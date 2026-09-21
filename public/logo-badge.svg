@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b192c"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Ring -->
+  <circle cx="60" cy="60" r="58" fill="url(#badgeGrad)" stroke="url(#goldGrad)" stroke-width="3.5"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+  
+  <!-- Inner Center Circle -->
+  <circle cx="60" cy="60" r="42" fill="#ffffff"/>
+  
+  <!-- Central Badge Content -->
+  <!-- Red banner arch -->
+  <path d="M 28 60 Q 60 48 92 60 Q 60 72 28 60 Z" fill="url(#redGrad)"/>
+  
+  <!-- JEET bold text -->
+  <text x="60" y="64" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#ffffff" text-anchor="middle" letter-spacing="1">JEET</text>
+  
+  <!-- Top text -->
+  <text x="60" y="44" font-family="'Inter', sans-serif" font-weight="700" font-size="7.5" fill="#0b192c" text-anchor="middle" letter-spacing="0.5">E-GOVERNANCE</text>
+  
+  <!-- Bottom text -->
+  <text x="60" y="78" font-family="'Inter', sans-serif" font-weight="700" font-size="7" fill="#b91c1c" text-anchor="middle" letter-spacing="0.5">SEVA KENDRA</text>
+
+  <!-- Stars -->
+  <polygon points="60,20 62,25 67,25 63,28 65,33 60,30 55,33 57,28 53,25 58,25" fill="url(#goldGrad)"/>
+  <polygon points="60,94 62,99 67,99 63,102 65,107 60,104 55,107 57,102 53,99 58,99" fill="url(#goldGrad)"/>
+</svg>
