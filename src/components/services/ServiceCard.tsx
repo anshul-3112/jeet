@@ -1,37 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Fingerprint, CreditCard, Plane, QrCode, Car, ShieldCheck, Award, Receipt, Home, FileCheck2, FileBadge, Store, Utensils, BookOpen, FileText, Building2, Zap, Landmark, ShieldPlus, GraduationCap
+  Fingerprint, CreditCard, Plane, QrCode, Car, ShieldCheck, Award, Receipt, Home, FileCheck2, FileBadge, Store, Utensils, BookOpen, FileText, Building2, Zap, Landmark, ShieldPlus, GraduationCap, type LucideIcon
 } from 'lucide-react';
 import type { ServiceItem } from '../../data/services';
 import { useLanguage } from '../../context/LanguageContext';
 
-const iconMap: Record<string, React.ReactNode> = {
-  Fingerprint: <Fingerprint className="w-8 h-8 text-brand-600" />,
-  CreditCard: <CreditCard className="w-8 h-8 text-brand-600" />,
-  Plane: <Plane className="w-8 h-8 text-brand-600" />,
-  QrCode: <QrCode className="w-8 h-8 text-brand-600" />,
-  Car: <Car className="w-8 h-8 text-brand-600" />,
-  ShieldCheck: <ShieldCheck className="w-8 h-8 text-brand-600" />,
-  Award: <Award className="w-8 h-8 text-brand-600" />,
-  Receipt: <Receipt className="w-8 h-8 text-brand-600" />,
-  Home: <Home className="w-8 h-8 text-brand-600" />,
-  FileCheck2: <FileCheck2 className="w-8 h-8 text-brand-600" />,
-  FileBadge: <FileBadge className="w-8 h-8 text-brand-600" />,
-  Store: <Store className="w-8 h-8 text-brand-600" />,
-  Utensils: <Utensils className="w-8 h-8 text-brand-600" />,
-  BookOpen: <BookOpen className="w-8 h-8 text-brand-600" />,
-  FileText: <FileText className="w-8 h-8 text-brand-600" />,
-  Building2: <Building2 className="w-8 h-8 text-brand-600" />,
-  Zap: <Zap className="w-8 h-8 text-brand-600" />,
-  Landmark: <Landmark className="w-8 h-8 text-brand-600" />,
-  ShieldPlus: <ShieldPlus className="w-8 h-8 text-brand-600" />,
-  GraduationCap: <GraduationCap className="w-8 h-8 text-brand-600" />
+const iconMap: Record<string, LucideIcon> = {
+  Fingerprint,
+  CreditCard,
+  Plane,
+  QrCode,
+  Car,
+  ShieldCheck,
+  Award,
+  Receipt,
+  Home,
+  FileCheck2,
+  FileBadge,
+  Store,
+  Utensils,
+  BookOpen,
+  FileText,
+  Building2,
+  Zap,
+  Landmark,
+  ShieldPlus,
+  GraduationCap
 };
 
 export const ServiceCard: React.FC<{ service: ServiceItem }> = ({ service }) => {
   const { language } = useLanguage();
-  const icon = iconMap[service.iconName] || <FileText className="w-8 h-8 text-brand-600" />;
+  const IconComponent = iconMap[service.iconName] || FileText;
 
   return (
     <Link
@@ -41,7 +41,7 @@ export const ServiceCard: React.FC<{ service: ServiceItem }> = ({ service }) => 
       {/* Icon Area */}
       <div className="mb-6">
         <div className="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-          {React.cloneElement(icon as React.ReactElement, { className: 'w-8 h-8 transition-colors' })}
+          <IconComponent className="w-8 h-8 transition-colors" />
         </div>
       </div>
 

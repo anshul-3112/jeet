@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { businessConfig } from '../../data/business';
 import { useLanguage } from '../../context/LanguageContext';
 
 export const HeroSection: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
 
   return (
     <section className="bg-white pt-12 pb-20 lg:pt-24 lg:pb-28">
