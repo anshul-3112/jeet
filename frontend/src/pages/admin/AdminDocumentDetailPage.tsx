@@ -94,19 +94,19 @@ export const AdminDocumentDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] text-slate-400">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-500 mb-3" />
-        <p className="text-xs">Loading document &amp; generating secure preview tokens...</p>
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-[#798C87]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#113D36] mb-3" />
+        <p className="text-xs font-medium">Generating secure presigned preview tokens...</p>
       </div>
     );
   }
 
   if (!document) {
     return (
-      <div className="p-8 text-center text-slate-400">
-        <p>Document not found or has been purged.</p>
-        <Link to="/admin/documents" className="mt-3 inline-block text-xs text-brand-400 hover:underline">
-          Return to document list
+      <div className="p-8 text-center text-[#798C87] bg-white rounded-2xl border border-[#EAE4DC]">
+        <p className="font-semibold text-sm">Document not found or has been permanently purged.</p>
+        <Link to="/admin/documents" className="mt-3 inline-block text-xs font-bold text-[#113D36] hover:underline">
+          ← Return to citizen document queue
         </Link>
       </div>
     );
@@ -123,30 +123,33 @@ export const AdminDocumentDetailPage: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/admin/documents')}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-colors"
+            className="p-2.5 bg-white hover:bg-[#FAF8F5] text-[#152220] rounded-xl border border-[#EAE4DC] transition-colors shadow-2xs"
+            title="Back to queue"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black text-white font-mono">{document.trackingId}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-[#152220] font-mono tracking-tight">
+                {document.trackingId}
+              </h1>
               {document.status === 'printed' ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#F2F8F6] text-[#113D36] border border-[#C2DDD4]">
                   <CheckCircle2 className="w-3 h-3" />
                   <span>Printed</span>
                 </span>
               ) : document.status === 'expired' ? (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F3EFEA] text-[#798C87]">
                   Expired
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#F7EFE7] text-[#A86938] border border-[#EFDCB9]">
                   <Printer className="w-3 h-3" />
                   <span>Received</span>
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">{serviceName}</p>
+            <p className="text-xs text-[#798C87] mt-0.5 font-medium">{serviceName}</p>
           </div>
         </div>
 
@@ -155,10 +158,10 @@ export const AdminDocumentDetailPage: React.FC = () => {
           <button
             onClick={handleToggleStatus}
             disabled={updating || document.status === 'expired'}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${
+            className={`px-4 py-2.5 rounded-full text-xs font-bold transition-colors flex items-center gap-2 ${
               document.status === 'printed'
-                ? 'bg-slate-800 hover:bg-slate-700 text-slate-300'
-                : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20'
+                ? 'bg-white hover:bg-[#FAF8F5] text-[#152220] border border-[#EAE4DC]'
+                : 'bg-[#113D36] hover:bg-[#144A42] text-white shadow-xs'
             }`}
           >
             <CheckCircle2 className="w-4 h-4" />
@@ -168,7 +171,7 @@ export const AdminDocumentDetailPage: React.FC = () => {
           <button
             onClick={handlePrintCurrentFile}
             disabled={!currentFile || document.status === 'expired'}
-            className="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-colors shadow-md shadow-brand-600/20"
+            className="px-4 py-2.5 bg-[#113D36] hover:bg-[#144A42] text-white rounded-full text-xs font-bold flex items-center gap-2 transition-colors shadow-xs"
           >
             <Printer className="w-4 h-4" />
             <span>Print Current File</span>
@@ -177,8 +180,8 @@ export const AdminDocumentDetailPage: React.FC = () => {
           <button
             onClick={handleDelete}
             disabled={updating}
-            className="p-2.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-xl transition-colors border border-red-900/50"
-            title="Delete Immediately"
+            className="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-full transition-colors border border-red-200"
+            title="Delete Permanently"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -189,17 +192,17 @@ export const AdminDocumentDetailPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Citizen Details & Time */}
         <div className="space-y-4">
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">Citizen Details</h2>
+          <div className="bg-white border border-[#EAE4DC] rounded-2xl p-5 space-y-4 shadow-2xs">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#798C87]">Citizen Details</h2>
 
             <div>
-              <p className="text-sm font-bold text-white">{document.citizenName}</p>
-              <div className="flex items-center gap-3 mt-2">
+              <p className="text-base font-bold text-[#152220]">{document.citizenName}</p>
+              <div className="flex items-center gap-2 mt-2">
                 <a
                   href={`tel:${document.citizenPhone}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-semibold text-slate-200"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FAF8F5] hover:bg-[#F3EFEA] border border-[#EAE4DC] rounded-full text-xs font-semibold text-[#152220]"
                 >
-                  <Phone className="w-3.5 h-3.5 text-slate-400" />
+                  <Phone className="w-3.5 h-3.5 text-[#113D36]" />
                   <span>Call {document.citizenPhone}</span>
                 </a>
                 <a
@@ -210,44 +213,44 @@ export const AdminDocumentDetailPage: React.FC = () => {
                   )}%20is%20ready%20at%20Jeet%20Kendra.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 rounded-xl text-xs font-semibold text-emerald-300"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F2F8F6] hover:bg-[#E2EFEA] border border-[#C2DDD4] rounded-full text-xs font-semibold text-[#113D36]"
                 >
-                  <MessageCircle className="w-3.5 h-3.5" />
+                  <MessageCircle className="w-3.5 h-3.5 fill-[#113D36] text-white" />
                   <span>WhatsApp</span>
                 </a>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-800 space-y-2 text-xs">
-              <div className="flex justify-between text-slate-400">
+            <div className="pt-3 border-t border-[#F3EFEA] space-y-2 text-xs">
+              <div className="flex justify-between text-[#798C87]">
                 <span>Uploaded</span>
-                <span className="text-slate-200">{new Date(document.uploadedAt).toLocaleString()}</span>
+                <span className="text-[#152220] font-medium">{new Date(document.uploadedAt).toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#798C87]">
                 <span>Auto-Purge Expiry</span>
-                <span className="text-slate-200">{new Date(document.expiresAt).toLocaleString()}</span>
+                <span className="text-[#152220] font-medium">{new Date(document.expiresAt).toLocaleString()}</span>
               </div>
               {document.printedAt && (
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-[#798C87]">
                   <span>Printed At</span>
-                  <span className="text-emerald-400 font-semibold">{new Date(document.printedAt).toLocaleTimeString()}</span>
+                  <span className="text-[#113D36] font-semibold">{new Date(document.printedAt).toLocaleTimeString()}</span>
                 </div>
               )}
             </div>
 
-            <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-2 text-xs text-slate-400">
-              <Clock className="w-4 h-4 text-amber-400 flex-shrink-0" />
+            <div className="p-3 bg-[#FAF8F5] rounded-xl border border-[#EAE4DC] flex items-center gap-2 text-xs text-[#798C87]">
+              <Clock className="w-4 h-4 text-[#A86938] flex-shrink-0" />
               <span>
                 {document.status === 'expired'
-                  ? 'Expired and removed from storage.'
+                  ? 'Expired and safely removed from storage.'
                   : `${Math.max(0, Math.floor(document.remainingMinutes / 60))}h ${document.remainingMinutes % 60}m remaining before purge.`}
               </span>
             </div>
           </div>
 
           {/* Files Selector */}
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-white border border-[#EAE4DC] rounded-2xl p-5 space-y-3 shadow-2xs">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#798C87]">
               Attached Documents ({document.files.length})
             </h2>
 
@@ -256,17 +259,17 @@ export const AdminDocumentDetailPage: React.FC = () => {
                 <button
                   key={file.key}
                   onClick={() => setActiveFileIndex(idx)}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl border text-left text-xs transition-colors ${
+                  className={`w-full flex items-center justify-between p-3 rounded-xl border text-left text-xs transition-colors cursor-pointer ${
                     activeFileIndex === idx
-                      ? 'bg-brand-600/20 border-brand-500/40 text-brand-300 font-bold'
-                      : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-850'
+                      ? 'bg-[#E2EFEA] border-[#C2DDD4] text-[#113D36] font-bold shadow-2xs'
+                      : 'bg-[#FAF8F5] border-[#EAE4DC] text-[#4A5B57] hover:bg-[#F3EFEA]'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 truncate">
                     <FileText className="w-4 h-4 flex-shrink-0" />
                     <span className="truncate">{file.fileName}</span>
                   </div>
-                  <span className="text-[10px] uppercase font-bold text-slate-500">
+                  <span className="text-[10px] uppercase font-bold text-[#798C87]">
                     {file.isPdf ? 'PDF' : 'IMG'}
                   </span>
                 </button>
@@ -276,11 +279,11 @@ export const AdminDocumentDetailPage: React.FC = () => {
         </div>
 
         {/* Right Column: Preview Area */}
-        <div className="lg:col-span-2 bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-6 flex flex-col">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+        <div className="lg:col-span-2 bg-white border border-[#EAE4DC] rounded-2xl p-4 sm:p-6 flex flex-col shadow-2xs">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#F3EFEA]">
             <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs font-semibold text-slate-300">
+              <Shield className="w-4 h-4 text-[#113D36]" />
+              <span className="text-xs font-semibold text-[#4A5B57]">
                 Secure Preview (Signed URL expires in 5 minutes)
               </span>
             </div>
@@ -291,7 +294,7 @@ export const AdminDocumentDetailPage: React.FC = () => {
                   href={currentFile.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#152220] text-xs font-medium rounded-full border border-[#EAE4DC]"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>Open Fullscreen</span>
@@ -299,7 +302,7 @@ export const AdminDocumentDetailPage: React.FC = () => {
                 <a
                   href={currentFile.url}
                   download={currentFile.fileName}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#152220] text-xs font-medium rounded-full border border-[#EAE4DC]"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Save</span>
@@ -309,9 +312,9 @@ export const AdminDocumentDetailPage: React.FC = () => {
           </div>
 
           {/* Preview Container */}
-          <div className="flex-1 min-h-[500px] bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center p-2 border border-slate-800">
+          <div className="flex-1 min-h-[500px] bg-[#FAF8F5] rounded-xl overflow-hidden flex items-center justify-center p-3 border border-[#EAE4DC]">
             {!currentFile ? (
-              <p className="text-xs text-slate-500">No file selected for preview.</p>
+              <p className="text-xs text-[#798C87]">No file selected for preview.</p>
             ) : currentFile.isPdf ? (
               <iframe
                 src={`${currentFile.url}#toolbar=1`}
@@ -323,7 +326,7 @@ export const AdminDocumentDetailPage: React.FC = () => {
                 <img
                   src={currentFile.url}
                   alt={currentFile.fileName}
-                  className="max-h-[550px] object-contain rounded-lg shadow-md"
+                  className="max-h-[550px] object-contain rounded-lg shadow-sm"
                 />
               </div>
             )}

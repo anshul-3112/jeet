@@ -59,30 +59,32 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Main Header Bar */}
-      <div className="glass-nav border-b border-slate-200/80">
+      <div className="glass-nav-warm border-b border-[#EAE4DC]/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Business Logo & Name */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <img
-                src="/logo-badge.svg"
-                alt="Jeet Digital E-Governance Logo"
-                className="w-12 h-12 md:w-14 md:h-14 object-contain drop-shadow-sm group-hover:scale-105 transition-transform"
-              />
+            <Link to="/" className="flex items-center gap-3.5 group">
+              <div className="w-12 h-12 md:w-13 md:h-13 rounded-2xl bg-[#113D36] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform overflow-hidden p-2">
+                <img
+                  src="/logo-badge.svg"
+                  alt="Jeet Digital Logo"
+                  className="w-full h-full object-contain filter brightness-0 invert"
+                />
+              </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-black text-lg md:text-xl text-brand-600 tracking-tight">
+                <div className="flex items-center gap-2">
+                  <span className="font-extrabold text-base md:text-lg text-[#152220] tracking-tight font-sans">
                     JEET DIGITAL
                   </span>
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300">
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#F7EFE7] text-[#A86938] border border-[#EFDCB9]">
                     आपले सरकार
                   </span>
                 </div>
-                <span className="text-xs md:text-sm font-bold text-govnavy-900 tracking-tight leading-none">
-                  E-Governance Seva Kendra
+                <span className="text-xs font-semibold text-[#4A5B57] tracking-tight">
+                  E-Governance &amp; Document Seva Kendra
                 </span>
-                <span className="text-[10px] text-slate-500 font-medium leading-tight">
-                  {language === 'mr' ? 'लांजेवार स्टोअर्सजवळ, नागपूर-२४' : 'Beside Balaji Jewelers, Nagpur'}
+                <span className="text-[10px] text-[#798C87] font-medium leading-tight">
+                  {language === 'mr' ? 'अयोध्या नगर, नागपूर-२४' : 'Ayodhya Nagar, Nagpur-24'}
                 </span>
               </div>
             </Link>
@@ -93,10 +95,10 @@ export const Header: React.FC = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors duration-150 ${
+                  className={`px-3.5 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-150 ${
                     isActive(link.path)
-                      ? 'text-brand-600 bg-brand-50'
-                      : 'text-slate-700 hover:text-brand-600 hover:bg-slate-100'
+                      ? 'text-[#113D36] bg-[#E2EFEA] font-bold shadow-xs'
+                      : 'text-[#4A5B57] hover:text-[#113D36] hover:bg-[#F3EFEA]'
                   }`}
                 >
                   {link.name}
@@ -110,18 +112,18 @@ export const Header: React.FC = () => {
                 href={`https://wa.me/${businessConfig.whatsappNumber}?text=${encodeURIComponent('Hi Yash, I need assistance with e-governance / documentation services.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-all"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold text-[#113D36] bg-[#F2F8F6] hover:bg-[#E2EFEA] border border-[#C2DDD4] transition-all"
               >
-                <MessageCircle className="w-4 h-4 fill-emerald-500 text-emerald-700" />
+                <MessageCircle className="w-3.5 h-3.5 fill-[#113D36] text-[#113D36]" />
                 <span>WhatsApp</span>
               </a>
 
               <a
                 href={`tel:${businessConfig.primaryPhone}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 shadow-sm hover:shadow active:scale-95 transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold text-white bg-[#113D36] hover:bg-[#144A42] shadow-sm hover:shadow active:scale-95 transition-all"
               >
-                <Phone className="w-4 h-4 text-white" />
-                <span>Call {businessConfig.primaryPhone}</span>
+                <Phone className="w-3.5 h-3.5 text-white" />
+                <span>Call Center</span>
               </a>
             </div>
 
@@ -129,7 +131,7 @@ export const Header: React.FC = () => {
             <div className="flex items-center lg:hidden space-x-2">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-lg text-slate-700 hover:text-brand-600 hover:bg-slate-100 focus:outline-none"
+                className="p-2 rounded-xl text-[#152220] hover:text-[#113D36] hover:bg-[#F3EFEA] focus:outline-none"
                 aria-label="Open mobile menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -141,9 +143,9 @@ export const Header: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 shadow-xl px-4 pt-2 pb-6 space-y-3 animate-fadeIn">
-          <div className="flex justify-between items-center py-2 border-b border-slate-100">
-            <span className="text-xs font-semibold text-slate-500">Navigation</span>
+        <div className="lg:hidden bg-[#FAF8F5] border-b border-[#EAE4DC] shadow-xl px-4 pt-3 pb-6 space-y-3 animate-fadeIn">
+          <div className="flex justify-between items-center py-2 border-b border-[#EAE4DC]">
+            <span className="text-xs font-semibold text-[#798C87]">Navigation</span>
             <LanguageToggle />
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -152,10 +154,10 @@ export const Header: React.FC = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3 py-2.5 rounded-lg text-sm font-semibold text-left transition-colors ${
+                className={`px-3 py-2.5 rounded-xl text-xs font-semibold text-left transition-colors ${
                   isActive(link.path)
-                    ? 'text-brand-600 bg-brand-50 font-bold'
-                    : 'text-slate-700 hover:bg-slate-100'
+                    ? 'text-[#113D36] bg-[#E2EFEA] font-bold'
+                    : 'text-[#4A5B57] hover:bg-[#F3EFEA]'
                 }`}
               >
                 {link.name}
@@ -163,19 +165,19 @@ export const Header: React.FC = () => {
             ))}
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+          <div className="pt-2 border-t border-[#EAE4DC] flex flex-col gap-2">
             <a
               href={`tel:${businessConfig.primaryPhone}`}
-              className="w-full py-2.5 px-4 bg-brand-600 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-[#113D36] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2"
             >
               <Phone className="w-4 h-4" />
               <span>Call Primary: {businessConfig.formattedPrimaryPhone}</span>
             </a>
             <a
               href={`tel:${businessConfig.alternatePhone}`}
-              className="w-full py-2 px-4 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2"
+              className="w-full py-2 px-4 bg-[#F3EFEA] text-[#152220] hover:bg-[#EAE4DC] rounded-xl text-xs font-semibold flex items-center justify-center gap-2"
             >
-              <Phone className="w-3.5 h-3.5 text-slate-500" />
+              <Phone className="w-3.5 h-3.5 text-[#798C87]" />
               <span>Alternate: {businessConfig.formattedAlternatePhone}</span>
             </a>
           </div>

@@ -5,10 +5,9 @@ import { faqData } from '../../data/faq';
 import { useLanguage } from '../../context/LanguageContext';
 
 export const FAQPreview: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  // Show first 5 FAQs on the homepage
   const previewFaqs = faqData.slice(0, 5);
 
   const toggle = (idx: number) => {
@@ -16,19 +15,21 @@ export const FAQPreview: React.FC = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-slate-50">
+    <section className="py-16 md:py-24 bg-white border-t border-[#EAE4DC]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center mb-12">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 mb-3">
-            {t.faqSection.tag}
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-govnavy-900 tracking-tight">
-            {t.faqSection.title}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-[#F7EFE7] text-[#A86938] border border-[#EFDCB9] mb-3">
+            <span>{language === 'mr' ? 'नेहमी विचारले जाणारे प्रश्न' : 'Frequently Asked Questions'}</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-normal text-[#152220] tracking-tight font-serif mb-4">
+            {language === 'mr' ? 'काही शंका आहेत का?' : 'Common Queries Answered'}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 mt-2">
-            {t.faqSection.subtitle}
+          <p className="text-base text-[#4A5B57] max-w-xl mx-auto">
+            {language === 'mr'
+              ? 'कास्ट व्हॅलिडिटी, उत्पन्नाचा दाखला आणि सेवांबद्दल नागरिकांनी विचारलेले महत्त्वाचे प्रश्न.'
+              : 'Clear answers on required proofs, turnaround windows, privacy guarantees, and government charges.'}
           </p>
         </div>
 
@@ -39,20 +40,20 @@ export const FAQPreview: React.FC = () => {
             return (
               <div
                 key={faq.id}
-                className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden transition-all duration-200"
+                className="bg-[#FAF8F5] rounded-2xl border border-[#EAE4DC] overflow-hidden transition-all duration-200"
               >
                 <button
                   type="button"
                   onClick={() => toggle(index)}
-                  className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors"
+                  className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white transition-colors"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm sm:text-base font-bold text-govnavy-900 leading-snug">
+                  <span className="text-sm sm:text-base font-bold text-[#152220] leading-snug font-sans">
                     {language === 'mr' ? faq.questionMr : faq.question}
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 bg-brand-50 text-brand-600' : 'text-slate-500'
+                    className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 bg-[#113D36] text-white' : 'bg-[#F3EFEA] text-[#798C87]'
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -60,7 +61,7 @@ export const FAQPreview: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 animate-fadeIn">
+                  <div className="px-6 pb-5 pt-2 text-xs sm:text-sm text-[#4A5B57] leading-relaxed border-t border-[#EAE4DC]/60 animate-fadeIn">
                     <p>{language === 'mr' ? faq.answerMr : faq.answer}</p>
                   </div>
                 )}
@@ -73,11 +74,11 @@ export const FAQPreview: React.FC = () => {
         <div className="mt-10 text-center">
           <Link
             to="/faq"
-            className="inline-flex items-center gap-1.5 px-6 py-3 rounded-xl bg-white hover:bg-slate-100 text-govnavy-900 font-bold text-xs sm:text-sm border border-slate-200 shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#FAF8F5] text-[#113D36] font-bold text-xs sm:text-sm border border-[#EAE4DC] hover:border-[#113D36]/30 shadow-xs transition-all"
           >
-            <HelpCircle className="w-4 h-4 text-brand-600" />
-            <span>View All Frequently Asked Questions</span>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <HelpCircle className="w-4 h-4 text-[#113D36]" />
+            <span>{language === 'mr' ? 'सर्व वारंवार विचारले जाणारे प्रश्न पहा' : 'View All Frequently Asked Questions'}</span>
+            <ArrowRight className="w-4 h-4 text-[#798C87]" />
           </Link>
         </div>
 

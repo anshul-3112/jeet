@@ -74,13 +74,13 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-2xl shadow-card border border-slate-100 p-6 sm:p-8 ${className}`}>
+    <div className={`bg-white rounded-3xl shadow-soft border border-[#EAE4DC] p-6 sm:p-8 ${className}`}>
       <div className="mb-6">
-        <h3 className="text-xl font-bold text-govnavy-900 tracking-tight flex items-center gap-2">
-          <FileText className="w-5 h-5 text-brand-600" />
+        <h3 className="text-xl font-bold text-[#152220] tracking-tight flex items-center gap-2 font-sans">
+          <FileText className="w-5 h-5 text-[#113D36]" />
           <span>{title}</span>
         </h3>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-[#798C87] mt-1">
           {subtitle}
         </p>
       </div>
@@ -88,11 +88,11 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {/* Field 1: Name */}
         <div>
-          <label htmlFor="enquiry-name" className="block text-xs font-semibold text-slate-700 mb-1">
-            Full Name <span className="text-brand-600">*</span>
+          <label htmlFor="enquiry-name" className="block text-xs font-semibold text-[#152220] mb-1">
+            Full Name <span className="text-[#C27E4B]">*</span>
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#798C87]">
               <User className="w-4 h-4" />
             </div>
             <input
@@ -101,24 +101,24 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Rahul Sharma"
-              className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 transition-all ${
+              className={`w-full pl-9 pr-3 py-2.5 text-sm bg-[#FAF8F5] border rounded-xl focus:bg-white focus:outline-none focus:ring-2 transition-all ${
                 errors.name
-                  ? 'border-brand-500 focus:ring-brand-200'
-                  : 'border-slate-200 focus:border-brand-600 focus:ring-brand-100'
+                  ? 'border-red-400 focus:ring-red-100'
+                  : 'border-[#EAE4DC] focus:border-[#113D36] focus:ring-[#C2DDD4]'
               }`}
               required
             />
           </div>
-          {errors.name && <p className="text-xs text-brand-600 mt-1 font-medium">{errors.name}</p>}
+          {errors.name && <p className="text-xs text-red-500 mt-1 font-medium">{errors.name}</p>}
         </div>
 
         {/* Field 2: Phone Number */}
         <div>
-          <label htmlFor="enquiry-phone" className="block text-xs font-semibold text-slate-700 mb-1">
-            WhatsApp / Mobile Number <span className="text-brand-600">*</span>
+          <label htmlFor="enquiry-phone" className="block text-xs font-semibold text-[#152220] mb-1">
+            WhatsApp / Mobile Number <span className="text-[#C27E4B]">*</span>
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#798C87]">
               <Phone className="w-4 h-4" />
             </div>
             <input
@@ -128,30 +128,30 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
               onChange={(e) => setPhone(e.target.value)}
               placeholder="e.g. 9876543210"
               maxLength={10}
-              className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 transition-all ${
+              className={`w-full pl-9 pr-3 py-2.5 text-sm bg-[#FAF8F5] border rounded-xl focus:bg-white focus:outline-none focus:ring-2 transition-all ${
                 errors.phone
-                  ? 'border-brand-500 focus:ring-brand-200'
-                  : 'border-slate-200 focus:border-brand-600 focus:ring-brand-100'
+                  ? 'border-red-400 focus:ring-red-100'
+                  : 'border-[#EAE4DC] focus:border-[#113D36] focus:ring-[#C2DDD4]'
               }`}
               required
             />
           </div>
-          {errors.phone && <p className="text-xs text-brand-600 mt-1 font-medium">{errors.phone}</p>}
+          {errors.phone && <p className="text-xs text-red-500 mt-1 font-medium">{errors.phone}</p>}
         </div>
 
         {/* Field 3: Service Selection */}
         <div>
-          <label htmlFor="enquiry-service" className="block text-xs font-semibold text-slate-700 mb-1">
-            Service Needed <span className="text-brand-600">*</span>
+          <label htmlFor="enquiry-service" className="block text-xs font-semibold text-[#152220] mb-1">
+            Service Needed <span className="text-[#C27E4B]">*</span>
           </label>
           <select
             id="enquiry-service"
             value={service}
             onChange={(e) => setService(e.target.value)}
-            className={`w-full px-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 transition-all ${
+            className={`w-full px-3 py-2.5 text-sm bg-[#FAF8F5] border rounded-xl focus:bg-white focus:outline-none focus:ring-2 transition-all ${
               errors.service
-                ? 'border-brand-500 focus:ring-brand-200'
-                : 'border-slate-200 focus:border-brand-600 focus:ring-brand-100'
+                ? 'border-red-400 focus:ring-red-100'
+                : 'border-[#EAE4DC] focus:border-[#113D36] focus:ring-[#C2DDD4]'
             }`}
             required
           >
@@ -162,12 +162,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
               </option>
             ))}
           </select>
-          {errors.service && <p className="text-xs text-brand-600 mt-1 font-medium">{errors.service}</p>}
+          {errors.service && <p className="text-xs text-red-500 mt-1 font-medium">{errors.service}</p>}
         </div>
 
         {/* Field 4: Optional Note / Query */}
         <div>
-          <label htmlFor="enquiry-note" className="block text-xs font-semibold text-slate-700 mb-1">
+          <label htmlFor="enquiry-note" className="block text-xs font-semibold text-[#152220] mb-1">
             Note / Special Requirement (Optional)
           </label>
           <div className="relative">
@@ -177,13 +177,13 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Urgent Caste Validity for 12th science admission, or need address correction in Aadhaar"
               rows={2}
-              className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:border-brand-600 focus:ring-brand-100 transition-all resize-none"
+              className="w-full px-3 py-2 text-sm bg-[#FAF8F5] border border-[#EAE4DC] rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:border-[#113D36] focus:ring-[#C2DDD4] transition-all resize-none"
             />
           </div>
         </div>
 
         {/* Privacy Note */}
-        <p className="text-[11px] text-slate-400 leading-tight">
+        <p className="text-[11px] text-[#798C87] leading-tight">
           🔒 Your details are kept confidential and used only to respond to your specific service query.
         </p>
 
@@ -191,14 +191,14 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 px-6 rounded-xl text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md hover:shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+          className="w-full py-3.5 px-6 rounded-full text-xs font-bold text-white bg-[#113D36] hover:bg-[#144A42] active:bg-[#0D2C27] shadow-sm hover:shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
           id="submit-enquiry-btn"
         >
           {isSubmitting ? (
             <span>Connecting to WhatsApp...</span>
           ) : (
             <>
-              <Send className="w-4 h-4" />
+              <Send className="w-3.5 h-3.5" />
               <span>Submit &amp; Connect on WhatsApp</span>
             </>
           )}
