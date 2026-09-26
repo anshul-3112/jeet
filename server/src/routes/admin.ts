@@ -208,7 +208,9 @@ router.get('/documents/:id', authMiddleware, async (req: Request, res: Response)
         documentId: doc.id,
         action: 'viewed',
       });
-    } catch (e) {}
+    } catch {
+      // Ignore audit failure
+    }
 
     return res.json({
       id: doc.id,
@@ -257,7 +259,9 @@ router.patch('/documents/:id', authMiddleware, async (req: Request, res: Respons
         documentId: id,
         action: status === 'printed' ? 'printed' : 'status_update',
       });
-    } catch (e) {}
+    } catch {
+      // Ignore audit failure
+    }
 
     return res.json({ success: true, document: updated });
   } catch (err: any) {
@@ -298,7 +302,9 @@ router.delete('/documents/:id', authMiddleware, async (req: Request, res: Respon
         documentId: id,
         action: 'deleted',
       });
-    } catch (e) {}
+    } catch {
+      // Ignore audit failure
+    }
 
     return res.json({ success: true, message: 'Document and files deleted successfully.' });
   } catch (err: any) {
