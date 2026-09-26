@@ -12,10 +12,10 @@ dotenv.config();
 
 const router = Router();
 
-// Strict rate limit for admin login: max 5 attempts per 15 min
+// Rate limit for admin login (relaxed in development)
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: process.env.NODE_ENV === 'production' ? 5 : 50,
   message: { error: 'Too many login attempts. Please try again after 15 minutes.' },
   standardHeaders: true,
   legacyHeaders: false,
