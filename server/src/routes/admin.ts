@@ -66,7 +66,9 @@ router.post('/login', loginLimiter, async (req: Request, res: Response) => {
         await db.update(adminUsers)
           .set({ lastLoginAt: new Date() })
           .where(eq(adminUsers.id, adminUser.id));
-      } catch (err) {}
+      } catch {
+        // Ignore update failure
+      }
     }
 
     const token = generateToken({ id: userId, username });
@@ -82,10 +84,12 @@ router.post('/login', loginLimiter, async (req: Request, res: Response) => {
     // Audit log
     try {
       await db.insert(auditLog).values({
-        adminId: adminUser ? adminUser.id : undefined,
+        adminId: adminUser ? adminUser.id : null,
         action: 'login',
       });
-    } catch (e) {}
+    } catch {
+      // Ignore audit failure
+    }
 
     return res.json({
       success: true,

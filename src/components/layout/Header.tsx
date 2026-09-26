@@ -13,6 +13,8 @@ export const Header: React.FC = () => {
   const navLinks = [
     { name: t.nav.home, path: '/' },
     { name: t.nav.services, path: '/services' },
+    { name: language === 'mr' ? 'कागदपत्रे अपलोड' : 'Upload Docs', path: '/upload' },
+    { name: language === 'mr' ? 'स्थिती तपासा' : 'Track Status', path: '/track' },
     { name: t.nav.howItWorks, path: '/how-it-works' },
     { name: t.nav.about, path: '/about' },
     { name: t.nav.contact, path: '/contact' },
