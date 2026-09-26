@@ -6,19 +6,24 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID || '';
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY || '';
+const endpoint = process.env.AWS_ENDPOINT_URL_S3 || process.env.S3_ENDPOINT || undefined;
+const region = process.env.AWS_REGION || 'us-east-2';
+export const bucketName = process.env.S3_BUCKET || 'assets';
+
 const isS3Configured = Boolean(
-  process.env.S3_ACCESS_KEY_ID &&
-  process.env.S3_SECRET_ACCESS_KEY &&
-  process.env.S3_BUCKET &&
-  process.env.S3_ACCESS_KEY_ID !== 'access_key'
+  accessKeyId &&
+  secretAccessKey &&
+  accessKeyId !== 'access_key'
 );
 
 export const s3Client = new S3Client({
-  region: 'auto',
-  endpoint: process.env.S3_ENDPOINT || undefined,
+  region,
+  endpoint,
   credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+    accessKeyId,
+    secretAccessKey,
   },
   forcePathStyle: true,
 });
@@ -36,7 +41,7 @@ export async function uploadFileToStorage(
   if (isS3Configured) {
     await s3Client.send(
       new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET,
+        Bucket: bucketName,
         Key: fileKey,
         Body: buffer,
         ContentType: contentType,
@@ -55,10 +60,10 @@ export async function uploadFileToStorage(
   }
 }
 
-export async function getSignedDownloadUrl(fileKey: string, expiresInSeconds = 300): Promise<string> {
+export async function getSignedDownloadUrl(fileKey: string, expiresInSeconds = 3600): Promise<string> {
   if (isS3Configured) {
     const command = new GetObjectCommand({
-      Bucket: process.env.S3_BUCKET,
+      Bucket: bucketName,
       Key: fileKey,
     });
     return await getSignedUrl(s3Client, command, { expiresIn: expiresInSeconds });
@@ -72,7 +77,7 @@ export async function deleteFileFromStorage(fileKey: string): Promise<void> {
   if (isS3Configured) {
     await s3Client.send(
       new DeleteObjectCommand({
-        Bucket: process.env.S3_BUCKET,
+        Bucket: bucketName,
         Key: fileKey,
       })
     );
