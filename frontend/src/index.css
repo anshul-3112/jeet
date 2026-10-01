@@ -91,3 +91,6 @@
 
 /* UI update 7 */
 .ui-flex-center { display: flex; align-items: center; justify-content: center; }
+
+/* UI update 8 */
+.ui-text-sm { font-size: 0.875rem; }
