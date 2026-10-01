@@ -103,3 +103,6 @@
 
 /* UI update 11 */
 .ui-rounded-sm { border-radius: 0.125rem; }
+
+/* UI update 12 */
+.ui-rounded-md { border-radius: 0.375rem; }
