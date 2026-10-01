@@ -88,3 +88,6 @@
 
 /* UI update 6 */
 .ui-mt-3 { margin-top: 1rem; }
+
+/* UI update 7 */
+.ui-flex-center { display: flex; align-items: center; justify-content: center; }
