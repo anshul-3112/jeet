@@ -70,3 +70,6 @@
   border: 1px solid rgba(17, 61, 54, 0.07);
   box-shadow: 0 1px 3px rgba(17, 61, 54, 0.03), 0 8px 24px -4px rgba(17, 61, 54, 0.05);
 }
+
+/* UI update 1 */
+.ui-mb-1 { margin-bottom: 0.25rem; }
