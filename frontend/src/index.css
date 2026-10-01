@@ -100,3 +100,6 @@
 
 /* UI update 10 */
 .ui-font-bold { font-weight: bold; }
+
+/* UI update 11 */
+.ui-rounded-sm { border-radius: 0.125rem; }
