@@ -119,13 +119,17 @@ export const UploadPage: React.FC = () => {
       setCurrentStep(3);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err: any) {
-      console.error('Upload failed:', err);
+      const httpStatus = err.response?.status;
+      const responseData = err.response?.data;
+      console.error('Upload failed with HTTP status:', httpStatus, 'response data:', responseData, 'full error:', err);
+
+      const serverErrorMessage = responseData?.error || err.message;
       setErrors({
-        upload:
-          err.response?.data?.error ||
-          (language === 'mr'
-            ? 'अपलोड करताना त्रुटी आली. कृपया पुन्हा प्रयत्न करा.'
-            : 'Failed to upload documents. Please check your network and try again.'),
+        upload: serverErrorMessage
+          ? `${language === 'mr' ? 'अपलोड त्रुटी' : 'Upload Error'}${httpStatus ? ` (${httpStatus})` : ''}: ${serverErrorMessage}`
+          : (language === 'mr'
+              ? 'अपलोड करताना त्रुटी आली. कृपया नेटवर्क तपासा व पुन्हा प्रयत्न करा.'
+              : 'Failed to upload documents. Please check your network and try again.'),
       });
     } finally {
       setIsSubmitting(false);

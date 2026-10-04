@@ -18,11 +18,7 @@ export interface TrackStatusResponse {
 }
 
 export async function uploadDocuments(formData: FormData): Promise<UploadResponse> {
-  const response = await apiClient.post<UploadResponse>('/documents/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const response = await apiClient.post<UploadResponse>('/documents/upload', formData);
   return response.data;
 }
 
