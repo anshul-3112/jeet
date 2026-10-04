@@ -11,23 +11,14 @@ export const PopularServices: React.FC = () => {
 
   const categories = [
     { id: 'all', name: 'All Popular', nameMr: 'सर्व प्रमुख' },
-    { id: 'student', name: '12th Science & Students', nameMr: '१२ वी सायन्स व विद्यार्थी' },
-    { id: 'certificates', name: 'Revenue Certificates', nameMr: 'महसूल दाखले' },
-    { id: 'identity', name: 'Identity & Business', nameMr: 'ओळखपत्र व व्यवसाय' },
+    { id: 'certificates', name: 'Govt Certificates', nameMr: 'शासकीय दाखले' },
+    { id: 'identity-travel', name: 'Identity & Travel', nameMr: 'ओळख व प्रवास' },
+    { id: 'business-legal-financial', name: 'Business & Legal', nameMr: 'व्यवसाय व कायदेशीर' },
   ];
 
   const filteredServices = servicesData.filter((s) => {
     if (selectedCategory === 'all') return s.isPopular;
-    if (selectedCategory === 'student') {
-      return s.slug.includes('caste') || s.slug.includes('scholarship') || s.slug.includes('admission');
-    }
-    if (selectedCategory === 'certificates') {
-      return s.slug.includes('income') || s.slug.includes('domicile') || s.slug.includes('non-creamy') || s.slug.includes('affidavit');
-    }
-    if (selectedCategory === 'identity') {
-      return s.slug.includes('pan') || s.slug.includes('aadhaar') || s.slug.includes('gumasta') || s.slug.includes('food');
-    }
-    return s.isPopular;
+    return s.category === selectedCategory && s.isPopular;
   }).slice(0, 9);
 
   return (
@@ -68,8 +59,8 @@ export const PopularServices: React.FC = () => {
           </div>
         </div>
 
-        {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {/* Service Cards Grid (Equal Heights) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {filteredServices.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}

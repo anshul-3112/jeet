@@ -22,8 +22,10 @@ export interface ServiceItem {
   whoIsThisForMr?: string[];
   documentSections: DocumentSection[];
   processSteps: string[];
-  turnaroundTime?: string;
-  turnaroundTimeMr?: string;
+  turnaroundBadge: string;
+  turnaroundBadgeMr: string;
+  turnaroundTime: string;
+  turnaroundTimeMr: string;
   iconName: string;
   isPopular?: boolean;
   featuredNotice?: string;
@@ -36,19 +38,19 @@ export const serviceCategories: { id: ServiceCategory; name: string; nameMr: str
     id: 'identity-travel',
     name: 'Identity & Travel Documents',
     nameMr: 'ओळख व प्रवास कागदपत्रे',
-    description: 'Aadhaar, PAN, Passport, Voter ID & Driving Licences'
+    description: 'Aadhaar, PAN, Voter ID, Passport & Driving Licences'
   },
   {
     id: 'certificates',
     name: 'Government Certificates',
     nameMr: 'शासकीय व महसूल प्रमाणपत्रे',
-    description: 'Caste Validity, Caste, Income, Domicile, EWS & Non-Creamy Layer'
+    description: '12th Science Caste Validity, Caste, Income, Domicile, EWS & Non-Creamy Layer'
   },
   {
     id: 'business-legal-financial',
-    name: 'Business, Legal & Utility Services',
+    name: 'Business, Legal & Digital Services',
     nameMr: 'व्यावसायिक, कायदेशीर व इतर सेवा',
-    description: 'Gumasta, Food Licence, Gazette, Affidavits, Rent Agreement & MSEB'
+    description: 'Gumasta, Food Licence, Gazette, Affidavits, Rent Agreement, Insurance & Online Forms'
   }
 ];
 
@@ -61,7 +63,7 @@ export const servicesData: ServiceItem[] = [
     category: 'identity-travel',
     categoryName: 'Identity & Travel',
     categoryNameMr: 'ओळख व प्रवास',
-    shortDescription: 'Assistance for Aadhaar demographic updates, address change, mobile linkage verification, and reprint.',
+    shortDescription: 'Assistance for Aadhaar address updates, mobile linkage verification, demographic corrections, and PVC card printing.',
     shortDescriptionMr: 'आधार पत्ता बदल, नाव सुधारणा, मोबाईल लिंकिंग व नवीन कार्ड प्रिंट सहाय्य.',
     detailedDescription: 'Get hassle-free assistance for Aadhaar card related services including address updates, demographic corrections, PVC smart card printing, and checking application or enrollment status.',
     detailedDescriptionMr: 'आधार कार्डशी संबंधित पत्ता बदल, माहिती सुधारणा, स्मार्ट कार्ड प्रिंटिंग व नावनोंदणी संदर्भात संपूर्ण मार्गदर्शन व सेवा.',
@@ -88,6 +90,8 @@ export const servicesData: ServiceItem[] = [
       'Submission via official UIDAI portal / guidance for biometric authorization',
       'Acknowledgement slip generation for online tracking'
     ],
+    turnaroundBadge: '5-15 Days',
+    turnaroundBadgeMr: '५-१५ दिवस',
     turnaroundTime: 'Typically updated within 5 to 15 working days as per UIDAI processing',
     turnaroundTimeMr: 'UIDAI नियमांनुसार साधारण ५ ते १५ कामकाजाचे दिवस',
     iconName: 'Fingerprint',
@@ -131,6 +135,8 @@ export const servicesData: ServiceItem[] = [
       'Digital e-Sign and submission on official NSDL/UTI portal',
       'Receive instant e-PAN on email and original PVC PAN card at your doorstep'
     ],
+    turnaroundBadge: '24-72 Hours',
+    turnaroundBadgeMr: '२४-७२ तास',
     turnaroundTime: 'e-PAN generated within 24-72 hours; physical card delivered in 10-15 days',
     turnaroundTimeMr: 'e-PAN २४ ते ७२ तासांत; मूळ कार्ड १० ते १५ दिवसांत पोस्टाने प्राप्त होते',
     iconName: 'CreditCard',
@@ -138,7 +144,50 @@ export const servicesData: ServiceItem[] = [
     relatedSlugs: ['aadhaar-card', 'smart-card-aadhaar-epic', 'income-certificate']
   },
 
-  // 3. Passport
+  // 3. Voter ID Card (Distinct, Non-Duplicate)
+  {
+    slug: 'smart-card-aadhaar-epic',
+    name: 'Voter ID Card (EPIC Registration & Smart Card)',
+    nameMr: 'मतदार ओळखपत्र (Voter ID व स्मार्ट कार्ड)',
+    category: 'identity-travel',
+    categoryName: 'Identity & Travel',
+    categoryNameMr: 'ओळख व प्रवास',
+    shortDescription: 'Fresh Voter ID registration (Form 6), address shift (Form 8), Aadhaar-Voter linkage, and HD PVC card printing.',
+    shortDescriptionMr: 'नवीन मतदार नोंदणी, नाव/पत्ता दुरुस्ती, आधार लिंकिंग व पीव्हीसी स्मार्ट कार्ड प्रिंटिंग.',
+    detailedDescription: 'Official Election Commission of India (ECI) voter services. Apply for fresh voter registration upon turning 18, request constituency transfer, rectify spelling errors, and get an authentic high-definition PVC voter card.',
+    detailedDescriptionMr: 'नवीन मतदार नोंदणी, मतदार यादीत नाव शोधणे, पत्ता बदल व वॉटरप्रूफ प्लास्टिक स्मार्ट कार्ड त्वरित मिळवा.',
+    whoIsThisFor: [
+      'Young citizens turning 18 years of age registering as new voters',
+      'Citizens relocated to a new assembly constituency in Nagpur',
+      'Voters with damaged or faded voter cards needing instant PVC reprint'
+    ],
+    documentSections: [
+      {
+        title: 'Requirements for Voter ID Application / Print',
+        titleMr: 'आवश्यक तपशील व कागदपत्रे',
+        items: [
+          'Passport size photo and Aadhaar Card',
+          'Proof of Age / DOB (School Leaving Certificate / Birth Certificate / 10th Marksheet)',
+          'Proof of Address (Electricity bill, Ration card, or Water bill of current Nagpur residence)',
+          'Existing Voter EPIC Number (for correction, shift, or PVC print)'
+        ]
+      }
+    ],
+    processSteps: [
+      'Form selection (Form 6 for new voter, Form 8 for shift/correction)',
+      'Document scanning and portal upload on ECINet / NVSP',
+      'Instant generation of application reference number for BLO verification tracking'
+    ],
+    turnaroundBadge: 'Same Day / 15 Days',
+    turnaroundBadgeMr: 'त्वरित / १५ दिवस',
+    turnaroundTime: 'PVC print in 15 minutes; Fresh ECI voter registration approval in 15-30 days',
+    turnaroundTimeMr: 'स्मार्ट कार्ड १५ मिनिटांत; नवीन नोंदणी १५ ते ३० दिवसांत',
+    iconName: 'QrCode',
+    isPopular: true,
+    relatedSlugs: ['aadhaar-card', 'pan-card', 'driving-licence']
+  },
+
+  // 4. Passport Seva
   {
     slug: 'passport',
     name: 'Passport Seva Online Assistance',
@@ -146,7 +195,7 @@ export const servicesData: ServiceItem[] = [
     category: 'identity-travel',
     categoryName: 'Identity & Travel',
     categoryNameMr: 'ओळख व प्रवास',
-    shortDescription: 'Fresh passport, reissue/renewal, Tatkaal passport, and Police Clearance Certificate (PCC) booking.',
+    shortDescription: 'Fresh passport, reissue/renewal, Tatkaal passport, and Police Clearance Certificate (PCC) appointment booking.',
     shortDescriptionMr: 'नवीन पासपोर्ट, नूतनीकरण, तात्काळ पासपोर्ट व पोलीस क्लिअरन्स (PCC) अर्ज.',
     detailedDescription: 'Expert guidance for Passport Seva Kendra (PSK / POPSK) appointments in Nagpur. We handle profile registration, document annexures, application fee payment, and appointment scheduling without errors.',
     detailedDescriptionMr: 'पासपोर्ट सेवा केंद्र नागपूर येथे अपॉइंटमेंट, अर्ज भरणे, कागदपत्रे पडताळणी व संपूर्ण मार्गदर्शन.',
@@ -175,6 +224,8 @@ export const servicesData: ServiceItem[] = [
       'Fee payment and convenient appointment slot booking at Nagpur PSK',
       'Guidance for physical verification and police clearance process'
     ],
+    turnaroundBadge: '3-15 Days',
+    turnaroundBadgeMr: '३-१५ दिवस',
     turnaroundTime: 'Normal: 15-30 days after PSK visit; Tatkaal: 3-7 days',
     turnaroundTimeMr: 'सामान्य: १५ ते ३० दिवस; तात्काळ: ३ ते ७ दिवस',
     iconName: 'Plane',
@@ -182,50 +233,11 @@ export const servicesData: ServiceItem[] = [
     relatedSlugs: ['driving-licence', 'pan-card', 'aadhaar-card']
   },
 
-  // 4. Smart Card Aadhaar / EPIC
-  {
-    slug: 'smart-card-aadhaar-epic',
-    name: 'Smart Card Aadhaar & Voter ID (EPIC)',
-    nameMr: 'स्मार्ट कार्ड आधार व मतदान कार्ड (EPIC)',
-    category: 'identity-travel',
-    categoryName: 'Identity & Travel',
-    categoryNameMr: 'ओळख व प्रवास',
-    shortDescription: 'High-definition PVC smart card printing for Aadhaar Card and Voter ID (EPIC) with QR security.',
-    shortDescriptionMr: 'आधार कार्ड व मतदान ओळखपत्राचे वॉटरप्रूफ पीव्हीसी (PVC) स्मार्ट कार्ड प्रिंटिंग.',
-    detailedDescription: 'Protect your paper documents with durable, waterproof, pocket-friendly PVC smart cards. We print official Aadhaar and Election Photo Identity Cards (EPIC) with high-clarity barcodes and microtext.',
-    detailedDescriptionMr: 'खराब न होणारे आणि सुरक्षित पीव्हीसी प्लास्टिक स्मार्ट कार्ड त्वरित प्रिंट करून मिळवा.',
-    whoIsThisFor: [
-      'Citizens carrying torn or faded paper Aadhaar / Voter IDs',
-      'People who need a compact, durable wallet card for daily verification'
-    ],
-    documentSections: [
-      {
-        title: 'Requirements for Smart Card Printing',
-        titleMr: 'आवश्यक तपशील',
-        items: [
-          'Aadhaar PDF file with password OR Aadhaar Number with OTP verification',
-          'Voter EPIC Number or downloadable e-EPIC file',
-          'Self-verification of photo and text clarity'
-        ]
-      }
-    ],
-    processSteps: [
-      'Provide your e-Aadhaar PDF or Voter EPIC number',
-      'Digital layout inspection and color calibration',
-      'Instant high-density thermal PVC card printing at our centre'
-    ],
-    turnaroundTime: 'Immediate / Ready in 10-20 minutes at centre or express collection',
-    turnaroundTimeMr: 'केंद्रावर त्वरित १० ते २० मिनिटांत उपलब्ध',
-    iconName: 'QrCode',
-    isPopular: false,
-    relatedSlugs: ['aadhaar-card', 'pan-card', 'driving-licence']
-  },
-
   // 5. Driving Licence
   {
     slug: 'driving-licence',
-    name: 'Driving Licence Services',
-    nameMr: 'ड्रायव्हिंग लायसन्स सेवा',
+    name: 'Driving Licence Services (RTO)',
+    nameMr: 'ड्रायव्हिंग लायसन्स सेवा (RTO)',
     category: 'identity-travel',
     categoryName: 'Identity & Travel',
     categoryNameMr: 'ओळख व प्रवास',
@@ -257,6 +269,8 @@ export const servicesData: ServiceItem[] = [
       'Slot booking for LL test / RTO track test',
       'Application status tracking until licence dispatch'
     ],
+    turnaroundBadge: '1-3 Days',
+    turnaroundBadgeMr: '१-३ दिवस',
     turnaroundTime: 'Learner licence within 1-3 days; permanent licence following RTO driving test',
     turnaroundTimeMr: 'लर्निंग लायसन्स १-३ दिवसांत; पक्के लायसन्स आरटीओ चाचणीनंतर',
     iconName: 'Car',
@@ -267,12 +281,12 @@ export const servicesData: ServiceItem[] = [
   // 6. Caste Validity (FEATURED SOURCE-AUTHENTIC SERVICE)
   {
     slug: 'caste-validity',
-    name: 'Caste Validity Certificate (जात पडताळणी)',
-    nameMr: 'जात पडताळणी / व्हॅलिडिटी प्रमाणपत्र',
+    name: '12th Science & Degree Caste Validity',
+    nameMr: '१२ वी सायन्स जात पडताळणी (Caste Validity)',
     category: 'certificates',
     categoryName: 'Certificates',
     categoryNameMr: 'शासकीय प्रमाणपत्रे',
-    shortDescription: 'Comprehensive CCVIS / Barti online form filling and document dossier preparation for 12th Science & Degree students.',
+    shortDescription: 'Essential CCVIS / Barti online form filing, family tree dossier compilation, and scrutiny support for 12th Science & Degree admissions.',
     shortDescriptionMr: '१२ वी सायन्स, इंजिनिअरिंग, मेडिकल, डीएड/बीएड, पदवी व पदविका विद्यार्थ्यांसाठी जात वैधता अर्ज.',
     detailedDescription: 'Crucial verification certificate for students in 12th Science, Engineering, Medical, Polytechnic, Diploma, and Degree courses seeking admission under reserved categories. We assemble the exact family tree documentation, old revenue records, and required affidavits (Form 3 & Form 17) to ensure smooth approval from the District Caste Scrutiny Committee.',
     detailedDescriptionMr: 'विद्यार्थ्यांनी लक्ष द्या! आजच तुमची जात व्हॅलिडिटी प्रक्रिया पूर्ण करा! १२ वी सायन्स, डिप्लोमा व व्यावसायिक शिक्षणासाठी जात वैधता प्रमाणपत्र अत्यंत आवश्यक आहे. आम्ही सर्व आवश्यक कागदपत्रांची अचूक मांडणी करून देतो.',
@@ -303,14 +317,14 @@ export const servicesData: ServiceItem[] = [
         items: [
           "Father's School Leaving Certificate (TC) and Nirgam Utara (वडिलांचा टीसी आणि निर्गम उतारा)",
           "Grandfather's Primary School Leaving Certificate (TC) and Nirgam Utara (आजोबांचा टीसी - प्राथमिक आणि निर्गम उतारा)",
-          "Kotwal Book Extract (P1 / P2) / Hakka Abhilekh (Right of Records) / Sale Deed / Old Revenue Records mentioning caste (कोतवाल बुक नक्कल पी १ / पी २ / अधिकार अभिलेख, विक्री पत्र व महसुली पुरावे ज्यात जातीची नोंद असेल)"
+          "Kotwal Book Extract (P1 / P2) / Hakka Abhilekh / Sale Deed mentioning caste (कोतवाल बुक नक्कल पी १ / पी २ / अधिकार अभिलेख, विक्री पत्र व महसुली पुरावे)"
         ]
       },
       {
         title: "3. Relative's Validity Proof (कुटुंबातील जात वैधता प्रमाणपत्र)",
         titleMr: '३. कुटुंबातील जात वैधता',
         items: [
-          'Validity Certificate of any blood relative (Father, Uncle, Sibling, Paternal Grandfather) if available (कुटुंबात कोणाचे वैध प्रमाणपत्र (Validity) असल्यास त्याची प्रत जोडावी)'
+          'Validity Certificate of any blood relative (Father, Uncle, Sibling, Paternal Grandfather) if available (कुटुंबात कोणाचे वैध प्रमाणपत्र असल्यास प्रत जोडावी)'
         ]
       },
       {
@@ -326,9 +340,11 @@ export const servicesData: ServiceItem[] = [
       'Initial scrutiny of student, parental, and ancestral caste records',
       'Drafting of required affidavits (Namuna Form 3 and Namuna Form 17)',
       'Online application filing on CCVIS / Barti portal with document scanning',
-      'Compilation of physical dossier and guidance for submission to the District Caste Scrutiny Committee / Social Welfare Office (संबंधित जिल्ह्याच्या समाज कल्याण कार्यालयात प्रत जमा करणे)',
+      'Compilation of physical dossier and guidance for submission to District Caste Scrutiny Committee',
       'Tracking scrutiny committee notifications and hearing updates'
     ],
+    turnaroundBadge: '15-45 Days',
+    turnaroundBadgeMr: '१५-४५ दिवस',
     turnaroundTime: 'साधारणपणे १५ ते ४५ दिवसांत पूर्ण होते (Typically completed in approx. 15 to 45 days)',
     turnaroundTimeMr: 'वैधता प्रक्रिया साधारणपणे १५ ते ४५ दिवसांत पूर्ण होते',
     iconName: 'ShieldCheck',
@@ -341,12 +357,12 @@ export const servicesData: ServiceItem[] = [
   // 7. Caste Certificate
   {
     slug: 'caste-certificate',
-    name: 'Caste Certificate (जातीचा दाखला)',
+    name: 'Caste Certificate (जातीचा दाखला - State & Central)',
     nameMr: 'जातीचा दाखला (Caste Certificate)',
     category: 'certificates',
     categoryName: 'Certificates',
     categoryNameMr: 'शासकीय प्रमाणपत्रे',
-    shortDescription: 'Official Aaple Sarkar Tehsildar caste certificate for SC, ST, VJNT, OBC, and SBC categories.',
+    shortDescription: 'Official Aaple Sarkar Tehsildar caste certificate for SC, ST, VJNT, OBC, and SBC categories & Central formats.',
     shortDescriptionMr: 'अनुसूचित जाती, जमाती, विमुक्त जाती, भटक्या जमाती, इतर मागासवर्गीय जातीचा दाखला.',
     detailedDescription: 'Get your official Maharashtra Caste Certificate issued by the competent Sub-Divisional Officer (SDO) / Tehsildar via the Aaple Sarkar portal. Essential for school admissions, scholarships, competitive exams, and government schemes.',
     detailedDescriptionMr: 'आपले सरकार पोर्टलद्वारे सक्षम अधिकाऱ्यांकडून जातीचा अधिकृत दाखला मिळवण्यासाठी ऑनलाईन अर्ज.',
@@ -374,6 +390,8 @@ export const servicesData: ServiceItem[] = [
       'Application submission on Aaple Sarkar portal',
       'Collection of digitally signed Tehsildar certificate'
     ],
+    turnaroundBadge: '15-21 Days',
+    turnaroundBadgeMr: '१५-२१ दिवस',
     turnaroundTime: 'Typically 15 to 21 working days as per Maharashtra Right to Public Services Act',
     turnaroundTimeMr: 'लोकसेवा हक्क कायद्यानुसार साधारण १५ ते २१ कामकाजाचे दिवस',
     iconName: 'Award',
@@ -384,12 +402,12 @@ export const servicesData: ServiceItem[] = [
   // 8. Income Certificate
   {
     slug: 'income-certificate',
-    name: 'Income Certificate (उत्पन्न दाखला)',
-    nameMr: 'उत्पन्नाचा दाखला (Income Certificate)',
+    name: 'Tahsildar Income Certificate (उत्पन्न दाखला)',
+    nameMr: 'तहसीलदार उत्पन्नाचा दाखला (१ व ३ वर्षे)',
     category: 'certificates',
     categoryName: 'Certificates',
     categoryNameMr: 'शासकीय प्रमाणपत्रे',
-    shortDescription: '1-Year and 3-Year Tehsildar Income Certificates for scholarships, fee concessions, and government welfare schemes.',
+    shortDescription: '1-Year and 3-Year Tehsildar Income Certificates for scholarships, fee concessions, and welfare schemes.',
     shortDescriptionMr: '१ वर्ष व ३ वर्षांचा अधिकृत तहसीलदारांचा उत्पन्नाचा दाखला.',
     detailedDescription: 'Authentic income certificate issued by the Revenue Department / Tehsildar for scholarship applications (MahaDBT), college admission fee waivers, government ration benefits, and medical assistance.',
     detailedDescriptionMr: 'महाडीबीटी शिष्यवृत्ती, शैक्षणिक सवलती व विविध शासकीय योजनांसाठी उत्पन्नाचा दाखला.',
@@ -416,6 +434,8 @@ export const servicesData: ServiceItem[] = [
       'Filing on Aaple Sarkar portal',
       'Delivery of digitally signed barcode certificate'
     ],
+    turnaroundBadge: '7-15 Days',
+    turnaroundBadgeMr: '७-१५ दिवस',
     turnaroundTime: 'Usually 7 to 15 working days',
     turnaroundTimeMr: 'साधारण ७ ते १५ कामकाजाचे दिवस',
     iconName: 'Receipt',
@@ -423,7 +443,7 @@ export const servicesData: ServiceItem[] = [
     relatedSlugs: ['domicile-certificate', 'ews-certificate', 'caste-certificate']
   },
 
-  // 9. Domicile & Nationality Certificate
+  // 9. Domicile Certificate
   {
     slug: 'domicile-certificate',
     name: 'Domicile & Nationality Certificate (अधिवास दाखला)',
@@ -457,6 +477,8 @@ export const servicesData: ServiceItem[] = [
       'Aaple Sarkar portal application upload',
       'Tehsildar scrutiny and digital signature approval'
     ],
+    turnaroundBadge: '7-15 Days',
+    turnaroundBadgeMr: '७-१५ दिवस',
     turnaroundTime: '7 to 15 working days',
     turnaroundTimeMr: 'साधारण ७ ते १५ कामकाजाचे दिवस',
     iconName: 'Home',
@@ -467,7 +489,7 @@ export const servicesData: ServiceItem[] = [
   // 10. EWS Certificate
   {
     slug: 'ews-certificate',
-    name: 'EWS Certificate (ई.डब्ल्यू.एस. प्रमाणपत्र)',
+    name: 'EWS Certificate (१०% ई.डब्ल्यू.एस. आरक्षण)',
     nameMr: 'ई.डब्ल्यू.एस. प्रमाणपत्र (EWS Certificate)',
     category: 'certificates',
     categoryName: 'Certificates',
@@ -497,6 +519,8 @@ export const servicesData: ServiceItem[] = [
       'Drafting of EWS specific undertaking / affidavit',
       'Submission through competent Revenue authority portal'
     ],
+    turnaroundBadge: '15-21 Days',
+    turnaroundBadgeMr: '१५-२१ दिवस',
     turnaroundTime: '15 to 21 working days',
     turnaroundTimeMr: 'साधारण १५ ते २१ कामकाजाचे दिवस',
     iconName: 'FileCheck2',
@@ -504,16 +528,16 @@ export const servicesData: ServiceItem[] = [
     relatedSlugs: ['income-certificate', 'domicile-certificate', 'non-creamy-layer-central-caste']
   },
 
-  // 11. Central Caste & Non-Creamy Layer (OBC-NCL)
+  // 11. Non-Creamy Layer (NCL)
   {
     slug: 'non-creamy-layer-central-caste',
-    name: 'Non-Creamy Layer (NCL) & Central Caste',
-    nameMr: 'नॉन-क्रिमीलेअर व केंद्रीय जात प्रमाणपत्र (Central Caste)',
+    name: 'Non-Creamy Layer Certificate (NCL)',
+    nameMr: 'नॉन-क्रिमीलेअर प्रमाणपत्र (Non-Creamy Layer)',
     category: 'certificates',
     categoryName: 'Certificates',
     categoryNameMr: 'शासकीय प्रमाणपत्रे',
-    shortDescription: 'Maharashtra Non-Creamy Layer certificate (valid for 3 years) and Central Government format OBC/SC/ST certificates.',
-    shortDescriptionMr: 'ओबीसी/एसबीसी/व्हीजेएनटी प्रवर्गासाठी नॉन-क्रिमीलेअर व केंद्रीय सरकारी नोकऱ्यांसाठी सेंट्रल कास्ट.',
+    shortDescription: 'Maharashtra Non-Creamy Layer certificate (valid for 3 years) for OBC, VJNT, and SBC reservations.',
+    shortDescriptionMr: 'ओबीसी/एसबीसी/व्हीजेएनटी प्रवर्गासाठी ३ वर्षे वैध असणारे नॉन-क्रिमीलेअर प्रमाणपत्र.',
     detailedDescription: 'Essential certificate proving that the applicant does not belong to the Creamy Layer. Required for OBC, VJNT, and SBC candidates for competitive admissions and Central Govt examinations (UPSC, SSC, Railway, Banking).',
     detailedDescriptionMr: 'केंद्रीय व राज्यस्तरीय परीक्षा, शिष्यवृत्ती व नोकरीसाठी नॉन-क्रिमीलेअर प्रमाणपत्र.',
     whoIsThisFor: [
@@ -522,7 +546,7 @@ export const servicesData: ServiceItem[] = [
     ],
     documentSections: [
       {
-        title: 'Required Documents for NCL / Central Caste',
+        title: 'Required Documents for NCL Certificate',
         titleMr: 'आवश्यक कागदपत्रे',
         items: [
           'Existing State Caste Certificate',
@@ -535,9 +559,11 @@ export const servicesData: ServiceItem[] = [
     ],
     processSteps: [
       'Assessment of 3-year income documents',
-      'Online filing on Aaple Sarkar / Central portal format',
+      'Online filing on Aaple Sarkar portal format',
       'Verification by Competent Sub-Divisional Officer'
     ],
+    turnaroundBadge: '15-21 Days',
+    turnaroundBadgeMr: '१५-२१ दिवस',
     turnaroundTime: '15 to 21 working days',
     turnaroundTimeMr: 'साधारण १५ ते २१ कामकाजाचे दिवस',
     iconName: 'FileBadge',
@@ -548,8 +574,8 @@ export const servicesData: ServiceItem[] = [
   // 12. Gumasta (Shop & Establishment Licence)
   {
     slug: 'gumasta-shop-licence',
-    name: 'Gumasta Licence (Shop & Establishment)',
-    nameMr: 'गुमास्ता परवाना (Shop Act / MSME Udyam)',
+    name: 'Gumasta Licence & Udyam MSME',
+    nameMr: 'गुमास्ता परवाना व उद्यम नोंदणी (Shop Act)',
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
     categoryNameMr: 'व्यावसायिक व कायदेशीर',
@@ -581,6 +607,8 @@ export const servicesData: ServiceItem[] = [
       'Filing on Maharashtra Labour Department portal / Municipal portal',
       'Instant / Fast issue of digitally approved Gumasta Certificate'
     ],
+    turnaroundBadge: '1-3 Days',
+    turnaroundBadgeMr: '१-३ दिवस',
     turnaroundTime: 'Typically 1 to 3 working days',
     turnaroundTimeMr: 'साधारण १ ते ३ कामकाजाचे दिवस',
     iconName: 'Store',
@@ -596,7 +624,7 @@ export const servicesData: ServiceItem[] = [
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
     categoryNameMr: 'व्यावसायिक व कायदेशीर',
-    shortDescription: 'FSSAI Basic Registration and State Licence for hotels, restaurants, food stalls, and manufacturers.',
+    shortDescription: 'FSSAI Basic Registration and State Licence for hotels, restaurants, food stalls, mess, and manufacturers.',
     shortDescriptionMr: 'हॉटेल्स, खाद्यपदार्थ विक्रेते, मेस व डेअरीसाठी अधिकृत एफएसएसएआय अन्न परवाना.',
     detailedDescription: 'Compulsory compliance from the Food Safety and Standards Authority of India (FSSAI). Protect your business from regulatory penalties and gain customer trust for all food manufacturing, handling, catering, or selling activities.',
     detailedDescriptionMr: 'अन्न सुरक्षा कायद्यानुसार सर्व खाद्य व्यवसायिकांसाठी अनिवार्य असणारा परवाना.',
@@ -621,6 +649,8 @@ export const servicesData: ServiceItem[] = [
       'Online application on FoSCoS FSSAI portal',
       'Fee payment and application tracking'
     ],
+    turnaroundBadge: '5-10 Days',
+    turnaroundBadgeMr: '५-१० दिवस',
     turnaroundTime: 'Basic Registration in 5-10 days; State licence subject to inspection',
     turnaroundTimeMr: 'नोंदणी साधारण ५ ते १० कामकाजाचे दिवस',
     iconName: 'Utensils',
@@ -664,6 +694,8 @@ export const servicesData: ServiceItem[] = [
       'Payment of official gazette fee',
       'Download of published official Maharashtra Gazette PDF'
     ],
+    turnaroundBadge: '7-15 Days',
+    turnaroundBadgeMr: '७-१५ दिवस',
     turnaroundTime: '7 to 15 working days following portal processing',
     turnaroundTimeMr: 'साधारण ७ ते १५ कामकाजाचे दिवस',
     iconName: 'BookOpen',
@@ -704,6 +736,8 @@ export const servicesData: ServiceItem[] = [
       'Printing on authorized e-Stamp paper / stamp format',
       'Notary attestation and signature'
     ],
+    turnaroundBadge: 'Same Day (30 Min)',
+    turnaroundBadgeMr: 'त्याच दिवशी (३० मि.)',
     turnaroundTime: 'Same day / Ready in 30 minutes to a few hours',
     turnaroundTimeMr: 'त्याच दिवशी किंवा काही तासांत उपलब्ध',
     iconName: 'FileText',
@@ -714,7 +748,7 @@ export const servicesData: ServiceItem[] = [
   // 16. Registered Rent Agreement
   {
     slug: 'registered-rent-agreement',
-    name: 'Registered Rent Agreement (नोंदणीकृत भाडेकरार)',
+    name: 'Registered Online Rent Agreement',
     nameMr: 'नोंदणीकृत भाडेकरार (Online Rent Agreement)',
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
@@ -744,6 +778,8 @@ export const servicesData: ServiceItem[] = [
       'Online biometric capture of Owner, Tenant, and 2 Witnesses',
       'Government approval and generation of registered document with Government Index II'
     ],
+    turnaroundBadge: '24-48 Hours',
+    turnaroundBadgeMr: '२४-४८ तास',
     turnaroundTime: '24 to 48 hours after biometric submission',
     turnaroundTimeMr: 'बायोमेट्रिक पूर्ण झाल्यानंतर २४ ते ४८ तासांत',
     iconName: 'Building2',
@@ -754,7 +790,7 @@ export const servicesData: ServiceItem[] = [
   // 17. MSEB Electricity Services
   {
     slug: 'mseb-service',
-    name: 'MSEB / MSEDCL Electricity Services',
+    name: 'MSEB Electricity Name Change & Meter',
     nameMr: 'महावितरण वीज सेवा (MSEB Services)',
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
@@ -785,6 +821,8 @@ export const servicesData: ServiceItem[] = [
       'Upload of ownership proof and compliance forms',
       'Application tracking and demand note generation assistance'
     ],
+    turnaroundBadge: '7-15 Days',
+    turnaroundBadgeMr: '७-१५ दिवस',
     turnaroundTime: '7 to 15 working days as per MSEDCL norms',
     turnaroundTimeMr: 'साधारण ७ ते १५ कामकाजाचे दिवस',
     iconName: 'Zap',
@@ -795,8 +833,8 @@ export const servicesData: ServiceItem[] = [
   // 18. Loan Services Documentation
   {
     slug: 'loan-services',
-    name: 'Loan Documentation & Application Support',
-    nameMr: 'कर्ज सहाय्य कागदपत्रे (Loan Services)',
+    name: 'Loan File & Banking Documentation',
+    nameMr: 'कर्ज व बँकिंग कागदपत्र सहाय्य (Loan Docs)',
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
     categoryNameMr: 'व्यावसायिक व कायदेशीर',
@@ -825,6 +863,8 @@ export const servicesData: ServiceItem[] = [
       'Preparation and organization of income/business files',
       'Guidance on submission to banking partners'
     ],
+    turnaroundBadge: '24-48 Hours',
+    turnaroundBadgeMr: '२४-४८ तास',
     turnaroundTime: 'File preparation within 24-48 hours',
     turnaroundTimeMr: 'फाइल तयार करणे २४ ते ४८ तासांत',
     iconName: 'Landmark',
@@ -835,8 +875,8 @@ export const servicesData: ServiceItem[] = [
   // 19. All Types of Insurance
   {
     slug: 'all-type-insurance',
-    name: 'All Types of Insurance (सर्व प्रकारचा विमा)',
-    nameMr: 'सर्व प्रकारचा विमा (Insurance Services)',
+    name: 'Vehicle & Health Insurance (सर्व विमा)',
+    nameMr: 'वाहन व आरोग्य विमा (Insurance Services)',
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
     categoryNameMr: 'व्यावसायिक व कायदेशीर',
@@ -865,6 +905,8 @@ export const servicesData: ServiceItem[] = [
       'Selection of policy and add-on covers (Zero Dep, Engine Protect, Roadside Assistance)',
       'Instant payment and generation of authentic digital policy certificate'
     ],
+    turnaroundBadge: 'Instant (15 Min)',
+    turnaroundBadgeMr: '१०-१५ मिनिटे',
     turnaroundTime: 'Instant / Within 10 to 15 minutes',
     turnaroundTimeMr: '१० ते १५ मिनिटांत त्वरित पॉलिसी प्राप्त',
     iconName: 'ShieldPlus',
@@ -875,7 +917,7 @@ export const servicesData: ServiceItem[] = [
   // 20. Online Admission & Recruitment Forms
   {
     slug: 'online-admission-recruitment-forms',
-    name: 'Online Admission & Job Application Forms',
+    name: 'College Admission & Govt Job Forms',
     nameMr: 'शैक्षणिक व नोकरी भरती ऑनलाईन फॉर्म',
     category: 'business-legal-financial',
     categoryName: 'Business & Legal',
@@ -905,6 +947,8 @@ export const servicesData: ServiceItem[] = [
       'Precision scanning and document resizing according to portal specifications',
       'Form submission, fee payment, and final printout with fee receipt handover'
     ],
+    turnaroundBadge: 'Instant / Same Day',
+    turnaroundBadgeMr: 'तत्काळ उपलब्ध',
     turnaroundTime: 'Immediate / Scheduled as per exam deadlines',
     turnaroundTimeMr: 'केंद्रावर प्रत्यक्ष किंवा ऑनलाईन तत्काळ',
     iconName: 'GraduationCap',

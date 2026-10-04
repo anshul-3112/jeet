@@ -21,6 +21,7 @@ export interface BusinessConfig {
   hours: string;
   hoursMr: string;
   googleMapsUrl: string;
+  locationQrImage: string;
   tagline: string;
   taglineMr: string;
   formsBannerMr: string;
@@ -51,6 +52,7 @@ export const businessConfig: BusinessConfig = {
   hours: "Open 24 Hours (24x7 Assistance)",
   hoursMr: "२४ तास सेवा उपलब्ध (Open 24 Hours)",
   googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Ayodhya+Nagar+Square+Nagpur+Maharashtra+440024",
+  locationQrImage: "/location-qr.png",
   tagline: "Government & Private Documentation Services Under One Roof",
   taglineMr: "सर्व शासकीय आणि खाजगी सेवा एका छताखाली - आपले सरकार सेवा केंद्रात उपलब्ध",
   formsBannerMr: "सर्व प्रकारचे शैक्षणिक , रोजगार संबंधित फॉर्म ऑनलाईन पद्धतीने भरून मिळतात.",
