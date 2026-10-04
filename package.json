@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Jeet Digital E-Governance Seva Kendra - Monorepo (Frontend & Backend)",
   "scripts": {
+    "dev": "concurrently -n \"backend,frontend\" -c \"cyan,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
     "build:frontend": "npm --prefix frontend run build",
@@ -11,5 +12,8 @@
     "build": "npm run build:backend && npm run build:frontend",
     "seed:admin": "npm --prefix backend run seed:admin",
     "lint:frontend": "npm --prefix frontend run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }
