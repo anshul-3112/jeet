@@ -19,6 +19,7 @@ import {
   Loader2,
   AlertCircle,
   ExternalLink,
+  Search,
 } from 'lucide-react';
 
 declare global {
@@ -49,6 +50,15 @@ export const UploadPage: React.FC = () => {
   const [uploadResult, setUploadResult] = useState<UploadResponse | null>(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Check URL query parameters for preselected service
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const serviceParam = params.get('service');
+    if (serviceParam) {
+      setServiceSlug(serviceParam);
+    }
+  }, []);
 
   // Filtered services list
   const filteredServices = servicesData.filter((s) => {
@@ -127,7 +137,6 @@ export const UploadPage: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Standard convenience fee or service charge (e.g. ₹50)
       const order = await createPaymentOrder(uploadResult.trackingId, 50);
 
       const options = {
@@ -155,7 +164,7 @@ export const UploadPage: React.FC = () => {
           contact: citizenPhone,
         },
         theme: {
-          color: '#dc2626',
+          color: '#0B3830',
         },
       };
 
@@ -190,21 +199,21 @@ export const UploadPage: React.FC = () => {
   const whatsappUrl = `https://wa.me/${businessConfig.whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-8 md:py-14 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-[#FAF9F6] py-8 md:py-14 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-2xl mx-auto">
         {/* Header Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-[#F2F8F6] border border-[#C2DDD4] text-[#113D36] rounded-full text-xs font-semibold mb-3">
-            <ShieldCheck className="w-4 h-4 text-[#113D36]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-50 border border-emerald-200 text-[#0B3830] rounded-full text-xs font-bold mb-3">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             <span>100% Private • Auto-Purged After 24 Hours</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-normal text-[#152220] tracking-tight font-serif">
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-sans">
             {language === 'mr' ? 'कागदपत्रे अपलोड करा' : 'Upload Documents for Fast Processing'}
           </h1>
-          <p className="text-sm text-[#4A5B57] mt-2 max-w-lg mx-auto">
+          <p className="text-sm text-slate-600 mt-2 max-w-lg mx-auto font-normal leading-relaxed">
             {language === 'mr'
               ? 'कोणत्याही लॉगिनशिवाय थेट कागदपत्रे पाठवा. तुमचे काम जलद गतीने केले जाईल.'
-              : 'Direct upload to Yash Chopade’s verified center. Files are encrypted and auto-deleted in 24 hours.'}
+              : 'Direct zero-login upload to Yash Chopade’s verified center in Nagpur. Files are auto-deleted in 24 hours.'}
           </p>
         </div>
 
@@ -213,38 +222,38 @@ export const UploadPage: React.FC = () => {
           <div className="flex flex-col items-center">
             <div
               className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                currentStep >= 1 ? 'bg-[#113D36] text-white shadow-2xs' : 'bg-[#F3EFEA] text-[#798C87]'
+                currentStep >= 1 ? 'bg-[#0B3830] text-white shadow-2xs' : 'bg-slate-200 text-slate-500'
               }`}
             >
               1
             </div>
-            <span className="text-[11px] font-semibold text-[#4A5B57] mt-1.5">
+            <span className="text-[11px] font-bold text-slate-700 mt-1.5">
               {language === 'mr' ? 'माहिती' : 'Details'}
             </span>
           </div>
-          <div className={`flex-1 h-0.5 mx-2 rounded-full ${currentStep >= 2 ? 'bg-[#113D36]' : 'bg-[#EAE4DC]'}`} />
+          <div className={`flex-1 h-0.5 mx-2 rounded-full ${currentStep >= 2 ? 'bg-[#0B3830]' : 'bg-slate-200'}`} />
           <div className="flex flex-col items-center">
             <div
               className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                currentStep >= 2 ? 'bg-[#113D36] text-white shadow-2xs' : 'bg-[#F3EFEA] text-[#798C87]'
+                currentStep >= 2 ? 'bg-[#0B3830] text-white shadow-2xs' : 'bg-slate-200 text-slate-500'
               }`}
             >
               2
             </div>
-            <span className="text-[11px] font-semibold text-[#4A5B57] mt-1.5">
+            <span className="text-[11px] font-bold text-slate-700 mt-1.5">
               {language === 'mr' ? 'अपलोड' : 'Upload'}
             </span>
           </div>
-          <div className={`flex-1 h-0.5 mx-2 rounded-full ${currentStep >= 3 ? 'bg-[#113D36]' : 'bg-[#EAE4DC]'}`} />
+          <div className={`flex-1 h-0.5 mx-2 rounded-full ${currentStep >= 3 ? 'bg-[#0B3830]' : 'bg-slate-200'}`} />
           <div className="flex flex-col items-center">
             <div
               className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                currentStep === 3 ? 'bg-[#113D36] text-white shadow-2xs' : 'bg-[#F3EFEA] text-[#798C87]'
+                currentStep === 3 ? 'bg-[#0B3830] text-white shadow-2xs' : 'bg-slate-200 text-slate-500'
               }`}
             >
               3
             </div>
-            <span className="text-[11px] font-semibold text-[#4A5B57] mt-1.5">
+            <span className="text-[11px] font-bold text-slate-700 mt-1.5">
               {language === 'mr' ? 'पूर्ण' : 'Complete'}
             </span>
           </div>
@@ -252,71 +261,76 @@ export const UploadPage: React.FC = () => {
 
         {/* STEP 1: Details */}
         {currentStep === 1 && (
-          <div className="bg-white rounded-3xl shadow-soft border border-[#EAE4DC] p-6 sm:p-8">
-            <h2 className="text-lg font-bold text-[#152220] mb-5 flex items-center gap-2 font-sans">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#113D36]"></span>
+          <div className="bg-white rounded-3xl shadow-elevated border border-slate-200/90 p-6 sm:p-8">
+            <h2 className="text-lg font-black text-slate-900 mb-5 flex items-center gap-2 font-sans">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#0B3830]"></span>
               {language === 'mr' ? 'पायरी १: तुमची माहिती व सेवा निवडा' : 'Step 1: Citizen Details & Service'}
             </h2>
 
             <form onSubmit={handleNextToStep2} className="space-y-5">
               <div>
-                <label className="block text-xs font-semibold text-[#152220] uppercase tracking-wider mb-1.5">
-                  {language === 'mr' ? 'पूर्ण नाव' : 'Full Name'} *
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  {language === 'mr' ? 'पूर्ण नाव' : 'Full Name'} <span className="text-amber-600">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Ramesh Patil"
                   value={citizenName}
                   onChange={(e) => setCitizenName(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl border bg-[#FAF8F5] text-[#152220] focus:bg-white focus:outline-none transition-all ${
-                    errors.name ? 'border-red-400 ring-2 ring-red-100' : 'border-[#EAE4DC] focus:border-[#113D36] focus:ring-2 focus:ring-[#C2DDD4]'
+                  className={`w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:outline-none transition-all ${
+                    errors.name ? 'border-red-400 ring-2 ring-red-100' : 'border-slate-200 focus:border-[#0B3830] focus:ring-2 focus:ring-emerald-100'
                   }`}
                 />
                 {errors.name && <p className="text-xs text-red-500 mt-1 font-medium">{errors.name}</p>}
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#152220] uppercase tracking-wider mb-1.5">
-                  {language === 'mr' ? 'मोबाईल नंबर (WhatsApp)' : 'Mobile Number (WhatsApp)'} *
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  {language === 'mr' ? 'मोबाईल नंबर (WhatsApp)' : 'Mobile Number (WhatsApp)'} <span className="text-amber-600">*</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-3 text-[#798C87] font-medium text-sm">+91</span>
+                  <span className="absolute left-4 top-3 text-slate-400 font-bold text-sm">+91</span>
                   <input
                     type="tel"
                     maxLength={10}
                     placeholder="9876543210"
                     value={citizenPhone}
                     onChange={(e) => setCitizenPhone(e.target.value.replace(/\D/g, ''))}
-                    className={`w-full pl-14 pr-4 py-3 rounded-xl border bg-[#FAF8F5] text-[#152220] focus:bg-white focus:outline-none transition-all ${
-                      errors.phone ? 'border-red-400 ring-2 ring-red-100' : 'border-[#EAE4DC] focus:border-[#113D36] focus:ring-2 focus:ring-[#C2DDD4]'
+                    className={`w-full pl-14 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:outline-none transition-all ${
+                      errors.phone ? 'border-red-400 ring-2 ring-red-100' : 'border-slate-200 focus:border-[#0B3830] focus:ring-2 focus:ring-emerald-100'
                     }`}
                   />
                 </div>
                 {errors.phone && <p className="text-xs text-red-500 mt-1 font-medium">{errors.phone}</p>}
-                <p className="text-[11px] text-[#798C87] mt-1">
+                <p className="text-[11px] text-slate-500 mt-1">
                   {language === 'mr'
                     ? 'या नंबरवर प्रिंटिंग स्थिती व पोचपावती पाठवली जाईल.'
-                    : 'Used to alert you when documents are ready.'}
+                    : 'Used to alert you on WhatsApp when documents are ready.'}
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#152220] uppercase tracking-wider mb-1.5">
-                  {language === 'mr' ? 'सेवा निवडा' : 'Select Service / Requirement'} *
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  {language === 'mr' ? 'सेवा निवडा' : 'Select Service / Requirement'} <span className="text-amber-600">*</span>
                 </label>
                 <div className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder={language === 'mr' ? 'सेवा शोधा (उदा. आधार, जात पडताळणी...)' : 'Search services (e.g. Aadhaar, PAN, Caste...)'}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] focus:bg-white focus:outline-none focus:border-[#113D36]"
-                  />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                      <Search className="w-3.5 h-3.5" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder={language === 'mr' ? 'सेवा शोधा (उदा. आधार, जात पडताळणी...)' : 'Search services (e.g. Aadhaar, PAN, Caste...)'}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:border-[#0B3830]"
+                    />
+                  </div>
                   <select
                     value={serviceSlug}
                     onChange={(e) => setServiceSlug(e.target.value)}
-                    className={`w-full px-4 py-3 rounded-xl border bg-[#FAF8F5] text-[#152220] focus:bg-white focus:outline-none transition-all text-sm ${
-                      errors.service ? 'border-red-400' : 'border-[#EAE4DC] focus:border-[#113D36]'
+                    className={`w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:outline-none transition-all text-sm font-medium ${
+                      errors.service ? 'border-red-400' : 'border-slate-200 focus:border-[#0B3830]'
                     }`}
                   >
                     <option value="">-- {language === 'mr' ? 'सेवा निवडा' : 'Choose a Service'} --</option>
@@ -333,7 +347,7 @@ export const UploadPage: React.FC = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-[#113D36] hover:bg-[#144A42] shadow-xs active:scale-[0.99] transition-all"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-[#0B3830] hover:bg-[#134E43] shadow-md active:scale-[0.99] transition-all cursor-pointer"
                 >
                   <span>{language === 'mr' ? 'पुढे जा (कागदपत्रे जोडा)' : 'Continue to Upload Files'}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -345,30 +359,30 @@ export const UploadPage: React.FC = () => {
 
         {/* STEP 2: File Upload */}
         {currentStep === 2 && (
-          <div className="bg-white rounded-3xl shadow-soft border border-[#EAE4DC] p-6 sm:p-8">
+          <div className="bg-white rounded-3xl shadow-elevated border border-slate-200/90 p-6 sm:p-8">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold text-[#152220] flex items-center gap-2 font-sans">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#113D36]"></span>
+              <h2 className="text-lg font-black text-slate-900 flex items-center gap-2 font-sans">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#0B3830]"></span>
                 {language === 'mr' ? 'पायरी २: कागदपत्रे जोडा' : 'Step 2: Attach Documents'}
               </h2>
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#798C87] hover:text-[#152220]"
+                className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>{language === 'mr' ? 'मागे' : 'Back'}</span>
               </button>
             </div>
 
-            <div className="mb-4 p-3.5 bg-[#FAF8F5] rounded-2xl border border-[#EAE4DC] text-xs text-[#4A5B57] flex items-center justify-between">
+            <div className="mb-4 p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-700 flex items-center justify-between">
               <div>
-                <p className="font-bold text-[#152220]">{citizenName}</p>
-                <p>{citizenPhone} • {selectedService ? (language === 'mr' ? selectedService.nameMr : selectedService.name) : serviceSlug}</p>
+                <p className="font-bold text-slate-900">{citizenName}</p>
+                <p className="text-slate-500">{citizenPhone} • {selectedService ? (language === 'mr' ? selectedService.nameMr : selectedService.name) : serviceSlug}</p>
               </div>
               <button
                 onClick={() => setCurrentStep(1)}
-                className="text-[#113D36] font-bold hover:underline"
+                className="text-[#0B3830] font-bold hover:underline cursor-pointer"
               >
                 {language === 'mr' ? 'बदला' : 'Edit'}
               </button>
@@ -384,11 +398,11 @@ export const UploadPage: React.FC = () => {
               </div>
             )}
 
-            <div className="mt-6 pt-4 border-t border-[#F3EFEA] flex flex-col sm:flex-row items-center gap-3">
+            <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-3">
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="w-full sm:w-auto px-6 py-3 rounded-full font-medium text-[#4A5B57] hover:bg-[#FAF8F5] transition-colors text-xs"
+                className="w-full sm:w-auto px-6 py-3 rounded-full font-bold text-slate-600 hover:bg-slate-100 transition-colors text-xs cursor-pointer"
               >
                 {language === 'mr' ? 'मागे' : 'Back'}
               </button>
@@ -396,7 +410,7 @@ export const UploadPage: React.FC = () => {
                 type="button"
                 disabled={isSubmitting || files.length === 0}
                 onClick={handleUploadSubmit}
-                className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-[#113D36] hover:bg-[#144A42] disabled:opacity-50 shadow-xs active:scale-[0.99] transition-all text-xs"
+                className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-[#0B3830] hover:bg-[#134E43] disabled:opacity-50 shadow-md active:scale-[0.99] transition-all text-xs cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
@@ -420,47 +434,47 @@ export const UploadPage: React.FC = () => {
 
         {/* STEP 3: Complete / Tracking Code / Razorpay */}
         {currentStep === 3 && uploadResult && (
-          <div className="bg-white rounded-3xl shadow-soft border border-[#EAE4DC] p-6 sm:p-8 text-center">
-            <div className="w-16 h-16 bg-[#F2F8F6] text-[#113D36] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#C2DDD4]">
+          <div className="bg-white rounded-3xl shadow-elevated border border-slate-200/90 p-6 sm:p-8 text-center">
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-200">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-normal text-[#152220] font-serif">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-sans">
               {language === 'mr' ? 'कागदपत्रे यशस्वीरीत्या मिळाली!' : 'Documents Uploaded Successfully!'}
             </h2>
-            <p className="text-sm text-[#4A5B57] mt-1">
+            <p className="text-sm text-slate-600 mt-1">
               {language === 'mr'
                 ? 'जीत डिजिटल सेवा केंद्रात तुमचे काम सुरू झाले आहे.'
-                : 'Your request has been received at Jeet Digital Seva Kendra.'}
+                : 'Your request has been received at Jeet Digital Seva Kendra in Nagpur.'}
             </p>
 
             {/* Tracking Code Banner */}
-            <div className="my-6 p-6 bg-[#113D36] rounded-3xl text-white shadow-soft text-center">
-              <p className="text-xs uppercase tracking-widest text-[#C2DDD4] font-semibold mb-1">
+            <div className="my-6 p-6 bg-[#0B3830] rounded-3xl text-white shadow-md text-center">
+              <p className="text-xs uppercase tracking-widest text-emerald-200 font-bold mb-1">
                 {language === 'mr' ? 'तुमचा ट्रॅकिंग कोड' : 'Your Tracking Code'}
               </p>
               <div className="flex items-center justify-center gap-3">
-                <span className="text-3xl sm:text-4xl font-black tracking-widest text-[#EFDCB9] font-mono">
+                <span className="text-3xl sm:text-4xl font-black tracking-widest text-amber-300 font-mono">
                   {uploadResult.trackingId}
                 </span>
                 <button
                   type="button"
                   onClick={copyTrackingCode}
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors"
+                  className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors cursor-pointer"
                   title="Copy Tracking Code"
                 >
                   <Copy className="w-4 h-4" />
                 </button>
               </div>
-              {copied && <p className="text-xs text-emerald-300 mt-1 font-medium">Copied to clipboard!</p>}
-              <p className="text-xs text-[#EFDCB9] mt-2 font-medium">
+              {copied && <p className="text-xs text-emerald-300 mt-1 font-bold">Copied to clipboard!</p>}
+              <p className="text-xs text-amber-200/90 mt-2 font-medium">
                 📸 Save or take a screenshot of this tracking code!
               </p>
             </div>
 
             {/* Privacy & Auto-delete Note */}
-            <div className="flex items-center justify-center gap-2 text-xs text-[#798C87] mb-6 bg-[#FAF8F5] py-2.5 px-4 rounded-xl border border-[#EAE4DC]">
-              <Clock className="w-4 h-4 text-[#113D36] flex-shrink-0" />
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-600 mb-6 bg-slate-50 py-2.5 px-4 rounded-xl border border-slate-200">
+              <Clock className="w-4 h-4 text-emerald-700 flex-shrink-0" />
               <span>
                 {language === 'mr'
                   ? 'गोपनीयता खात्री: २४ तासांनंतर तुमच्या फाईल्स आपोआप कायमच्या नष्ट केल्या जातील.'
@@ -475,9 +489,9 @@ export const UploadPage: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-[0.99] transition-all"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-600/20 active:scale-[0.99] transition-all cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5 fill-white" />
                 <span>{language === 'mr' ? 'व्हाट्सॲपवर कळवा (तात्काळ प्रिंटिंग)' : 'Alert Yash Bhai on WhatsApp'}</span>
               </a>
 
@@ -487,15 +501,15 @@ export const UploadPage: React.FC = () => {
                   type="button"
                   onClick={handleRazorpayPayment}
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer text-xs"
                 >
-                  <CreditCard className="w-4 h-4 text-brand-600" />
+                  <CreditCard className="w-4 h-4 text-[#0B3830]" />
                   <span>{language === 'mr' ? 'ऑनलाईन फी भरा (₹५० - Razorpay)' : 'Pay Service Fee Online (₹50 via Razorpay)'}</span>
                 </button>
               ) : (
-                <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 text-sm font-semibold flex items-center justify-center gap-2">
+                <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 text-xs font-bold flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Payment Confirmed via Razorpay! Receipt Generated.</span>
+                  <span>Payment Confirmed via Razorpay! Official receipt generated.</span>
                 </div>
               )}
 
@@ -503,7 +517,7 @@ export const UploadPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(`/track/${uploadResult.trackingId}`)}
-                className="w-full flex items-center justify-center gap-1.5 py-2.5 text-xs font-semibold text-brand-600 hover:text-brand-700 hover:underline"
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#0B3830] hover:underline cursor-pointer"
               >
                 <span>{language === 'mr' ? 'स्थिती तपासा' : 'View Real-time Tracking Status'}</span>
                 <ExternalLink className="w-3.5 h-3.5" />

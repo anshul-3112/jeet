@@ -31,16 +31,16 @@ export const ServiceCategoryTabs: React.FC<ServiceCategoryTabsProps> = ({
           <button
             key={tab.id}
             onClick={() => onSelectCategory(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
               isActive
-                ? 'bg-brand-600 text-white shadow-sm'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                ? 'bg-[#0B3830] text-white shadow-xs'
+                : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 hover:border-emerald-300'
             }`}
           >
             <span>{language === 'mr' ? tab.labelMr : tab.label}</span>
             <span
-              className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${
-                isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+              className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
               }`}
             >
               {count}

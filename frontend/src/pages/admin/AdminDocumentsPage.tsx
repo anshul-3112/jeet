@@ -105,10 +105,10 @@ export const AdminDocumentsPage: React.FC = () => {
       {/* Top Title & Refresh */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#152220] tracking-tight font-sans">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight font-sans">
             Citizen Document Submissions
           </h1>
-          <p className="text-xs text-[#798C87] mt-0.5">
+          <p className="text-xs text-slate-600 mt-1 font-medium">
             Strict 24-hour privacy retention policy. Print or verify before scheduled automated purge.
           </p>
         </div>
@@ -116,32 +116,32 @@ export const AdminDocumentsPage: React.FC = () => {
         <button
           onClick={fetchDocs}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#FAF8F5] text-[#152220] text-xs font-semibold rounded-full border border-[#EAE4DC] shadow-2xs transition-colors w-fit"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold rounded-full border border-slate-200 shadow-2xs transition-colors w-fit cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 text-[#113D36] ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 text-emerald-700 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh Queue</span>
         </button>
       </div>
 
       {/* Critical Alert Banner for Expiring Documents (< 1 hour) */}
       {expiringCount > 0 && (
-        <div className="p-4 bg-[#F7EFE7] border border-[#EFDCB9] rounded-2xl flex items-center justify-between gap-3 text-[#152220]">
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-between gap-3 text-slate-900 shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C27E4B] text-white flex items-center justify-center flex-shrink-0 animate-bounce">
+            <div className="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center flex-shrink-0 animate-bounce">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-[#152220]">
+              <p className="text-sm font-bold text-amber-950">
                 Urgent Attention: {expiringCount} {expiringCount === 1 ? 'document has' : 'documents have'} under 1 hour remaining!
               </p>
-              <p className="text-xs text-[#A86938]">
+              <p className="text-xs text-amber-800 mt-0.5">
                 Please print or archive now. The system will permanently delete the files at 24 hours.
               </p>
             </div>
           </div>
           <button
             onClick={() => setStatusFilter('received')}
-            className="hidden sm:block px-4 py-2 bg-[#113D36] hover:bg-[#144A42] text-white font-bold text-xs rounded-full transition-colors flex-shrink-0"
+            className="hidden sm:block px-4 py-2 bg-[#0B3830] hover:bg-[#072722] text-white font-bold text-xs rounded-full transition-colors flex-shrink-0 cursor-pointer shadow-xs"
           >
             Filter Pending
           </button>
@@ -151,59 +151,59 @@ export const AdminDocumentsPage: React.FC = () => {
       {/* 4 Metric Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Total */}
-        <div className="bg-white p-5 rounded-2xl border border-[#EAE4DC] shadow-2xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-[#798C87]">Total Uploads</span>
-            <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] flex items-center justify-center text-[#113D36]">
+            <span className="text-xs font-bold text-slate-600">Total Uploads</span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-[#0B3830]">
               <FileText className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-[#152220] tabular-nums font-serif">
+          <div className="text-2xl font-black text-slate-900 tabular-nums">
             {totalCount}
           </div>
-          <div className="text-[11px] text-[#798C87] mt-1">Active within 24h window</div>
+          <div className="text-[11px] text-slate-500 mt-1 font-medium">Active within 24h window</div>
         </div>
 
         {/* Card 2: Pending Print */}
-        <div className="bg-white p-5 rounded-2xl border border-[#EAE4DC] shadow-2xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-[#798C87]">Pending Print</span>
-            <div className="w-8 h-8 rounded-lg bg-[#F7EFE7] flex items-center justify-center text-[#A86938]">
+            <span className="text-xs font-bold text-amber-800">Pending Print</span>
+            <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-700">
               <Printer className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-[#A86938] tabular-nums font-serif">
+          <div className="text-2xl font-black text-amber-700 tabular-nums">
             {pendingCount}
           </div>
-          <div className="text-[11px] text-[#798C87] mt-1">Require physical print</div>
+          <div className="text-[11px] text-slate-500 mt-1 font-medium">Require physical print</div>
         </div>
 
         {/* Card 3: Printed & Ready */}
-        <div className="bg-white p-5 rounded-2xl border border-[#EAE4DC] shadow-2xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-[#798C87]">Printed &amp; Done</span>
-            <div className="w-8 h-8 rounded-lg bg-[#F2F8F6] flex items-center justify-center text-[#113D36]">
+            <span className="text-xs font-bold text-emerald-800">Printed &amp; Done</span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-700">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-[#113D36] tabular-nums font-serif">
+          <div className="text-2xl font-black text-[#0B3830] tabular-nums">
             {printedCount}
           </div>
-          <div className="text-[11px] text-[#798C87] mt-1">Ready for citizen pickup</div>
+          <div className="text-[11px] text-slate-500 mt-1 font-medium">Ready for citizen pickup</div>
         </div>
 
         {/* Card 4: Expiring Soon */}
-        <div className="bg-white p-5 rounded-2xl border border-[#EAE4DC] shadow-2xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-[#798C87]">Expiring Soon</span>
-            <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+            <span className="text-xs font-bold text-rose-700">Expiring Soon</span>
+            <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-rose-600">
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-red-600 tabular-nums font-serif">
+          <div className="text-2xl font-black text-rose-600 tabular-nums">
             {expiringCount}
           </div>
-          <div className="text-[11px] text-[#798C87] mt-1">&lt; 1 hour remaining</div>
+          <div className="text-[11px] text-slate-500 mt-1 font-medium">&lt; 1 hour remaining</div>
         </div>
       </div>
 
@@ -211,23 +211,23 @@ export const AdminDocumentsPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Search */}
         <div className="relative">
-          <Search className="w-4 h-4 text-[#798C87] absolute left-3.5 top-3.5" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
           <input
             type="text"
             placeholder="Search citizen name, phone, code..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#EAE4DC] rounded-xl text-xs text-[#152220] placeholder-[#798C87] focus:outline-none focus:border-[#113D36] focus:ring-1 focus:ring-[#C2DDD4]"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0B3830] focus:ring-1 focus:ring-[#0B3830]"
           />
         </div>
 
         {/* Status Filter */}
-        <div className="flex items-center gap-2 bg-white border border-[#EAE4DC] rounded-xl px-3 py-1.5">
-          <Filter className="w-3.5 h-3.5 text-[#798C87]" />
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+          <Filter className="w-3.5 h-3.5 text-slate-500" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full bg-transparent text-xs text-[#152220] focus:outline-none cursor-pointer"
+            className="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none cursor-pointer"
           >
             <option value="all">All Statuses</option>
             <option value="received">Pending / Received</option>
@@ -237,12 +237,12 @@ export const AdminDocumentsPage: React.FC = () => {
         </div>
 
         {/* Service Filter */}
-        <div className="flex items-center gap-2 bg-white border border-[#EAE4DC] rounded-xl px-3 py-1.5">
-          <FileCheck className="w-3.5 h-3.5 text-[#798C87]" />
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+          <FileCheck className="w-3.5 h-3.5 text-slate-500" />
           <select
             value={serviceFilter}
             onChange={(e) => setServiceFilter(e.target.value)}
-            className="w-full bg-transparent text-xs text-[#152220] focus:outline-none cursor-pointer"
+            className="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none cursor-pointer"
           >
             <option value="all">All Services</option>
             {servicesData.map((s) => (
@@ -255,16 +255,16 @@ export const AdminDocumentsPage: React.FC = () => {
       </div>
 
       {/* Documents Table / Card List */}
-      <div className="bg-white border border-[#EAE4DC] rounded-2xl overflow-hidden shadow-2xs">
+      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
         {filteredDocs.length === 0 ? (
-          <div className="p-12 text-center text-[#798C87]">
-            <Clock className="w-8 h-8 mx-auto mb-2 opacity-40 text-[#113D36]" />
+          <div className="p-12 text-center text-slate-500">
+            <Clock className="w-8 h-8 mx-auto mb-2 opacity-40 text-slate-400" />
             <p className="text-sm font-semibold">No uploaded documents found matching this filter.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#FAF8F5] text-[#798C87] font-semibold border-b border-[#EAE4DC] uppercase tracking-wider">
+              <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
                 <tr>
                   <th className="py-3.5 px-4">Tracking Code</th>
                   <th className="py-3.5 px-4">Citizen</th>
@@ -274,7 +274,7 @@ export const AdminDocumentsPage: React.FC = () => {
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#F3EFEA]">
+              <tbody className="divide-y divide-slate-100">
                 {filteredDocs.map((doc) => {
                   const isPrinted = doc.status === 'printed';
                   const isExpired = doc.status === 'expired';
@@ -283,42 +283,42 @@ export const AdminDocumentsPage: React.FC = () => {
                     <tr
                       key={doc.id}
                       onClick={() => navigate(`/admin/documents/${doc.id}`)}
-                      className={`hover:bg-[#FAF8F5] cursor-pointer transition-colors ${
-                        doc.isExpiringSoon ? 'bg-[#FCF8F4]' : ''
+                      className={`hover:bg-slate-50/80 cursor-pointer transition-colors ${
+                        doc.isExpiringSoon ? 'bg-amber-50/40' : ''
                       }`}
                     >
                       {/* Tracking ID with quick copy */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-mono font-bold text-[#113D36] text-xs">
+                          <span className="font-mono font-bold text-[#0B3830] text-xs">
                             {doc.trackingId}
                           </span>
                           <button
                             onClick={(e) => copyTracking(e, doc.trackingId)}
-                            className="text-[#798C87] hover:text-[#113D36] p-0.5"
+                            className="text-slate-400 hover:text-[#0B3830] p-0.5 cursor-pointer"
                             title="Copy Code"
                           >
                             {copiedId === doc.trackingId ? (
-                              <Check className="w-3 h-3 text-[#113D36]" />
+                              <Check className="w-3 h-3 text-emerald-700" />
                             ) : (
                               <Copy className="w-3 h-3" />
                             )}
                           </button>
                         </div>
-                        <div className="text-[11px] text-[#798C87] mt-0.5">
+                        <div className="text-[11px] text-slate-500 mt-0.5 font-medium">
                           {doc.fileCount} {doc.fileCount === 1 ? 'file' : 'files'}
                         </div>
                       </td>
 
                       {/* Citizen */}
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-[#152220]">{doc.citizenName}</div>
-                        <div className="flex items-center gap-2 mt-0.5" onClick={(e) => e.stopPropagation()}>
+                        <div className="font-bold text-slate-900">{doc.citizenName}</div>
+                        <div className="flex items-center gap-2 mt-1" onClick={(e) => e.stopPropagation()}>
                           <a
                             href={`tel:${doc.citizenPhone}`}
-                            className="inline-flex items-center gap-1 text-[11px] text-[#4A5B57] hover:text-[#113D36]"
+                            className="inline-flex items-center gap-1 text-[11px] text-slate-600 hover:text-[#0B3830] font-medium"
                           >
-                            <Phone className="w-3 h-3 text-[#798C87]" />
+                            <Phone className="w-3 h-3 text-slate-400" />
                             <span>{doc.citizenPhone}</span>
                           </a>
                           <a
@@ -327,27 +327,27 @@ export const AdminDocumentsPage: React.FC = () => {
                             )},%20your%20document%20is%20being%20processed%20at%20Jeet%20Kendra.`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#113D36] hover:text-emerald-700"
+                            className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 hover:bg-emerald-200 text-[#0B3830] transition-colors"
                             title="WhatsApp citizen"
                           >
-                            <MessageCircle className="w-3.5 h-3.5 fill-[#113D36] text-white" />
+                            <MessageCircle className="w-3 h-3 fill-[#0B3830]" />
                           </a>
                         </div>
                       </td>
 
                       {/* Service */}
-                      <td className="py-3.5 px-4 max-w-[200px] truncate text-[#4A5B57] font-medium">
+                      <td className="py-3.5 px-4 max-w-[200px] truncate text-slate-700 font-semibold">
                         {getServiceName(doc.serviceSlug)}
                       </td>
 
                       {/* Countdown */}
                       <td className="py-3.5 px-4">
                         {isExpired ? (
-                          <span className="text-[#798C87] font-medium">Purged</span>
+                          <span className="text-slate-500 font-medium">Purged</span>
                         ) : (
                           <span
-                            className={`font-semibold flex items-center gap-1.5 ${
-                              doc.isExpiringSoon ? 'text-[#A86938] font-bold' : 'text-[#4A5B57]'
+                            className={`font-bold flex items-center gap-1.5 ${
+                              doc.isExpiringSoon ? 'text-amber-700' : 'text-slate-700'
                             }`}
                           >
                             <Clock className="w-3.5 h-3.5" />
@@ -359,17 +359,17 @@ export const AdminDocumentsPage: React.FC = () => {
                       {/* Status */}
                       <td className="py-3.5 px-4">
                         {isPrinted ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#F2F8F6] text-[#113D36] border border-[#C2DDD4]">
-                            <CheckCircle2 className="w-3 h-3" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-[#0B3830] border border-emerald-200">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-700" />
                             <span>Printed</span>
                           </span>
                         ) : isExpired ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#F3EFEA] text-[#798C87]">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
                             <span>Expired</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#F7EFE7] text-[#A86938] border border-[#EFDCB9]">
-                            <Printer className="w-3 h-3" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                            <Printer className="w-3 h-3 text-amber-700" />
                             <span>Received</span>
                           </span>
                         )}
@@ -381,7 +381,7 @@ export const AdminDocumentsPage: React.FC = () => {
                           {!isPrinted && !isExpired && (
                             <button
                               onClick={(e) => handleQuickMarkPrinted(e, doc.id)}
-                              className="px-2.5 py-1 bg-[#113D36] hover:bg-[#144A42] text-white rounded-lg text-xs font-semibold transition-colors"
+                              className="px-2.5 py-1 bg-[#0B3830] hover:bg-[#072722] text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shadow-2xs"
                               title="Mark as printed"
                             >
                               Done
@@ -389,7 +389,7 @@ export const AdminDocumentsPage: React.FC = () => {
                           )}
                           <button
                             onClick={() => navigate(`/admin/documents/${doc.id}`)}
-                            className="p-1.5 bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#113D36] border border-[#EAE4DC] rounded-lg transition-colors"
+                            className="p-1.5 bg-slate-50 hover:bg-slate-100 text-[#0B3830] border border-slate-200 rounded-lg transition-colors cursor-pointer"
                             title="Open Details & Print"
                           >
                             <Eye className="w-3.5 h-3.5" />

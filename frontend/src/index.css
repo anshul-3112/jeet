@@ -1,54 +1,106 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #FAF8F5;
-  --color-canvas-subtle: #F3EFEA;
+  --color-canvas: #FAF9F6;
+  --color-canvas-subtle: #F2F4F2;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #FFFFFF;
   
-  --color-pine-50: #F2F8F6;
-  --color-pine-100: #E2EFEA;
-  --color-pine-200: #C2DDD4;
-  --color-pine-500: #1C5E53;
-  --color-pine-600: #144A42;
-  --color-pine-700: #113D36;
-  --color-pine-800: #0D2C27;
-  --color-pine-900: #081B18;
+  /* Deep Heritage Forest Pine */
+  --color-pine-50: #F0F7F4;
+  --color-pine-100: #DEEFE8;
+  --color-pine-200: #BDDFD2;
+  --color-pine-300: #8DC4B1;
+  --color-pine-400: #54A38B;
+  --color-pine-500: #1B7865;
+  --color-pine-600: #125B4D;
+  --color-pine-700: #0E473D;
+  --color-pine-800: #0B3830;
+  --color-pine-900: #072520;
+  --color-pine-950: #031411;
 
-  --color-ochre-50: #FCF8F4;
-  --color-ochre-100: #F7EFE7;
-  --color-ochre-200: #EFDCB9;
-  --color-ochre-500: #C27E4B;
-  --color-ochre-600: #A86938;
-  --color-ochre-700: #875128;
+  /* Brand Emerald / Government Action */
+  --color-brand-50: #ECFDF5;
+  --color-brand-100: #D1FAE5;
+  --color-brand-200: #A7F3D0;
+  --color-brand-300: #6EE7B7;
+  --color-brand-400: #34D399;
+  --color-brand-500: #10B981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065F46;
+  --color-brand-900: #064E3B;
+  --color-brand-950: #022C22;
 
-  --color-ink-primary: #152220;
-  --color-ink-secondary: #4A5B57;
-  --color-ink-muted: #798C87;
+  /* Gov Navy / Deep Slate */
+  --color-govnavy-50: #F8FAFC;
+  --color-govnavy-100: #F1F5F9;
+  --color-govnavy-200: #E2E8F0;
+  --color-govnavy-300: #CBD5E1;
+  --color-govnavy-400: #94A3B8;
+  --color-govnavy-500: #64748B;
+  --color-govnavy-600: #475569;
+  --color-govnavy-700: #334155;
+  --color-govnavy-800: #1E293B;
+  --color-govnavy-900: #0F172A;
+  --color-govnavy-950: #080D1A;
+
+  /* Saffron Gold / Ochre - Official Aaple Sarkar Accents */
+  --color-ochre-50: #FFFBEB;
+  --color-ochre-100: #FEF3C7;
+  --color-ochre-200: #FDE68A;
+  --color-ochre-300: #FCD34D;
+  --color-ochre-400: #FBBF24;
+  --color-ochre-500: #F59E0B;
+  --color-ochre-600: #D97706;
+  --color-ochre-700: #B45309;
+  --color-ochre-800: #92400E;
+  --color-ochre-900: #78350F;
+
+  /* Typography Colors */
+  --color-ink-primary: #0F172A;
+  --color-ink-secondary: #334155;
+  --color-ink-muted: #64748B;
 
   --font-serif: 'Newsreader', Garamond, Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   --font-marathi: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
 
-  --shadow-soft: 0 1px 3px rgba(17, 61, 54, 0.04), 0 8px 24px -4px rgba(17, 61, 54, 0.06);
-  --shadow-elevated: 0 4px 6px -1px rgba(17, 61, 54, 0.05), 0 16px 32px -6px rgba(17, 61, 54, 0.08);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.04), 0 6px 16px -2px rgba(15, 23, 42, 0.05);
+  --shadow-soft: 0 2px 4px rgba(15, 23, 42, 0.03), 0 12px 28px -4px rgba(15, 23, 42, 0.06);
+  --shadow-elevated: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 20px 36px -6px rgba(15, 23, 42, 0.09);
 }
 
 @layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+
   html {
     scroll-behavior: smooth;
-    background-color: var(--color-canvas);
-    color: var(--color-ink-primary);
+    background-color: #FAF9F6;
+    color: #0F172A;
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    background-color: #FAF8F5;
-    color: #152220;
-    -webkit-font-smoothing: antialiased;
+    background-color: #FAF9F6;
+    color: #334155;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
   }
 
-  h1, h2, h3, .font-display {
-    font-family: var(--font-serif);
+  h1, h2, h3, h4, h5, h6 {
+    color: #0F172A;
+    font-weight: 700;
     text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
@@ -56,19 +108,59 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Warm glass nav */
+/* Glass navigation bar with crisp blur & border */
 .glass-nav-warm {
-  background: rgba(250, 248, 245, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(17, 61, 54, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
 }
 
-/* Subtle concentric border */
+/* Crafted card with concentric border & subtle depth */
 .card-craft {
-  background: #ffffff;
-  border: 1px solid rgba(17, 61, 54, 0.07);
-  box-shadow: 0 1px 3px rgba(17, 61, 54, 0.03), 0 8px 24px -4px rgba(17, 61, 54, 0.05);
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.05);
+}
+
+.card-craft:hover {
+  border-color: rgba(11, 56, 48, 0.25);
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.04), 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Pulse badge animation */
+@keyframes softPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-soft-pulse {
+  animation: softPulse 2.5s infinite ease-in-out;
 }
 
 /* UI update 1 */

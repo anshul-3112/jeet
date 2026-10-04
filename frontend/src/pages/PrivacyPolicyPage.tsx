@@ -6,7 +6,7 @@ import { businessConfig } from '../data/business';
 
 export const PrivacyPolicyPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-50 py-8 md:py-12">
+    <div className="min-h-screen bg-[#FAF9F6] py-8 md:py-12">
       <SEOHead
         title="Privacy Policy | Jeet Digital E-Governance Seva Kendra Nagpur"
         description="Privacy policy and data handling terms for Jeet Digital E-Governance Seva Kendra, Ayodhya Nagar, Nagpur."
@@ -18,11 +18,11 @@ export const PrivacyPolicyPage: React.FC = () => {
         <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 sm:p-12 space-y-8">
           
           <div className="border-b border-slate-100 pb-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 mb-3">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Data Confidentiality &amp; Privacy</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-[#0B3830] border border-emerald-200 mb-3">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Data Confidentiality &amp; 24-Hour Purge Guarantee</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-govnavy-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-sans">
               Privacy Policy
             </h1>
             <p className="text-xs text-slate-500 mt-1">
@@ -30,10 +30,10 @@ export const PrivacyPolicyPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed">
+          <div className="space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
             <section className="space-y-2">
-              <h2 className="text-base font-bold text-govnavy-900 flex items-center gap-2">
-                <Lock className="w-4 h-4 text-brand-600" />
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-sans">
+                <Lock className="w-4 h-4 text-[#0B3830]" />
                 <span>1. Overview</span>
               </h2>
               <p>
@@ -42,8 +42,8 @@ export const PrivacyPolicyPage: React.FC = () => {
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-base font-bold text-govnavy-900 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-brand-600" />
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-sans">
+                <FileText className="w-4 h-4 text-[#0B3830]" />
                 <span>2. Information We Collect</span>
               </h2>
               <p>
@@ -58,8 +58,8 @@ export const PrivacyPolicyPage: React.FC = () => {
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-base font-bold text-govnavy-900 flex items-center gap-2">
-                <Eye className="w-4 h-4 text-brand-600" />
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-sans">
+                <Eye className="w-4 h-4 text-[#0B3830]" />
                 <span>3. How We Use Your Information</span>
               </h2>
               <p>
@@ -71,30 +71,30 @@ export const PrivacyPolicyPage: React.FC = () => {
                 <li>Processing your authorized application on designated government portals (such as Aaple Sarkar, CCVIS/Barti, NSDL, Parivahan, etc.) with your explicit consent</li>
                 <li>Sharing application status tracking receipts and updates</li>
               </ul>
-              <p className="font-semibold text-slate-800 pt-1">
+              <p className="font-bold text-slate-900 pt-1">
                 We do NOT sell, rent, trade, or distribute your personal contact information to third-party telemarketers or advertisers.
               </p>
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-base font-bold text-govnavy-900 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-brand-600" />
-                <span>4. Confidentiality of Official Documents</span>
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-sans">
+                <ShieldCheck className="w-4 h-4 text-[#0B3830]" />
+                <span>4. Confidentiality of Official Documents &amp; 24-Hour Purge</span>
               </h2>
               <p>
-                Copies of identity proofs (Aadhaar, PAN, School Leaving Certificates, Kotwal records, and family documents) provided for online submissions are treated with utmost confidentiality and handled in compliance with applicable government data protection standards.
+                Copies of identity proofs (Aadhaar, PAN, School Leaving Certificates, Kotwal records, and family documents) provided for online submissions are treated with utmost confidentiality and permanently deleted from our servers automatically after 24 hours.
               </p>
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-base font-bold text-govnavy-900 flex items-center gap-2">
-                <Phone className="w-4 h-4 text-brand-600" />
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-sans">
+                <Phone className="w-4 h-4 text-[#0B3830]" />
                 <span>5. Contact for Privacy Inquiries</span>
               </h2>
               <p>
                 If you have any questions about this Privacy Policy or wish to have your contact record deleted from our communication history, please contact:
               </p>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1 text-slate-700">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1 text-slate-700">
                 <p><strong>Contact Person:</strong> {businessConfig.owner}</p>
                 <p><strong>Business:</strong> {businessConfig.name}</p>
                 <p><strong>Address:</strong> {businessConfig.address.fullEnglish}</p>

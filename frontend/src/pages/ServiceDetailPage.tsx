@@ -19,7 +19,8 @@ import {
   AlertTriangle,
   ArrowRight,
   Sparkles,
-  Layers
+  Layers,
+  UploadCloud
 } from 'lucide-react';
 
 export const ServiceDetailPage: React.FC = () => {
@@ -41,7 +42,7 @@ export const ServiceDetailPage: React.FC = () => {
   const isCasteValidity = service.slug === 'caste-validity';
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 md:py-12">
+    <div className="min-h-screen bg-[#FAF9F6] py-8 md:py-12">
       {/* Dynamic SEO Meta & Schema */}
       <SEOHead
         title={`${service.name} in Nagpur | Jeet Digital E-Governance Seva Kendra`}
@@ -78,13 +79,13 @@ export const ServiceDetailPage: React.FC = () => {
         {/* Hero Banner for Service */}
         <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 sm:p-10 mb-10">
           <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-govnavy-50 text-govnavy-800 border border-govnavy-200">
-              <Layers className="w-3.5 h-3.5" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-[#0B3830] border border-emerald-200">
+              <Layers className="w-3.5 h-3.5 text-emerald-700" />
               <span>{language === 'mr' ? service.categoryNameMr : service.categoryName}</span>
             </span>
 
             {isCasteValidity && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-brand-600 text-white uppercase tracking-wider">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500 text-white uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Featured Priority Service</span>
               </span>
@@ -98,7 +99,7 @@ export const ServiceDetailPage: React.FC = () => {
             )}
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-govnavy-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight font-sans">
             {language === 'mr' ? service.nameMr : service.name}
           </h1>
 
@@ -106,11 +107,11 @@ export const ServiceDetailPage: React.FC = () => {
             {language === 'mr' ? service.name : service.nameMr}
           </p>
 
-          <p className="text-sm sm:text-base text-slate-700 mt-4 max-w-4xl leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-700 mt-4 max-w-4xl leading-relaxed font-normal">
             {language === 'mr' ? service.detailedDescriptionMr : service.detailedDescription}
           </p>
 
-          {/* Featured Notice Banner (e.g. Caste Validity student warning from brochure) */}
+          {/* Featured Notice Banner (e.g. Caste Validity student warning) */}
           {service.featuredNotice && (
             <div className="mt-6 p-4 rounded-2xl bg-amber-50 border border-amber-300 flex items-start gap-3.5 text-xs sm:text-sm text-amber-900 font-medium">
               <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -122,24 +123,33 @@ export const ServiceDetailPage: React.FC = () => {
 
           {/* Quick Action CTAs */}
           <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-3">
+            <Link
+              to={`/upload?service=${service.slug}`}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#0B3830] hover:bg-[#134E43] text-white font-bold text-sm shadow-md active:scale-[0.98] transition-all cursor-pointer"
+              id="service-upload-cta"
+            >
+              <UploadCloud className="w-4 h-4" />
+              <span>Upload Documents Online</span>
+            </Link>
+
             <a
               href={getServiceWhatsAppUrl(service.name)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm active:scale-[0.98] transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-sm active:scale-[0.98] transition-all cursor-pointer"
               id="service-whatsapp-cta"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 fill-white" />
               <span>Apply / Inquire on WhatsApp</span>
             </a>
 
             <a
               href={`tel:${businessConfig.primaryPhone}`}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-sm active:scale-[0.98] transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm shadow-sm active:scale-[0.98] transition-all cursor-pointer"
               id="service-call-cta"
             >
-              <Phone className="w-4 h-4" />
-              <span>Call Yash Chopade ({businessConfig.primaryPhone})</span>
+              <Phone className="w-4 h-4 text-[#0B3830]" />
+              <span>Call: {businessConfig.formattedPrimaryPhone}</span>
             </a>
 
             <span className="text-xs text-slate-500 font-medium sm:ml-auto">
@@ -156,9 +166,9 @@ export const ServiceDetailPage: React.FC = () => {
             
             {/* 1. Who This Service Is For */}
             {service.whoIsThisFor && service.whoIsThisFor.length > 0 && (
-              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8">
-                <h3 className="text-lg font-bold text-govnavy-900 flex items-center gap-2 mb-4">
-                  <Users className="w-5 h-5 text-brand-600" />
+              <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 sm:p-8">
+                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-4 font-sans">
+                  <Users className="w-5 h-5 text-emerald-700" />
                   <span>{language === 'mr' ? 'कोणासाठी आवश्यक आहे?' : 'Who Is This Service For?'}</span>
                 </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
@@ -179,16 +189,16 @@ export const ServiceDetailPage: React.FC = () => {
             />
 
             {/* 3. Step-by-Step Process Timeline */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8">
-              <h3 className="text-lg font-bold text-govnavy-900 flex items-center gap-2 mb-6">
-                <ShieldCheck className="w-5 h-5 text-brand-600" />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 sm:p-8">
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-6 font-sans">
+                <ShieldCheck className="w-5 h-5 text-emerald-700" />
                 <span>{language === 'mr' ? 'अर्ज प्रक्रिया व पायऱ्या' : 'Step-by-Step Processing'}</span>
               </h3>
 
               <div className="space-y-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200">
                 {service.processSteps.map((step, idx) => (
                   <div key={idx} className="relative flex items-start gap-4">
-                    <div className="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 z-10 shadow-sm">
+                    <div className="w-7 h-7 rounded-full bg-[#0B3830] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 z-10 shadow-sm">
                       {idx + 1}
                     </div>
                     <div className="pt-0.5">
@@ -212,24 +222,24 @@ export const ServiceDetailPage: React.FC = () => {
             />
 
             {/* Direct Visit Card */}
-            <div className="bg-govnavy-900 text-white rounded-2xl p-6 shadow-sm border border-slate-800">
+            <div className="bg-[#0B3830] text-white rounded-3xl p-6 shadow-md border border-slate-800">
               <h4 className="text-sm font-bold tracking-tight uppercase text-amber-300 mb-3">
                 Visit In Person / थेट केंद्रावर या
               </h4>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-emerald-100/90 leading-relaxed">
                 <strong>{businessConfig.name}</strong><br />
                 {businessConfig.address.fullEnglish}<br />
                 <span className="text-amber-200 font-marathi text-[11px] block mt-1">
                   {businessConfig.address.fullMarathi}
                 </span>
               </p>
-              <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-                <span className="text-emerald-400 font-semibold">{businessConfig.hours}</span>
+              <div className="mt-4 pt-4 border-t border-emerald-800/80 flex items-center justify-between text-xs">
+                <span className="text-emerald-300 font-bold">{businessConfig.hours}</span>
                 <a
                   href={businessConfig.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-brand-300 font-bold underline"
+                  className="text-white hover:text-amber-300 font-bold underline"
                 >
                   Get Directions →
                 </a>
@@ -243,10 +253,10 @@ export const ServiceDetailPage: React.FC = () => {
         {relatedServices.length > 0 && (
           <div className="mt-16 pt-12 border-t border-slate-200">
             <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xl font-bold text-govnavy-900">
+              <h3 className="text-xl font-bold text-slate-900 font-sans">
                 Related Documentation Services in Nagpur
               </h3>
-              <Link to="/services" className="text-xs font-bold text-brand-600 hover:underline flex items-center gap-1">
+              <Link to="/services" className="text-xs font-bold text-[#0B3830] hover:underline flex items-center gap-1">
                 <span>View all</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>

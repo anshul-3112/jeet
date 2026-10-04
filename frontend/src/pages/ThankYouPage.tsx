@@ -10,7 +10,7 @@ export const ThankYouPage: React.FC = () => {
   const stateData = location.state as { name?: string; phone?: string; service?: string; note?: string } | null;
 
   return (
-    <div className="min-h-[80vh] bg-slate-50 py-12 md:py-20 flex items-center justify-center">
+    <div className="min-h-[80vh] bg-[#FAF9F6] py-12 md:py-20 flex items-center justify-center">
       <SEOHead
         title="Thank You | Jeet Digital E-Governance Seva Kendra"
         description="Thank you for contacting Jeet Digital E-Governance Seva Kendra in Nagpur."
@@ -18,18 +18,18 @@ export const ThankYouPage: React.FC = () => {
       />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 w-full">
-        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 sm:p-12 text-center">
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-elevated p-6 sm:p-12 text-center">
           
           {/* Green Success Badge */}
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-6 shadow-soft animate-bounce">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-6 shadow-soft border border-emerald-200">
             <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12" />
           </div>
 
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
+          <span className="inline-block px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
             Enquiry Received / व्हॉट्सॲप मेसेज तयार झाला
           </span>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-govnavy-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-sans">
             Thank You for Contacting Us!
           </h1>
 
@@ -40,7 +40,7 @@ export const ThankYouPage: React.FC = () => {
           {/* Submission Details Recap Card */}
           {stateData && (
             <div className="my-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs text-slate-700 max-w-md mx-auto space-y-1.5">
-              <p className="font-bold text-govnavy-900 border-b border-slate-200 pb-1 mb-2">
+              <p className="font-bold text-slate-900 border-b border-slate-200 pb-1 mb-2">
                 Submitted Details:
               </p>
               {stateData.name && <p><strong>Name:</strong> {stateData.name}</p>}
@@ -50,7 +50,7 @@ export const ThankYouPage: React.FC = () => {
           )}
 
           {/* What happens next */}
-          <div className="my-6 p-4 rounded-2xl bg-blue-50/60 border border-blue-200 text-xs text-blue-900 max-w-md mx-auto text-left space-y-1">
+          <div className="my-6 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-xs text-[#0B3830] max-w-md mx-auto text-left space-y-1 font-medium">
             <p className="font-bold">Next Steps:</p>
             <p>1. If your WhatsApp tab didn't open automatically, tap the WhatsApp button below.</p>
             <p>2. Yash Chopade will review your requirement and share the exact document list.</p>
@@ -61,31 +61,31 @@ export const ThankYouPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <a
               href={`tel:${businessConfig.primaryPhone}`}
-              className="w-full sm:w-auto px-6 py-3.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3.5 bg-[#0B3830] hover:bg-[#134E43] text-white rounded-full text-sm font-bold shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <Phone className="w-4 h-4" />
-              <span>Call Yash Chopade: {businessConfig.primaryPhone}</span>
+              <span>Call: {businessConfig.formattedPrimaryPhone}</span>
             </a>
 
             <a
               href={getGeneralWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-sm font-bold shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 fill-white" />
               <span>Open WhatsApp Chat</span>
             </a>
           </div>
 
           {/* Back Home Link */}
-          <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center gap-4 text-xs font-semibold text-slate-500">
-            <Link to="/" className="hover:text-brand-600 flex items-center gap-1">
+          <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center gap-4 text-xs font-bold text-slate-500">
+            <Link to="/" className="hover:text-[#0B3830] flex items-center gap-1">
               <Home className="w-3.5 h-3.5" />
               <span>Back to Home</span>
             </Link>
             <span>•</span>
-            <Link to="/services" className="hover:text-brand-600 flex items-center gap-1">
+            <Link to="/services" className="hover:text-[#0B3830] flex items-center gap-1">
               <span>Browse All Services</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>

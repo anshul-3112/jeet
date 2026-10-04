@@ -15,6 +15,7 @@ import {
   Loader2,
   ArrowLeft,
   Calendar,
+  UploadCloud
 } from 'lucide-react';
 
 export const TrackStatusPage: React.FC = () => {
@@ -83,21 +84,21 @@ export const TrackStatusPage: React.FC = () => {
   const whatsappUrl = `https://wa.me/${businessConfig.whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-[#FAF9F6] py-8 md:py-14 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 mb-3"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 mb-3 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{language === 'mr' ? 'मुख्य पृष्ठावर जा' : 'Back to Home'}</span>
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-sans">
             {language === 'mr' ? 'कागदपत्र स्थिती तपासा' : 'Track Document Status'}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 font-normal">
             {language === 'mr'
               ? 'तुमचा ५-अंकी ट्रॅकिंग कोड टाकून स्थिती तपासा'
               : 'Enter your tracking code (e.g. JD-7F3K2) to view live progress'}
@@ -114,13 +115,13 @@ export const TrackStatusPage: React.FC = () => {
                 value={inputTrackingId}
                 onChange={(e) => setInputTrackingId(e.target.value.toUpperCase())}
                 placeholder="e.g. JD-7F3K2"
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-mono font-bold tracking-wider uppercase focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-mono font-bold tracking-wider uppercase focus:outline-none focus:border-[#0B3830] focus:ring-2 focus:ring-emerald-100 shadow-2xs"
               />
             </div>
             <button
               type="submit"
               disabled={loading || !inputTrackingId.trim()}
-              className="px-5 py-3 rounded-xl font-bold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-50 transition-colors shadow-sm flex items-center gap-2"
+              className="px-6 py-3 rounded-xl font-bold text-white bg-[#0B3830] hover:bg-[#134E43] disabled:opacity-50 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>{language === 'mr' ? 'शोधा' : 'Track'}</span>}
             </button>
@@ -137,20 +138,20 @@ export const TrackStatusPage: React.FC = () => {
 
         {/* Result Card */}
         {data && (
-          <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 p-6 sm:p-8">
+          <div className="bg-white rounded-3xl shadow-elevated border border-slate-200/90 p-6 sm:p-8">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
               <div>
                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
                   {language === 'mr' ? 'ट्रॅकिंग आयडी' : 'Tracking Code'}
                 </span>
-                <p className="text-2xl font-black text-slate-900 font-mono tracking-wider">{data.trackingId}</p>
+                <p className="text-2xl font-black text-[#0B3830] font-mono tracking-wider">{data.trackingId}</p>
               </div>
 
               {/* Status Badge */}
               <div>
                 {data.status === 'printed' ? (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                     <span>{language === 'mr' ? 'प्रिंट तयार आहे' : 'Printed & Ready'}</span>
                   </span>
                 ) : data.status === 'expired' ? (
@@ -159,7 +160,7 @@ export const TrackStatusPage: React.FC = () => {
                     <span>{language === 'mr' ? 'कालबाह्य (Auto-Deleted)' : 'Expired (Purged)'}</span>
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">
                     <Printer className="w-3.5 h-3.5 text-blue-600 animate-pulse" />
                     <span>{language === 'mr' ? 'मिळाले (प्रक्रियेत)' : 'Received (In Queue)'}</span>
                   </span>
@@ -171,7 +172,7 @@ export const TrackStatusPage: React.FC = () => {
             <div className="space-y-4 mb-6">
               <div className="flex items-start justify-between py-2 border-b border-slate-50">
                 <span className="text-xs font-medium text-slate-500">{language === 'mr' ? 'सेवा' : 'Service'}</span>
-                <span className="text-xs font-bold text-slate-800 text-right">{serviceName}</span>
+                <span className="text-xs font-bold text-slate-900 text-right">{serviceName}</span>
               </div>
 
               <div className="flex items-center justify-between py-2 border-b border-slate-50">
@@ -185,8 +186,8 @@ export const TrackStatusPage: React.FC = () => {
               {data.status !== 'expired' && (
                 <div className="flex items-center justify-between py-2 border-b border-slate-50">
                   <span className="text-xs font-medium text-slate-500">{language === 'mr' ? 'उर्वरित वेळ' : 'Auto-Delete In'}</span>
-                  <span className="text-xs font-bold text-amber-600 flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="text-xs font-bold text-amber-700 flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5 text-amber-600" />
                     {getRemainingTimeText(data.remainingMinutes)}
                   </span>
                 </div>
@@ -194,8 +195,8 @@ export const TrackStatusPage: React.FC = () => {
             </div>
 
             {/* Reassurance banner */}
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-2.5 mb-6 text-xs text-slate-600">
-              <Shield className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-2.5 mb-6 text-xs text-slate-600">
+              <Shield className="w-4 h-4 text-emerald-700 flex-shrink-0" />
               <span>
                 {language === 'mr'
                   ? 'तुमची कागदपत्रे केवळ प्रिंटिंगसाठी सुरक्षित ठेवली जातात आणि २४ तासांनंतर नष्ट केली जातात.'
@@ -209,17 +210,18 @@ export const TrackStatusPage: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-sm cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 fill-white" />
                 <span>{language === 'mr' ? 'दुकानदाराशी संपर्क साधा (WhatsApp)' : 'Contact Yash Bhai on WhatsApp'}</span>
               </a>
 
               <Link
                 to="/upload"
-                className="w-full block text-center py-2.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#0B3830] hover:underline"
               >
-                {language === 'mr' ? '+ नवीन कागदपत्र अपलोड करा' : '+ Upload Another Document'}
+                <UploadCloud className="w-3.5 h-3.5" />
+                <span>{language === 'mr' ? '+ नवीन कागदपत्र अपलोड करा' : '+ Upload Another Document'}</span>
               </Link>
             </div>
           </div>

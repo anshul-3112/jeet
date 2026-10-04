@@ -7,7 +7,7 @@ import { getGeneralWhatsAppUrl } from '../utils/whatsapp';
 
 export const NotFoundPage: React.FC = () => {
   return (
-    <div className="min-h-[75vh] bg-slate-50 py-16 flex items-center justify-center">
+    <div className="min-h-[75vh] bg-[#FAF9F6] py-16 flex items-center justify-center">
       <SEOHead
         title="Page Not Found (404) | Jeet Digital Seva Kendra"
         description="The page you are looking for does not exist."
@@ -15,15 +15,15 @@ export const NotFoundPage: React.FC = () => {
       />
 
       <div className="max-w-lg mx-auto px-4 text-center">
-        <div className="w-16 h-16 rounded-3xl bg-brand-100 text-brand-600 flex items-center justify-center mx-auto mb-6 shadow-soft">
+        <div className="w-16 h-16 rounded-3xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto mb-6 shadow-soft border border-amber-200">
           <AlertTriangle className="w-8 h-8" />
         </div>
 
-        <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-700 uppercase tracking-widest mb-3">
+        <span className="inline-block px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-200 text-slate-800 uppercase tracking-widest mb-3">
           Error 404
         </span>
 
-        <h1 className="text-3xl font-black text-govnavy-900 tracking-tight">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight font-sans">
           That page doesn't exist.
         </h1>
 
@@ -35,7 +35,7 @@ export const NotFoundPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
           <Link
             to="/"
-            className="w-full sm:w-auto px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-6 py-3.5 bg-[#0B3830] hover:bg-[#134E43] text-white rounded-full text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
           >
             <Home className="w-4 h-4" />
             <span>Go to Home</span>
@@ -43,20 +43,20 @@ export const NotFoundPage: React.FC = () => {
 
           <Link
             to="/services"
-            className="w-full sm:w-auto px-5 py-3 bg-govnavy-900 hover:bg-govnavy-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 rounded-full text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
           >
-            <Layers className="w-4 h-4" />
+            <Layers className="w-4 h-4 text-emerald-700" />
             <span>Browse Services</span>
           </Link>
         </div>
 
         {/* Quick Contact Option */}
-        <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-semibold text-slate-500">
+        <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-bold text-slate-500">
           <a
             href={`tel:${businessConfig.primaryPhone}`}
-            className="hover:text-brand-600 flex items-center gap-1"
+            className="hover:text-[#0B3830] flex items-center gap-1"
           >
-            <Phone className="w-3.5 h-3.5" />
+            <Phone className="w-3.5 h-3.5 text-emerald-700" />
             <span>Call: {businessConfig.primaryPhone}</span>
           </a>
           <span>•</span>
@@ -64,9 +64,9 @@ export const NotFoundPage: React.FC = () => {
             href={getGeneralWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-emerald-600 flex items-center gap-1"
+            className="hover:text-emerald-700 flex items-center gap-1"
           >
-            <MessageCircle className="w-3.5 h-3.5" />
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-700" />
             <span>WhatsApp Us</span>
           </a>
         </div>

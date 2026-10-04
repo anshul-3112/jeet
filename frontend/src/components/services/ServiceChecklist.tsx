@@ -40,11 +40,11 @@ export const ServiceChecklist: React.FC<ServiceChecklistProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-6 md:p-8">
+    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 md:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
         <div>
-          <h3 className="text-xl font-bold text-govnavy-900 flex items-center gap-2">
-            <FileCheck className="w-5 h-5 text-brand-600" />
+          <h3 className="text-xl font-black text-slate-900 flex items-center gap-2 font-sans">
+            <FileCheck className="w-5 h-5 text-emerald-700" />
             <span>{language === 'mr' ? 'आवश्यक कागदपत्रांची यादी' : 'Required Documents Checklist'}</span>
           </h3>
           <p className="text-xs text-slate-500 mt-1">
@@ -56,7 +56,7 @@ export const ServiceChecklist: React.FC<ServiceChecklistProps> = ({
 
         <button
           onClick={handleCopyChecklist}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors self-start sm:self-auto cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors self-start sm:self-auto cursor-pointer"
           title="Copy checklist to clipboard"
         >
           {copied ? (
@@ -76,11 +76,11 @@ export const ServiceChecklist: React.FC<ServiceChecklistProps> = ({
       <div className="mt-6 space-y-8">
         {documentSections.map((section, sIndex) => (
           <div key={sIndex} className="space-y-3">
-            <h4 className="text-sm font-bold text-govnavy-900 uppercase tracking-wide bg-slate-50 py-2 px-3.5 rounded-lg border border-slate-200/70">
+            <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider bg-slate-50 py-2 px-3.5 rounded-xl border border-slate-200/70">
               {language === 'mr' && section.titleMr ? section.titleMr : section.title}
             </h4>
 
-            <div className="space-y-2.5 pl-1 sm:pl-2">
+            <div className="space-y-2 pl-1 sm:pl-2">
               {section.items.map((item, iIndex) => {
                 const itemKey = `${sIndex}-${iIndex}`;
                 const isChecked = !!checkedItems[itemKey];
@@ -89,19 +89,19 @@ export const ServiceChecklist: React.FC<ServiceChecklistProps> = ({
                   <div
                     key={iIndex}
                     onClick={() => toggleItem(itemKey)}
-                    className={`flex items-start gap-3 p-2.5 rounded-xl cursor-pointer transition-colors ${
+                    className={`flex items-start gap-3 p-3 rounded-2xl cursor-pointer transition-colors ${
                       isChecked
-                        ? 'bg-emerald-50/70 border border-emerald-200/80 text-emerald-950'
-                        : 'hover:bg-slate-50 text-slate-800'
+                        ? 'bg-emerald-50/80 border border-emerald-200 text-emerald-950 font-medium'
+                        : 'hover:bg-slate-50 border border-transparent text-slate-800'
                     }`}
                   >
                     <button
                       type="button"
-                      className="mt-0.5 text-slate-400 hover:text-slate-600 flex-shrink-0"
+                      className="mt-0.5 text-slate-400 hover:text-slate-600 flex-shrink-0 cursor-pointer"
                       aria-label={isChecked ? 'Mark uncollected' : 'Mark collected'}
                     >
                       {isChecked ? (
-                        <CheckSquare className="w-5 h-5 text-emerald-600 fill-emerald-100" />
+                        <CheckSquare className="w-5 h-5 text-emerald-700 fill-emerald-100" />
                       ) : (
                         <Square className="w-5 h-5 text-slate-300" />
                       )}
@@ -121,9 +121,9 @@ export const ServiceChecklist: React.FC<ServiceChecklistProps> = ({
       </div>
 
       {/* Checklist Help Note */}
-      <div className="mt-8 p-4 bg-amber-50/80 rounded-xl border border-amber-200 flex items-start gap-3 text-xs text-amber-900">
+      <div className="mt-8 p-4 bg-amber-50 rounded-2xl border border-amber-200 flex items-start gap-3 text-xs text-amber-900">
         <Info className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
-        <p className="leading-relaxed">
+        <p className="leading-relaxed font-medium">
           <strong>{language === 'mr' ? 'महत्त्वाची टीप:' : 'Important Note:'}</strong>{' '}
           {language === 'mr'
             ? 'काही कागदपत्रे अपूर्ण असल्यास घाबरू नका. आमचे केंद्र शपथपत्र तयार करणे, जुने महसूल नोंदी मिळवणे व योग्य पर्याय शोधण्यात संपूर्ण मार्गदर्शन करते.'

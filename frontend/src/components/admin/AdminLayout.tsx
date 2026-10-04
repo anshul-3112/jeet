@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Files, CreditCard, LogOut, Shield, Clock, ExternalLink } from 'lucide-react';
+import { Files, CreditCard, LogOut, Clock, ExternalLink } from 'lucide-react';
 import { adminLogout, getAdminDocuments } from '../../api/admin';
 
 export const AdminLayout: React.FC = () => {
@@ -30,20 +30,20 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#152220] flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-[#FAF9F6] text-slate-900 flex flex-col md:flex-row font-sans">
       {/* Sidebar for Desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-[#EAE4DC] p-5 justify-between flex-shrink-0 shadow-2xs">
+      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200/90 p-5 justify-between flex-shrink-0 shadow-2xs">
         <div>
           {/* Logo / Header */}
-          <div className="flex items-center space-x-3 px-2 py-3 border-b border-[#F3EFEA] mb-6">
-            <div className="w-10 h-10 rounded-2xl bg-[#113D36] flex items-center justify-center text-white shadow-sm">
-              <Shield className="w-5 h-5" />
+          <div className="flex items-center space-x-3 px-2 py-3 border-b border-slate-100 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-2xs overflow-hidden flex-shrink-0">
+              <img src="/logo.jpg" alt="Jeet Digital Logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="font-extrabold text-sm tracking-tight text-[#152220] leading-tight font-sans">
+              <h1 className="font-black text-sm tracking-tight text-slate-900 leading-tight font-sans">
                 Jeet Seva Kendra
               </h1>
-              <p className="text-[10px] text-[#A86938] font-bold tracking-wider uppercase mt-0.5">
+              <p className="text-[10px] text-amber-800 font-bold tracking-wider uppercase mt-0.5">
                 Admin Console
               </p>
             </div>
@@ -54,19 +54,19 @@ export const AdminLayout: React.FC = () => {
             <NavLink
               to="/admin/documents"
               className={({ isActive }) =>
-                `flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
+                `flex items-center justify-between px-4 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all ${
                   isActive
-                    ? 'bg-[#E2EFEA] text-[#113D36] font-bold shadow-2xs'
-                    : 'text-[#4A5B57] hover:text-[#113D36] hover:bg-[#F3EFEA]'
+                    ? 'bg-emerald-50 text-[#0B3830] border border-emerald-200 shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
             >
               <div className="flex items-center space-x-3">
-                <Files className="w-4 h-4" />
+                <Files className="w-4 h-4 text-emerald-700" />
                 <span>Citizen Documents</span>
               </div>
               {expiringCount > 0 && (
-                <span className="px-2 py-0.5 text-[10px] font-bold bg-[#F7EFE7] text-[#A86938] rounded-full border border-[#EFDCB9] animate-pulse">
+                <span className="px-2 py-0.5 text-[10px] font-bold bg-amber-50 text-amber-800 rounded-full border border-amber-200 animate-pulse">
                   {expiringCount}
                 </span>
               )}
@@ -75,14 +75,14 @@ export const AdminLayout: React.FC = () => {
             <NavLink
               to="/admin/payments"
               className={({ isActive }) =>
-                `flex items-center space-x-3 px-3.5 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
+                `flex items-center space-x-3 px-4 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all ${
                   isActive
-                    ? 'bg-[#E2EFEA] text-[#113D36] font-bold shadow-2xs'
-                    : 'text-[#4A5B57] hover:text-[#113D36] hover:bg-[#F3EFEA]'
+                    ? 'bg-emerald-50 text-[#0B3830] border border-emerald-200 shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
             >
-              <CreditCard className="w-4 h-4" />
+              <CreditCard className="w-4 h-4 text-emerald-700" />
               <span>Payments &amp; Ledger</span>
             </NavLink>
 
@@ -90,10 +90,10 @@ export const AdminLayout: React.FC = () => {
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-semibold text-[#798C87] hover:text-[#113D36] hover:bg-[#F3EFEA] transition-colors"
+              className="flex items-center justify-between px-4 py-2.5 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors"
             >
               <div className="flex items-center space-x-3">
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="w-4 h-4 text-slate-400" />
                 <span>Live Public Site</span>
               </div>
             </a>
@@ -101,10 +101,10 @@ export const AdminLayout: React.FC = () => {
         </div>
 
         {/* Bottom Sidebar Action */}
-        <div className="pt-4 border-t border-[#F3EFEA]">
+        <div className="pt-4 border-t border-slate-100">
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-3 w-full px-3.5 py-2.5 rounded-full text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors"
+            className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-full text-xs font-bold text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>
@@ -115,25 +115,25 @@ export const AdminLayout: React.FC = () => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 pb-16 md:pb-0">
         {/* Top Header */}
-        <header className="h-16 bg-white/80 backdrop-blur-md border-b border-[#EAE4DC] px-4 md:px-8 flex items-center justify-between sticky top-0 z-30">
+        <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/90 px-4 md:px-8 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center space-x-3">
-            <span className="md:hidden font-bold text-sm text-[#152220]">Jeet Kendra Admin</span>
+            <span className="md:hidden font-black text-sm text-slate-900">Jeet Kendra Admin</span>
             {expiringCount > 0 && (
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-[#F7EFE7] border border-[#EFDCB9] text-[#A86938] rounded-full text-xs font-semibold">
-                <Clock className="w-3.5 h-3.5 text-[#A86938] animate-pulse" />
+              <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-xs font-bold">
+                <Clock className="w-3.5 h-3.5 text-amber-700 animate-pulse" />
                 <span>{expiringCount} {expiringCount === 1 ? 'doc' : 'docs'} expiring in &lt;1 hr!</span>
               </div>
             )}
           </div>
 
           <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 text-xs text-[#4A5B57] bg-[#F2F8F6] px-3 py-1 rounded-full border border-[#C2DDD4]">
+            <div className="flex items-center space-x-2 text-xs text-slate-600 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="font-medium text-[#113D36]">Center Active (24/7)</span>
+              <span className="font-bold text-[#0B3830]">Center Active (24/7)</span>
             </div>
             <button
               onClick={handleLogout}
-              className="md:hidden p-2 text-[#798C87] hover:text-red-600"
+              className="md:hidden p-2 text-slate-400 hover:text-red-600 cursor-pointer"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />
@@ -148,12 +148,12 @@ export const AdminLayout: React.FC = () => {
       </div>
 
       {/* Bottom Navigation for Mobile */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-[#EAE4DC] flex items-center justify-around px-2 z-40">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 flex items-center justify-around px-2 z-40">
         <NavLink
           to="/admin/documents"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center flex-1 py-1 text-xs font-medium ${
-              isActive ? 'text-[#113D36] font-bold' : 'text-[#798C87]'
+            `flex flex-col items-center justify-center flex-1 py-1 text-xs font-bold ${
+              isActive ? 'text-[#0B3830]' : 'text-slate-500'
             }`
           }
         >
@@ -164,8 +164,8 @@ export const AdminLayout: React.FC = () => {
         <NavLink
           to="/admin/payments"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center flex-1 py-1 text-xs font-medium ${
-              isActive ? 'text-[#113D36] font-bold' : 'text-[#798C87]'
+            `flex flex-col items-center justify-center flex-1 py-1 text-xs font-bold ${
+              isActive ? 'text-[#0B3830]' : 'text-slate-500'
             }`
           }
         >
@@ -175,7 +175,7 @@ export const AdminLayout: React.FC = () => {
 
         <button
           onClick={handleLogout}
-          className="flex flex-col items-center justify-center flex-1 py-1 text-xs font-medium text-[#798C87] hover:text-red-600"
+          className="flex flex-col items-center justify-center flex-1 py-1 text-xs font-bold text-slate-500 hover:text-red-600 cursor-pointer"
         >
           <LogOut className="w-5 h-5 mb-0.5" />
           <span>Logout</span>

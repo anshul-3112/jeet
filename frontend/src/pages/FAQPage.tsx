@@ -34,7 +34,7 @@ export const FAQPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 md:py-12">
+    <div className="min-h-screen bg-[#FAF9F6] py-8 md:py-12">
       <SEOHead
         title="Frequently Asked Questions (FAQ) | Jeet Digital Seva Kendra Nagpur"
         description="Find answers to common questions regarding government document requirements, Caste Validity procedure, turnaround time, online form filling, and WhatsApp assistance in Nagpur."
@@ -45,14 +45,14 @@ export const FAQPage: React.FC = () => {
 
         {/* Page Header */}
         <div className="bg-white rounded-3xl border border-slate-200/90 shadow-card p-6 sm:p-10 mb-8 text-center">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 mb-3">
-            <HelpCircle className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-[#0B3830] border border-emerald-200 mb-3">
+            <HelpCircle className="w-3.5 h-3.5 text-emerald-700" />
             <span>{language === 'mr' ? 'मदत व मार्गदर्शन' : 'Help & Answers'}</span>
           </span>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-govnavy-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight font-sans">
             {language === 'mr' ? 'वारंवार विचारले जाणारे प्रश्न' : 'Frequently Asked Questions'}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-xl mx-auto leading-relaxed font-normal">
             Everything you need to know about preparing documents, turnaround times, and applying for government certificates in Nagpur.
           </p>
 
@@ -66,7 +66,7 @@ export const FAQPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search your question (e.g. Caste Validity, WhatsApp, family...)"
-              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-200 focus:border-brand-600 transition-all shadow-inner"
+              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-[#0B3830] transition-all shadow-inner"
             />
           </div>
         </div>
@@ -77,10 +77,10 @@ export const FAQPage: React.FC = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-govnavy-900 text-white shadow-sm'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                  ? 'bg-[#0B3830] text-white shadow-xs'
+                  : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
               }`}
             >
               {cat}
@@ -104,12 +104,12 @@ export const FAQPage: React.FC = () => {
                     className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors"
                     aria-expanded={isOpen}
                   >
-                    <span className="text-sm sm:text-base font-bold text-govnavy-900 leading-snug">
+                    <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug font-sans">
                       {language === 'mr' ? faq.questionMr : faq.question}
                     </span>
                     <div
-                      className={`w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 bg-brand-50 text-brand-600' : 'text-slate-500'
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-180 bg-[#0B3830] text-white' : 'bg-slate-100 text-slate-600'
                       }`}
                     >
                       <ChevronDown className="w-4 h-4" />
@@ -120,7 +120,7 @@ export const FAQPage: React.FC = () => {
                     <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-700 leading-relaxed border-t border-slate-100 animate-fadeIn">
                       <p>{language === 'mr' ? faq.answerMr : faq.answer}</p>
                       <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
-                        <span className="text-brand-600">Category: {faq.category}</span>
+                        <span className="text-[#0B3830]">Category: {faq.category}</span>
                       </div>
                     </div>
                   )}
@@ -129,34 +129,34 @@ export const FAQPage: React.FC = () => {
             })}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center mb-12">
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 text-center mb-12 shadow-card">
             <p className="text-sm text-slate-600">No questions matched your search query.</p>
           </div>
         )}
 
         {/* Bottom Direct Help Card */}
-        <div className="bg-govnavy-900 text-white rounded-3xl p-6 sm:p-8 text-center">
-          <h3 className="text-lg sm:text-xl font-bold">Have a specific question not covered here?</h3>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-md mx-auto">
+        <div className="bg-[#0B3830] text-white rounded-3xl p-6 sm:p-8 text-center shadow-elevated">
+          <h3 className="text-lg sm:text-xl font-bold font-sans">Have a specific question not covered here?</h3>
+          <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-md mx-auto">
             Contact Yash Chopade directly. We are open 24 hours to help you with your documentation questions.
           </p>
 
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href={`tel:${businessConfig.primaryPhone}`}
-              className="w-full sm:w-auto px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-50 text-[#0B3830] rounded-full text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <Phone className="w-4 h-4" />
-              <span>Call {businessConfig.primaryPhone}</span>
+              <span>Call: {businessConfig.formattedPrimaryPhone}</span>
             </a>
 
             <a
               href={getGeneralWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs sm:text-sm font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 fill-white" />
               <span>Ask on WhatsApp</span>
             </a>
           </div>
