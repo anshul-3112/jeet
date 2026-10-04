@@ -2,8 +2,8 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db';
-import { documents } from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { documents, payments } from '../db/schema';
+import { eq, desc } from 'drizzle-orm';
 import { uploadFileToStorage, getLocalFilePath } from '../services/storage';
 import rateLimit from 'express-rate-limit';
 
@@ -122,6 +122,20 @@ router.get('/track/:trackingId', async (req: Request, res: Response) => {
     const remainingMs = Math.max(0, new Date(doc.expiresAt).getTime() - now.getTime());
     const remainingMinutes = Math.floor(remainingMs / (1000 * 60));
 
+    // Fetch associated payment status if any
+    const paymentRecords = await db
+      .select({
+        status: payments.status,
+        amountPaise: payments.amountPaise,
+        razorpayPaymentId: payments.razorpayPaymentId,
+      })
+      .from(payments)
+      .where(eq(payments.documentId, doc.id))
+      .orderBy(desc(payments.createdAt))
+      .limit(1);
+
+    const paymentInfo = paymentRecords[0];
+
     // CRITICAL: NEVER return file URLs or the citizen's phone back out on this public endpoint!
     return res.json({
       trackingId: doc.trackingId,
@@ -131,6 +145,9 @@ router.get('/track/:trackingId', async (req: Request, res: Response) => {
       expiresAt: doc.expiresAt,
       remainingMinutes,
       printedAt: doc.printedAt,
+      paymentStatus: paymentInfo?.status || 'unpaid',
+      paymentAmount: paymentInfo ? paymentInfo.amountPaise / 100 : null,
+      paymentId: paymentInfo?.razorpayPaymentId || null,
     });
   } catch (err: any) {
     console.error('Error fetching track status:', err);

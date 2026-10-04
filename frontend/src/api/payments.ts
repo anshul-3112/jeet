@@ -5,6 +5,19 @@ export interface CreateOrderResponse {
   amount: number;
   currency: string;
   key: string;
+  isMock?: boolean;
+}
+
+export interface PaymentConfigResponse {
+  isLive: boolean;
+  key: string;
+  currency: string;
+  businessName: string;
+}
+
+export async function getPaymentConfig(): Promise<PaymentConfigResponse> {
+  const response = await apiClient.get<PaymentConfigResponse>('/payments/config');
+  return response.data;
 }
 
 export interface VerifyPaymentResponse {

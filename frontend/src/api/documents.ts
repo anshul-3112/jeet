@@ -15,6 +15,9 @@ export interface TrackStatusResponse {
   expiresAt: string;
   remainingMinutes: number;
   printedAt?: string | null;
+  paymentStatus?: 'paid' | 'pending' | 'failed' | 'unpaid';
+  paymentAmount?: number | null;
+  paymentId?: string | null;
 }
 
 export async function uploadDocuments(formData: FormData): Promise<UploadResponse> {

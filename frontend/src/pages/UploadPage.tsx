@@ -5,7 +5,7 @@ import { servicesData } from '../data/services';
 import { businessConfig } from '../data/business';
 import { FileDropzone } from '../components/upload/FileDropzone';
 import { uploadDocuments, type UploadResponse } from '../api/documents';
-import { createPaymentOrder, verifyPayment } from '../api/payments';
+import { createPaymentOrder, verifyPayment, type CreateOrderResponse } from '../api/payments';
 import {
   UploadCloud,
   CheckCircle2,
@@ -18,6 +18,7 @@ import {
   CreditCard,
   Loader2,
   AlertCircle,
+  AlertTriangle,
   ExternalLink,
   Search,
 } from 'lucide-react';
@@ -49,6 +50,10 @@ export const UploadPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadResult, setUploadResult] = useState<UploadResponse | null>(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentId, setPaymentId] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [showSandboxModal, setShowSandboxModal] = useState(false);
+  const [pendingOrder, setPendingOrder] = useState<CreateOrderResponse | null>(null);
   const [copied, setCopied] = useState(false);
 
   // Check URL query parameters for preselected service
@@ -139,10 +144,20 @@ export const UploadPage: React.FC = () => {
   const handleRazorpayPayment = async () => {
     if (!uploadResult) return;
     setIsSubmitting(true);
+    setPaymentError(null);
 
     try {
       const order = await createPaymentOrder(uploadResult.trackingId, 50);
+      setPendingOrder(order);
 
+      // If in sandbox simulator mode or Razorpay script missing/blocked
+      if (order.isMock || !window.Razorpay) {
+        setShowSandboxModal(true);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Live / Test Mode Razorpay Checkout
       const options = {
         key: order.key,
         amount: order.amount,
@@ -158,10 +173,19 @@ export const UploadPage: React.FC = () => {
               response.razorpay_signature,
               uploadResult.trackingId
             );
+            setPaymentId(response.razorpay_payment_id);
             setPaymentSuccess(true);
-          } catch (verErr) {
+          } catch (verErr: any) {
             console.error('Payment verification failed:', verErr);
+            setPaymentError(language === 'mr' ? 'पेमेंट पडताळणी अयशस्वी. कृपया काउंटरवर संपर्क करा.' : 'Payment verification failed. Please contact the counter with your transaction ID.');
+          } finally {
+            setIsSubmitting(false);
           }
+        },
+        modal: {
+          ondismiss: function () {
+            setIsSubmitting(false);
+          },
         },
         prefill: {
           name: citizenName,
@@ -172,16 +196,44 @@ export const UploadPage: React.FC = () => {
         },
       };
 
-      if (window.Razorpay) {
-        const rzp = new window.Razorpay(options);
-        rzp.open();
-      } else {
-        alert('Payment gateway loaded in sandbox mode.');
-        setPaymentSuccess(true);
-      }
-    } catch (err) {
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (failResp: any) {
+        setIsSubmitting(false);
+        setPaymentError(failResp?.error?.description || (language === 'mr' ? 'पेमेंट अयशस्वी झाले किंवा रद्द केले गेले.' : 'Payment was cancelled or unsuccessful.'));
+      });
+      rzp.open();
+    } catch (err: any) {
       console.error('Payment initiation failed:', err);
-      alert('Could not start Razorpay payment. You can pay directly at the shop counter.');
+      setPaymentError(language === 'mr' ? 'पेमेंट सुरू होऊ शकले नाही. आपण काउंटरवर रोख रक्कम देऊ शकता.' : 'Could not start online payment. You can pay cash at the counter.');
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSimulatePayment = async (success: boolean) => {
+    if (!uploadResult || !pendingOrder) return;
+    setIsSubmitting(true);
+
+    if (!success) {
+      setShowSandboxModal(false);
+      setIsSubmitting(false);
+      setPaymentError(language === 'mr' ? 'पेमेंट अयशस्वी झाले (सिम्युलेशन).' : 'Payment failed (Simulated decline). You can retry or pay cash at counter.');
+      return;
+    }
+
+    try {
+      const mockPayId = `pay_sim_${Date.now()}`;
+      await verifyPayment(
+        pendingOrder.orderId,
+        mockPayId,
+        'simulated_signature',
+        uploadResult.trackingId
+      );
+      setPaymentId(mockPayId);
+      setPaymentSuccess(true);
+      setShowSandboxModal(false);
+    } catch (err: any) {
+      console.error('Simulated payment verification failed:', err);
+      setPaymentError(language === 'mr' ? 'पेमेंट नोंदणी करताना त्रुटी आली.' : 'Failed to record simulated payment.');
     } finally {
       setIsSubmitting(false);
     }
@@ -501,19 +553,35 @@ export const UploadPage: React.FC = () => {
 
               {/* Online Payment button (Optional/Recommended) */}
               {!paymentSuccess ? (
-                <button
-                  type="button"
-                  onClick={handleRazorpayPayment}
-                  disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer text-xs"
-                >
-                  <CreditCard className="w-4 h-4 text-[#0B3830]" />
-                  <span>{language === 'mr' ? 'ऑनलाईन फी भरा (₹५० - Razorpay)' : 'Pay Service Fee Online (₹50 via Razorpay)'}</span>
-                </button>
+                <div className="space-y-2">
+                  <button
+                    type="button"
+                    onClick={handleRazorpayPayment}
+                    disabled={isSubmitting}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-[#0B3830] hover:bg-[#124b41] shadow-md shadow-[#0B3830]/20 active:scale-[0.99] transition-all cursor-pointer text-xs"
+                  >
+                    <CreditCard className="w-4 h-4 text-emerald-400" />
+                    <span>{language === 'mr' ? 'ऑनलाईन फी भरा (₹५० - Razorpay)' : 'Pay Service Fee Online (₹50 via Razorpay)'}</span>
+                  </button>
+                  {paymentError && (
+                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-xs font-medium flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 flex-shrink-0 text-rose-600" />
+                      <span>{paymentError}</span>
+                    </div>
+                  )}
+                </div>
               ) : (
-                <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 text-xs font-bold flex items-center justify-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Payment Confirmed via Razorpay! Official receipt generated.</span>
+                <div className="p-4 bg-emerald-50 text-emerald-950 rounded-2xl border border-emerald-300 text-xs font-bold flex flex-col gap-1.5 shadow-2xs">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>{language === 'mr' ? 'Razorpay द्वारे पेमेंट यशस्वी झाले! (₹५०)' : 'Payment Confirmed via Razorpay! (₹50.00)'}</span>
+                  </div>
+                  {paymentId && (
+                    <div className="pl-6 text-[11px] font-mono text-emerald-700 font-normal">
+                      <span>Receipt ID: </span>
+                      <span className="font-bold">{paymentId}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -526,6 +594,83 @@ export const UploadPage: React.FC = () => {
                 <span>{language === 'mr' ? 'स्थिती तपासा' : 'View Real-time Tracking Status'}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Razorpay Test Sandbox Simulator Modal */}
+        {showSandboxModal && pendingOrder && (
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+              {/* Sandbox Header */}
+              <div className="bg-[#0B3830] text-white p-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-emerald-400">
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm">Razorpay Sandbox Simulator</h3>
+                    <p className="text-[11px] text-emerald-300 font-medium">Gateway Demo &amp; Test Environment</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowSandboxModal(false)}
+                  className="text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-5 space-y-4">
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold">Sandbox Mode:</span> Live Razorpay merchant keys are not configured in <code className="bg-amber-100 px-1 py-0.5 rounded text-[11px]">.env</code>. You can test the end-to-end payment flow instantly using the simulation buttons below.
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">
+                  <div className="flex justify-between text-slate-600">
+                    <span>Payee:</span>
+                    <span className="font-bold text-slate-900">{businessConfig.name}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-600">
+                    <span>Tracking ID:</span>
+                    <span className="font-mono font-bold text-[#0B3830]">{uploadResult?.trackingId}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-600">
+                    <span>Customer:</span>
+                    <span className="font-bold text-slate-900">{citizenName} ({citizenPhone})</span>
+                  </div>
+                  <div className="pt-2 border-t border-slate-200 flex justify-between items-center">
+                    <span className="font-bold text-slate-800">Total Fee:</span>
+                    <span className="text-lg font-black text-slate-900 font-mono">₹50.00</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2 pt-2">
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => handleSimulatePayment(true)}
+                    className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Simulate Successful Payment (Instant Confirm)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => handleSimulatePayment(false)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  >
+                    <AlertTriangle className="w-4 h-4 text-rose-600" />
+                    <span>Simulate Failed Payment (Card Declined)</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -15,7 +15,8 @@ import {
   Loader2,
   ArrowLeft,
   Calendar,
-  UploadCloud
+  UploadCloud,
+  CreditCard
 } from 'lucide-react';
 
 export const TrackStatusPage: React.FC = () => {
@@ -181,6 +182,21 @@ export const TrackStatusPage: React.FC = () => {
                   <Calendar className="w-3.5 h-3.5 text-slate-400" />
                   {new Date(data.uploadedAt).toLocaleString()}
                 </span>
+              </div>
+
+              <div className="flex items-center justify-between py-2 border-b border-slate-50">
+                <span className="text-xs font-medium text-slate-500">{language === 'mr' ? 'शुल्क / पेमेंट' : 'Service Fee'}</span>
+                {data.paymentStatus === 'paid' ? (
+                  <span className="text-xs font-bold text-emerald-700 flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>{language === 'mr' ? 'ऑनलाईन भरले (₹५०)' : 'Paid Online (₹50)'}</span>
+                  </span>
+                ) : (
+                  <span className="text-xs font-medium text-slate-700 flex items-center gap-1">
+                    <CreditCard className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{language === 'mr' ? 'काउंटरवर रोख भरा' : 'Pay at Counter'}</span>
+                  </span>
+                )}
               </div>
 
               {data.status !== 'expired' && (
