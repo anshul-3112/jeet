@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAdminPayments, type PaymentItem } from '../../api/admin';
+import { getPaymentConfig, type PaymentConfigResponse } from '../../api/payments';
 import {
   CreditCard,
   IndianRupee,
@@ -10,10 +11,13 @@ import {
   RefreshCw,
   Search,
   TrendingUp,
+  AlertTriangle,
+  ShieldCheck,
 } from 'lucide-react';
 
 export const AdminPaymentsPage: React.FC = () => {
   const [payments, setPayments] = useState<PaymentItem[]>([]);
+  const [gatewayConfig, setGatewayConfig] = useState<PaymentConfigResponse | null>(null);
   const [summary, setSummary] = useState({
     totalCollected: 0,
     todayCollected: 0,
@@ -26,9 +30,13 @@ export const AdminPaymentsPage: React.FC = () => {
   const fetchPayments = async () => {
     setLoading(true);
     try {
-      const res = await getAdminPayments();
+      const [res, config] = await Promise.all([
+        getAdminPayments(),
+        getPaymentConfig().catch(() => null),
+      ]);
       setPayments(res.payments || []);
       setSummary(res.summary);
+      if (config) setGatewayConfig(config);
     } catch (err) {
       console.error('Failed to fetch payments:', err);
     } finally {
@@ -73,6 +81,48 @@ export const AdminPaymentsPage: React.FC = () => {
           <span>Refresh</span>
         </button>
       </div>
+
+      {/* Gateway Mode Indicator */}
+      {gatewayConfig && (
+        <div
+          className={`p-4 rounded-2xl border text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs ${
+            gatewayConfig.isLive
+              ? 'bg-emerald-50/80 border-emerald-200 text-emerald-950'
+              : 'bg-amber-50/80 border-amber-200 text-amber-950'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                gatewayConfig.isLive ? 'bg-emerald-600 text-white' : 'bg-amber-600 text-white'
+              }`}
+            >
+              {gatewayConfig.isLive ? <ShieldCheck className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">
+                  {gatewayConfig.isLive ? 'Razorpay Live / Test Gateway Connected' : 'Razorpay Sandbox Simulator Active'}
+                </span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                    gatewayConfig.isLive
+                      ? 'bg-emerald-200 text-emerald-800'
+                      : 'bg-amber-200 text-amber-800'
+                  }`}
+                >
+                  {gatewayConfig.isLive ? 'LIVE CREDENTIALS' : 'SANDBOX / TEST'}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-600 mt-0.5">
+                {gatewayConfig.isLive
+                  ? `Authenticated with Razorpay Key ID: ${gatewayConfig.key.substring(0, 14)}...`
+                  : 'Citizens and admins can test payments with the built-in simulator. To accept real online UPI/Card payments, add your live RAZORPAY_KEY_ID & RAZORPAY_KEY_SECRET in backend/.env.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Revenue Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
