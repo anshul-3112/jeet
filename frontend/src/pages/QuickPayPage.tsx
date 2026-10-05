@@ -32,6 +32,28 @@ const PRESET_AMOUNTS = [
   { value: 500, label: 'Licence / Business' },
 ];
 
+function numberToWords(num: number): string {
+  const a = [
+    '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+    'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+  ];
+  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  const n = Math.floor(num);
+  if (n === 0) return 'Zero Rupees Only';
+
+  function convert(val: number): string {
+    if (val < 20) return a[val];
+    if (val < 100) return b[Math.floor(val / 10)] + (val % 10 !== 0 ? ' ' + a[val % 10] : '');
+    if (val < 1000) return a[Math.floor(val / 100)] + ' Hundred' + (val % 100 !== 0 ? ' ' + convert(val % 100) : '');
+    if (val < 100000) return convert(Math.floor(val / 1000)) + ' Thousand' + (val % 1000 !== 0 ? ' ' + convert(val % 1000) : '');
+    if (val < 10000000) return convert(Math.floor(val / 100000)) + ' Lakh' + (val % 100000 !== 0 ? ' ' + convert(val % 100000) : '');
+    return val.toString();
+  }
+
+  return convert(n) + ' Rupees Only';
+}
+
 export const QuickPayPage: React.FC = () => {
   const { language } = useLanguage();
   const [searchParams] = useSearchParams();
@@ -89,10 +111,6 @@ export const QuickPayPage: React.FC = () => {
       return;
     }
 
-    if (!customerPhone.trim() && !customerName.trim()) {
-      // Gentle validation - at least one identifier is helpful
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -104,9 +122,8 @@ export const QuickPayPage: React.FC = () => {
         purpose: purpose.trim() || undefined,
       });
 
-      // If Razorpay SDK not available or returned mock order
+      // If in mock mode or Razorpay SDK not available
       if (!window.Razorpay || order.isMock) {
-        // Fallback simulation
         const mockPayId = `pay_sim_${Date.now()}`;
         await verifyPayment(order.orderId, mockPayId, 'sim_sig', trackingId.trim());
         setReceiptData({
@@ -116,7 +133,7 @@ export const QuickPayPage: React.FC = () => {
           customerName: customerName.trim() || 'Citizen',
           customerPhone: customerPhone.trim(),
           trackingId: trackingId.trim().toUpperCase(),
-          purpose: purpose.trim(),
+          purpose: purpose.trim() || 'Documentation & CSC Service',
           date: new Date().toLocaleString(),
         });
         setPaymentSuccess(true);
@@ -147,7 +164,7 @@ export const QuickPayPage: React.FC = () => {
               customerName: customerName.trim() || 'Citizen',
               customerPhone: customerPhone.trim(),
               trackingId: trackingId.trim().toUpperCase(),
-              purpose: purpose.trim(),
+              purpose: purpose.trim() || 'Documentation & CSC Service',
               date: new Date().toLocaleString(),
             });
             setPaymentSuccess(true);
@@ -206,39 +223,43 @@ export const QuickPayPage: React.FC = () => {
     ? encodeURIComponent(
         `*Jeet Digital Seva Kendra - Payment Receipt*\n` +
           `--------------------------------\n` +
-          `• *Amount:* ₹${receiptData.amount.toFixed(2)}\n` +
-          `• *Payment ID:* ${receiptData.paymentId}\n` +
-          `• *Customer:* ${receiptData.customerName}\n` +
-          (receiptData.trackingId ? `• *Tracking ID:* ${receiptData.trackingId}\n` : '') +
-          `• *Purpose:* ${receiptData.purpose}\n` +
-          `• *Date:* ${receiptData.date}\n` +
+          `• Receipt No: ${receiptData.paymentId}\n` +
+          `• Total Paid: ₹${receiptData.amount.toFixed(2)}\n` +
+          `• Customer: ${receiptData.customerName}\n` +
+          (receiptData.customerPhone ? `• Phone: ${receiptData.customerPhone}\n` : '') +
+          (receiptData.trackingId ? `• Tracking ID: ${receiptData.trackingId}\n` : '') +
+          `• Service: ${receiptData.purpose}\n` +
+          `• Date: ${receiptData.date}\n` +
           `--------------------------------\n` +
-          `Paid safely via Razorpay.`
+          `Status: PAID (Razorpay Online)\n` +
+          `Thank you for choosing Jeet Digital!`
       )
     : '';
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-slate-50/70">
+    <div className="min-h-screen py-8 sm:py-10 px-4 sm:px-6 lg:px-8 bg-slate-50/70 print:bg-white print:py-0 print:px-0 print-receipt-wrapper">
       <div className="max-w-2xl mx-auto">
-        {/* Top Back Link */}
-        <div className="mb-6 flex items-center justify-between">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#0B3830] transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>{language === 'mr' ? 'मुख्यपृष्ठावर परत जा' : 'Back to Home'}</span>
-          </Link>
+        {/* Navigation & Status Header (Screen Only) */}
+        {!paymentSuccess ? (
+          <div className="no-print mb-6 flex items-center justify-between">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#0B3830] transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{language === 'mr' ? 'मुख्यपृष्ठावर परत जा' : 'Back to Home'}</span>
+            </Link>
 
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-              <span>{gatewayLive ? 'Razorpay Gateway Live' : 'Razorpay Gateway Active'}</span>
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                <span>{gatewayLive ? 'Razorpay Gateway Live' : 'Razorpay Gateway Active'}</span>
+              </span>
+            </div>
           </div>
-        </div>
+        ) : null}
 
-        {/* Payment Form OR Receipt View */}
+        {/* PAYMENT FORM (Shown before payment) */}
         {!paymentSuccess ? (
           <div className="bg-white rounded-3xl shadow-xl border border-slate-200/90 overflow-hidden">
             {/* Header Banner */}
@@ -429,110 +450,256 @@ export const QuickPayPage: React.FC = () => {
             </form>
           </div>
         ) : (
-          /* Payment Success & Receipt View */
+          /* ========================================================================= */
+          /* MINIMAL & CLEAN RECEIPT WITH NORMAL STRUCTURED TABLE                     */
+          /* ========================================================================= */
           receiptData && (
-            <div className="bg-white rounded-3xl shadow-xl border border-emerald-300 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-              {/* Receipt Header Banner */}
-              <div className="bg-emerald-700 text-white p-6 sm:p-8 text-center relative">
-                <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3 shadow-inner">
-                  <CheckCircle2 className="w-8 h-8 text-white" />
-                </div>
-                <h2 className="text-2xl font-black">
-                  {language === 'mr' ? 'पेमेंट यशस्वी झाले!' : 'Payment Successful!'}
-                </h2>
-                <p className="text-xs text-emerald-100 mt-1 font-medium">
-                  {language === 'mr'
-                    ? 'जीत डिजिटल सेवा केंद्रात तुमचे पेमेंट जमा झाले आहे.'
-                    : 'Your payment was successfully received at Jeet Digital Seva Kendra.'}
-                </p>
-                <div className="mt-4 inline-block bg-white text-emerald-950 font-black px-6 py-2 rounded-full font-mono text-2xl shadow-md">
-                  ₹{receiptData.amount.toFixed(2)}
-                </div>
-              </div>
+            <div className="space-y-4">
+              {/* Screen-Only Control Toolbar (Hidden during print) */}
+              <div className="no-print bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+                <Link
+                  to="/"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#0B3830] transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>{language === 'mr' ? 'होमपेज' : 'Home'}</span>
+                </Link>
 
-              {/* Receipt Body */}
-              <div className="p-6 sm:p-8 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-                  <span className="text-slate-500 font-semibold">Payment ID:</span>
-                  <span className="font-mono font-bold text-slate-900">{receiptData.paymentId}</span>
-                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0B3830] hover:bg-[#124b41] text-white text-xs font-bold rounded-xl shadow-sm transition-all cursor-pointer"
+                  >
+                    <Printer className="w-3.5 h-3.5" />
+                    <span>{language === 'mr' ? 'पावती प्रिंट करा (PDF)' : 'Print / Save PDF'}</span>
+                  </button>
 
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-                  <span className="text-slate-500 font-semibold">Order ID:</span>
-                  <span className="font-mono text-slate-600">{receiptData.orderId}</span>
-                </div>
-
-                {receiptData.trackingId && (
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-                    <span className="text-slate-500 font-semibold">Tracking Code:</span>
-                    <span className="font-mono font-black text-[#0B3830] text-sm">
-                      {receiptData.trackingId}
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-                  <span className="text-slate-500 font-semibold">Customer:</span>
-                  <span className="font-bold text-slate-900">
-                    {receiptData.customerName} {receiptData.customerPhone ? `(${receiptData.customerPhone})` : ''}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-                  <span className="text-slate-500 font-semibold">Service / Purpose:</span>
-                  <span className="font-bold text-slate-800">{receiptData.purpose}</span>
-                </div>
-
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-                  <span className="text-slate-500 font-semibold">Date &amp; Time:</span>
-                  <span className="text-slate-700">{receiptData.date}</span>
-                </div>
-
-                {/* Actions */}
-                <div className="pt-4 space-y-2.5">
                   <a
                     href={`https://wa.me/${businessConfig.whatsappNumber}?text=${whatsappReceiptText}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-sm cursor-pointer text-xs"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-sm"
                   >
-                    <MessageCircle className="w-4 h-4 fill-white" />
-                    <span>{language === 'mr' ? 'दुकानदाराला पावती पाठवा (WhatsApp)' : 'Share Receipt with Yash Bhai (WhatsApp)'}</span>
+                    <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                    <span>{language === 'mr' ? 'व्हाट्सॲपवर पाठवा' : 'Share WhatsApp'}</span>
                   </a>
 
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => window.print()}
-                      className="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <Printer className="w-3.5 h-3.5 text-slate-500" />
-                      <span>{language === 'mr' ? 'प्रिंट काढा' : 'Print Receipt'}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPaymentSuccess(false);
-                        setReceiptData(null);
-                        setAmountStr('50');
-                      }}
-                      className="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors cursor-pointer"
-                    >
-                      <span>{language === 'mr' ? 'दुसरे पेमेंट करा' : 'Make Another Payment'}</span>
-                    </button>
-                  </div>
-
-                  {receiptData.trackingId && (
-                    <Link
-                      to={`/track/${receiptData.trackingId}`}
-                      className="w-full py-2.5 text-center block text-xs font-bold text-[#0B3830] hover:underline"
-                    >
-                      {language === 'mr' ? '→ ट्रॅकिंग स्थिती तपासा' : '→ View Live Document Tracking Status'}
-                    </Link>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPaymentSuccess(false);
+                      setReceiptData(null);
+                      setAmountStr('50');
+                    }}
+                    className="inline-flex items-center gap-1 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                  >
+                    <span>{language === 'mr' ? '+ नवीन पेमेंट' : '+ New Payment'}</span>
+                  </button>
                 </div>
               </div>
+
+              {/* The Actual Clean Receipt Card */}
+              <div className="print-clean-receipt bg-white rounded-2xl border border-slate-300 p-6 sm:p-8 shadow-sm text-slate-800">
+                {/* 1. Header: Business Brand & Receipt Heading */}
+                <div className="flex flex-col sm:flex-row justify-between items-start pb-5 border-b border-slate-200 gap-4">
+                  {/* Left: Center Info */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-lg tracking-wider flex-shrink-0">
+                      JD
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight uppercase">
+                          Jeet Digital Seva Kendra
+                        </h2>
+                      </div>
+                      <p className="text-[11px] font-semibold text-emerald-800">
+                        {language === 'mr'
+                          ? 'आपले सरकार ई-सेवा केंद्र • अधिकृत नागरिक सेवा'
+                          : 'Aaple Sarkar E-Governance Seva Kendra'}
+                      </p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        27A, Ayodhya Nagar Square, Nagpur - 440024
+                      </p>
+                      <p className="text-[11px] text-slate-500">
+                        Ph: +91 80552 03555 | Email: digitalsevangp@gmail.com
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right: Receipt Meta & Status */}
+                  <div className="text-left sm:text-right flex flex-col sm:items-end">
+                    <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 mb-1.5">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      <span>PAID / यशस्वी</span>
+                    </div>
+                    <div className="text-xs font-black tracking-wider text-slate-900 uppercase">
+                      Payment Receipt / पावती
+                    </div>
+                    <div className="text-[11px] font-mono text-slate-600 mt-0.5">
+                      Receipt No: <span className="font-bold text-slate-900">{receiptData.paymentId}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500">
+                      Date: <span className="font-medium text-slate-800">{receiptData.date}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Customer & Payment Details Block */}
+                <div className="my-5 p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/90 text-xs">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                        {language === 'mr' ? 'ग्राहकाचे नाव' : 'Billed To (Customer)'}
+                      </span>
+                      <span className="font-bold text-slate-900 break-words">
+                        {receiptData.customerName || 'Walk-in Citizen'}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                        {language === 'mr' ? 'मोबाईल नंबर' : 'Contact Phone'}
+                      </span>
+                      <span className="font-mono font-medium text-slate-800">
+                        {receiptData.customerPhone ? `+91 ${receiptData.customerPhone}` : 'N/A'}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                        {language === 'mr' ? 'ट्रॅकिंग कोड' : 'Tracking ID'}
+                      </span>
+                      <span className="font-mono font-bold text-[#0B3830]">
+                        {receiptData.trackingId || 'DIRECT-PAY'}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                        {language === 'mr' ? 'पेमेंट पद्धत' : 'Payment Mode'}
+                      </span>
+                      <span className="font-medium text-slate-800">
+                        Razorpay Online (UPI/Card)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. NORMAL CLEAN TABLE */}
+                <div className="overflow-x-auto mb-4 border border-slate-200 rounded-xl">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                        <th className="py-2.5 px-3.5 text-center w-12 border-r border-slate-200">#</th>
+                        <th className="py-2.5 px-3.5 border-r border-slate-200">
+                          {language === 'mr' ? 'सेवेचा तपशील / Description' : 'Service / Particulars'}
+                        </th>
+                        <th className="py-2.5 px-3.5 text-center border-r border-slate-200 w-32">
+                          {language === 'mr' ? 'संदर्भ कोड' : 'Reference Code'}
+                        </th>
+                        <th className="py-2.5 px-3.5 text-right w-32">
+                          {language === 'mr' ? 'रक्कम (₹)' : 'Amount (INR)'}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                      <tr>
+                        <td className="py-3.5 px-3.5 text-center font-mono text-slate-500 border-r border-slate-200">
+                          1
+                        </td>
+                        <td className="py-3.5 px-3.5 border-r border-slate-200">
+                          <div className="font-bold text-slate-900 text-xs sm:text-sm">
+                            {receiptData.purpose || 'Documentation & CSC Service'}
+                          </div>
+                          <div className="text-[11px] text-slate-500 mt-0.5">
+                            Government portal submission, documentation, form processing &amp; seva fees
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-3.5 text-center font-mono text-slate-700 border-r border-slate-200 text-xs">
+                          {receiptData.trackingId || receiptData.orderId.substring(0, 14)}
+                        </td>
+                        <td className="py-3.5 px-3.5 text-right font-mono font-bold text-slate-900 text-xs sm:text-sm">
+                          ₹{receiptData.amount.toFixed(2)}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot className="border-t-2 border-slate-200 bg-slate-50/70 text-xs">
+                      <tr>
+                        <td colSpan={3} className="py-2 px-3.5 text-right font-semibold text-slate-600 border-r border-slate-200">
+                          Subtotal / उपएकूण:
+                        </td>
+                        <td className="py-2 px-3.5 text-right font-mono font-semibold text-slate-800">
+                          ₹{receiptData.amount.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={3} className="py-1.5 px-3.5 text-right text-slate-500 border-r border-slate-200 text-[11px]">
+                          Gateway Charges &amp; Applicable Taxes:
+                        </td>
+                        <td className="py-1.5 px-3.5 text-right font-mono text-slate-500 text-[11px]">
+                          ₹0.00 (Included)
+                        </td>
+                      </tr>
+                      <tr className="bg-slate-100/90 font-bold border-t border-slate-200 text-xs sm:text-sm">
+                        <td colSpan={3} className="py-2.5 px-3.5 text-right text-slate-900 border-r border-slate-200 font-extrabold">
+                          Total Amount Paid / एकूण भरलेली रक्कम:
+                        </td>
+                        <td className="py-2.5 px-3.5 text-right font-mono font-black text-emerald-800 text-sm sm:text-base">
+                          ₹{receiptData.amount.toFixed(2)}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                {/* 4. Amount in Words & Order ID */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs text-slate-600 pt-1 pb-4 border-b border-slate-200 gap-1.5">
+                  <div>
+                    <span className="font-semibold text-slate-700">Amount in Words: </span>
+                    <span className="italic text-slate-900 font-medium">
+                      {numberToWords(receiptData.amount)}
+                    </span>
+                  </div>
+                  <div className="font-mono text-[11px] text-slate-400">
+                    Order ID: {receiptData.orderId}
+                  </div>
+                </div>
+
+                {/* 5. Footer Authenticity Seal & Signature */}
+                <div className="pt-4 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 text-xs text-slate-500">
+                  <div>
+                    <p className="font-semibold text-slate-700">Jeet Digital E-Governance Seva Kendra</p>
+                    <p className="text-[11px] text-slate-500">
+                      This is a computer-generated receipt valid for all service confirmations.
+                    </p>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      For any inquiries or follow-ups, quote Payment ID: <span className="font-mono font-bold text-slate-600">{receiptData.paymentId}</span>
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 flex-shrink-0">
+                    <ShieldCheck className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+                    <div className="text-[11px] leading-tight">
+                      <div className="font-bold">✓ VERIFIED BY RAZORPAY</div>
+                      <div className="text-[10px] text-emerald-700 font-mono">100% Secure Transaction</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Screen Only Bottom Navigation */}
+              {receiptData.trackingId && (
+                <div className="no-print text-center pt-2">
+                  <Link
+                    to={`/track/${receiptData.trackingId}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0B3830] hover:underline"
+                  >
+                    <span>{language === 'mr' ? '→ अर्जाची थेट स्थिती तपासा' : '→ View Live Document Tracking Status'}</span>
+                  </Link>
+                </div>
+              )}
             </div>
           )
         )}

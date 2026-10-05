@@ -204,3 +204,57 @@
 
 /* UI update 14 */
 .ui-shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+
+/* Print optimization for Receipts and Invoices */
+@media print {
+  header,
+  footer,
+  nav,
+  .no-print,
+  .mobile-contact-bar,
+  aside,
+  [data-mobile-bar] {
+    display: none !important;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-receipt-wrapper {
+    padding: 0 !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-shadow: none !important;
+  }
+
+  .print-clean-receipt {
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    padding: 20px !important;
+    page-break-inside: avoid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  @page {
+    size: auto;
+    margin: 10mm 15mm;
+  }
+}
+
