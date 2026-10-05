@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, MessageCircle, MapPin, Menu, X, UploadCloud } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Menu, X, UploadCloud, CreditCard } from 'lucide-react';
 import { businessConfig } from '../../data/business';
 import { LanguageToggle } from '../common/LanguageToggle';
 import { useLanguage } from '../../context/LanguageContext';
@@ -14,6 +14,7 @@ export const Header: React.FC = () => {
     { name: t.nav.home, path: '/' },
     { name: t.nav.services, path: '/services' },
     { name: language === 'mr' ? 'कागदपत्रे अपलोड' : 'Upload Docs', path: '/upload', highlight: true },
+    { name: language === 'mr' ? 'ऑनलाईन फी भरा' : 'Pay Online', path: '/pay', isPay: true },
     { name: language === 'mr' ? 'स्थिती तपासा' : 'Track Status', path: '/track' },
     { name: t.nav.howItWorks, path: '/how-it-works' },
     { name: t.nav.about, path: '/about' },
@@ -98,6 +99,8 @@ export const Header: React.FC = () => {
                   className={`px-3.5 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-150 ${
                     isActive(link.path)
                       ? 'text-[#0B3830] bg-emerald-50 border border-emerald-200 font-bold shadow-2xs'
+                      : (link as any).isPay
+                      ? 'text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 font-bold'
                       : link.highlight
                       ? 'text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50/60 font-bold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
@@ -109,7 +112,16 @@ export const Header: React.FC = () => {
             </nav>
 
             {/* Desktop CTAs */}
-            <div className="hidden sm:flex items-center space-x-3">
+            <div className="hidden sm:flex items-center space-x-2.5">
+              <Link
+                to="/pay"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-amber-950 bg-amber-100 hover:bg-amber-200/80 border border-amber-300 transition-all cursor-pointer shadow-2xs"
+                title="Pay Service Fee Online via Razorpay"
+              >
+                <CreditCard className="w-3.5 h-3.5 text-amber-800" />
+                <span>{language === 'mr' ? 'ऑनलाईन फी' : 'Quick Pay'}</span>
+              </Link>
+
               <a
                 href={`https://wa.me/${businessConfig.whatsappNumber}?text=${encodeURIComponent('Hi Yash, I need assistance with e-governance / documentation services.')}`}
                 target="_blank"
@@ -122,7 +134,7 @@ export const Header: React.FC = () => {
 
               <Link
                 to="/upload"
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold text-white bg-[#0B3830] hover:bg-[#134E43] shadow-sm hover:shadow active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white bg-[#0B3830] hover:bg-[#134E43] shadow-sm hover:shadow active:scale-95 transition-all"
               >
                 <UploadCloud className="w-3.5 h-3.5" />
                 <span>{language === 'mr' ? 'कागदपत्रे पाठवा' : 'Upload Files'}</span>
@@ -168,6 +180,15 @@ export const Header: React.FC = () => {
           </div>
 
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+            <Link
+              to="/pay"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-2.5 px-4 bg-amber-50 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-2xs"
+            >
+              <CreditCard className="w-4 h-4 text-amber-700" />
+              <span>{language === 'mr' ? 'ऑनलाईन फी भरा (Razorpay)' : 'Pay Online (Razorpay)'}</span>
+            </Link>
+
             <Link
               to="/upload"
               onClick={() => setMobileMenuOpen(false)}

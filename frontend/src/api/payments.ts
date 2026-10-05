@@ -26,11 +26,29 @@ export interface VerifyPaymentResponse {
   paymentId: string;
 }
 
-export async function createPaymentOrder(trackingId: string, amount: number): Promise<CreateOrderResponse> {
-  const response = await apiClient.post<CreateOrderResponse>('/payments/create-order', {
-    trackingId,
-    amount,
-  });
+export interface CreateOrderParams {
+  trackingId?: string;
+  amount: number;
+  customerName?: string;
+  customerPhone?: string;
+  purpose?: string;
+}
+
+export async function createPaymentOrder(
+  paramsOrTrackingId?: string | CreateOrderParams,
+  amountParam?: number
+): Promise<CreateOrderResponse> {
+  let payload: CreateOrderParams;
+  if (typeof paramsOrTrackingId === 'string' || paramsOrTrackingId === undefined) {
+    payload = {
+      trackingId: paramsOrTrackingId,
+      amount: amountParam ?? 50,
+    };
+  } else {
+    payload = paramsOrTrackingId;
+  }
+
+  const response = await apiClient.post<CreateOrderResponse>('/payments/create-order', payload);
   return response.data;
 }
 

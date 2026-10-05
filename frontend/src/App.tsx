@@ -20,6 +20,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { UploadPage } from './pages/UploadPage';
 import { TrackStatusPage } from './pages/TrackStatusPage';
+import { QuickPayPage } from './pages/QuickPayPage';
 
 // Admin Imports
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
@@ -70,6 +71,7 @@ export const App: React.FC = () => {
               <Route path="/thank-you" element={<ThankYouPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/upload" element={<UploadPage />} />
+              <Route path="/pay" element={<QuickPayPage />} />
               <Route path="/track" element={<TrackStatusPage />} />
               <Route path="/track/:trackingId" element={<TrackStatusPage />} />
               <Route path="*" element={<NotFoundPage />} />

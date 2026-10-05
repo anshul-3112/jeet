@@ -54,20 +54,28 @@ router.get('/config', (_req: Request, res: Response) => {
 // POST /api/payments/create-order
 router.post('/create-order', async (req: Request, res: Response) => {
   try {
-    const { trackingId, amount } = req.body; // amount in INR (e.g. 50)
-    if (!amount || amount <= 0) {
-      return res.status(400).json({ error: 'Valid amount is required.' });
+    const { trackingId, amount, customerName, customerPhone, purpose } = req.body;
+    const parsedAmount = parseFloat(amount);
+
+    if (isNaN(parsedAmount) || parsedAmount < 1) {
+      return res.status(400).json({ error: 'Valid payment amount is required (minimum ₹1).' });
     }
 
+    if (parsedAmount > 500000) {
+      return res.status(400).json({ error: 'Amount exceeds maximum permitted limit.' });
+    }
+
+    const cleanTrackingId = trackingId ? String(trackingId).trim().toUpperCase() : null;
+
     let documentId: string | null = null;
-    if (trackingId) {
-      const found = await db.select().from(documents).where(eq(documents.trackingId, trackingId));
+    if (cleanTrackingId) {
+      const found = await db.select().from(documents).where(eq(documents.trackingId, cleanTrackingId));
       if (found.length > 0) {
         documentId = found[0].id;
       }
     }
 
-    const amountPaise = Math.round(Number(amount) * 100);
+    const amountPaise = Math.round(parsedAmount * 100);
 
     let orderId: string;
     let isMock = false;
@@ -77,18 +85,21 @@ router.post('/create-order', async (req: Request, res: Response) => {
         const order = await razorpayInstance.orders.create({
           amount: amountPaise,
           currency: 'INR',
-          receipt: (trackingId || `rcpt_${Date.now()}`).substring(0, 40),
-          notes: { trackingId: trackingId || '' },
+          receipt: (cleanTrackingId || `rcpt_${Date.now()}`).substring(0, 40),
+          notes: {
+            trackingId: cleanTrackingId || '',
+            customerName: String(customerName || '').substring(0, 50),
+            phone: String(customerPhone || '').substring(0, 20),
+            purpose: String(purpose || 'Service Fee').substring(0, 50),
+          },
         });
         orderId = order.id;
       } catch (rzpErr) {
-        // If live call fails (e.g. test key credentials mismatch), fall back cleanly
         console.warn('Razorpay live order creation error, falling back to sandbox simulator:', rzpErr);
         orderId = `order_mock_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
         isMock = true;
       }
     } else {
-      // Instant sandbox order generation without slow 40s network timeouts
       orderId = `order_mock_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
       isMock = true;
     }
@@ -116,7 +127,7 @@ router.post('/create-order', async (req: Request, res: Response) => {
 // POST /api/payments/verify
 router.post('/verify', async (req: Request, res: Response) => {
   try {
-    const { order_id, payment_id, signature } = req.body;
+    const { order_id, payment_id, signature, trackingId } = req.body;
 
     if (!order_id || !payment_id) {
       return res.status(400).json({ error: 'order_id and payment_id are required.' });
@@ -162,9 +173,25 @@ router.post('/verify', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid payment signature.' });
     }
 
+    // Associate documentId if previously unlinked and trackingId provided
+    const updatePayload: any = {
+      status: 'paid',
+      razorpayPaymentId: payment_id,
+    };
+
+    if (trackingId && !existingPayments[0].documentId) {
+      const found = await db
+        .select()
+        .from(documents)
+        .where(eq(documents.trackingId, String(trackingId).trim().toUpperCase()));
+      if (found.length > 0) {
+        updatePayload.documentId = found[0].id;
+      }
+    }
+
     await db
       .update(payments)
-      .set({ status: 'paid', razorpayPaymentId: payment_id })
+      .set(updatePayload)
       .where(eq(payments.razorpayOrderId, order_id));
 
     return res.json({
@@ -185,8 +212,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
     const webhookSecret = (process.env.RAZORPAY_WEBHOOK_SECRET || '').trim();
     const signature = req.headers['x-razorpay-signature'] as string;
 
-    if (webhookSecret && signature && !webhookSecret.includes('webhook_secret')) {
-      // Use raw body buffer for authentic HMAC validation
+    if (webhookSecret && signature) {
       const rawPayload = (req as any).rawBody || Buffer.from(JSON.stringify(req.body));
       const expectedSignature = crypto
         .createHmac('sha256', webhookSecret)

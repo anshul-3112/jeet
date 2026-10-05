@@ -189,13 +189,25 @@ export const TrackStatusPage: React.FC = () => {
                 {data.paymentStatus === 'paid' ? (
                   <span className="text-xs font-bold text-emerald-700 flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>{language === 'mr' ? 'ऑनलाईन भरले (₹५०)' : 'Paid Online (₹50)'}</span>
+                    <span>
+                      {language === 'mr'
+                        ? `ऑनलाईन भरले (₹${data.paymentAmount || 50})`
+                        : `Paid Online (₹${data.paymentAmount || 50})`}
+                    </span>
                   </span>
                 ) : (
-                  <span className="text-xs font-medium text-slate-700 flex items-center gap-1">
-                    <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                    <span>{language === 'mr' ? 'काउंटरवर रोख भरा' : 'Pay at Counter'}</span>
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-slate-700 flex items-center gap-1">
+                      <CreditCard className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{language === 'mr' ? 'अद्याप भरलेले नाही' : 'Unpaid'}</span>
+                    </span>
+                    <Link
+                      to={`/pay?trackingId=${data.trackingId}&amount=${data.paymentAmount || 50}`}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-700 hover:bg-emerald-600 text-white transition-colors cursor-pointer"
+                    >
+                      {language === 'mr' ? 'आता भरा →' : 'Pay Now →'}
+                    </Link>
+                  </div>
                 )}
               </div>
 
@@ -209,6 +221,31 @@ export const TrackStatusPage: React.FC = () => {
                 </div>
               )}
             </div>
+
+            {/* Pay Online Callout */}
+            {data.paymentStatus !== 'paid' && data.status !== 'expired' && (
+              <div className="p-4 mb-4 bg-emerald-50/80 border border-emerald-300 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2.5 text-emerald-950">
+                  <CreditCard className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold">
+                      {language === 'mr' ? 'ऑनलाईन सेवा शुल्क भरा' : 'Pay Service Fee Online'}
+                    </p>
+                    <p className="text-[11px] text-emerald-800">
+                      {language === 'mr'
+                        ? 'रक्कम ठरवून Razorpay (UPI, QR, Card) द्वारे थेट भरा'
+                        : 'Enter your custom amount & pay via Razorpay (UPI / QR / Cards)'}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to={`/pay?trackingId=${data.trackingId}&amount=50`}
+                  className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#0B3830] hover:bg-[#124b41] text-white font-bold text-center transition-colors cursor-pointer shadow-sm text-xs"
+                >
+                  {language === 'mr' ? 'फी भरा (Razorpay)' : 'Pay with Razorpay'}
+                </Link>
+              </div>
+            )}
 
             {/* Reassurance banner */}
             <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-2.5 mb-6 text-xs text-slate-600">

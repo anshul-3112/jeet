@@ -55,6 +55,8 @@ export const UploadPage: React.FC = () => {
   const [showSandboxModal, setShowSandboxModal] = useState(false);
   const [pendingOrder, setPendingOrder] = useState<CreateOrderResponse | null>(null);
   const [copied, setCopied] = useState(false);
+  const [customPaymentAmount, setCustomPaymentAmount] = useState<number>(50);
+  const [amountInputStr, setAmountInputStr] = useState<string>('50');
 
   // Check URL query parameters for preselected service
   React.useEffect(() => {
@@ -143,11 +145,22 @@ export const UploadPage: React.FC = () => {
 
   const handleRazorpayPayment = async () => {
     if (!uploadResult) return;
+    const finalAmount = parseFloat(amountInputStr) || customPaymentAmount || 50;
+    if (finalAmount < 1) {
+      setPaymentError(language === 'mr' ? 'किमान पेमेंट रक्कम ₹१ असणे आवश्यक आहे.' : 'Minimum payment amount is ₹1.');
+      return;
+    }
     setIsSubmitting(true);
     setPaymentError(null);
 
     try {
-      const order = await createPaymentOrder(uploadResult.trackingId, 50);
+      const order = await createPaymentOrder({
+        trackingId: uploadResult.trackingId,
+        amount: finalAmount,
+        customerName: citizenName,
+        customerPhone: citizenPhone,
+        purpose: selectedService ? (language === 'mr' ? selectedService.nameMr : selectedService.name) : 'Service Fee',
+      });
       setPendingOrder(order);
 
       // If in sandbox simulator mode or Razorpay script missing/blocked
@@ -163,7 +176,7 @@ export const UploadPage: React.FC = () => {
         amount: order.amount,
         currency: order.currency,
         name: businessConfig.name,
-        description: `Documentation Service Fee (${selectedService?.name || 'Service'})`,
+        description: `Service Fee: ₹${finalAmount} (${selectedService?.name || 'Seva Kendra Service'})`,
         order_id: order.orderId,
         handler: async function (response: any) {
           try {
@@ -551,20 +564,100 @@ export const UploadPage: React.FC = () => {
                 <span>{language === 'mr' ? 'व्हाट्सॲपवर कळवा (तात्काळ प्रिंटिंग)' : 'Alert Yash Bhai on WhatsApp'}</span>
               </a>
 
-              {/* Online Payment button (Optional/Recommended) */}
+              {/* Online Payment Card with Custom Amount Input */}
               {!paymentSuccess ? (
-                <div className="space-y-2">
+                <div className="p-4 bg-white rounded-2xl border border-emerald-200/90 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                      <CreditCard className="w-4 h-4 text-emerald-600" />
+                      <span>{language === 'mr' ? 'ऑनलाईन सेवा शुल्क भरा (Razorpay)' : 'Pay Service Fee Online (Razorpay)'}</span>
+                    </div>
+                    <span className="text-[10px] uppercase font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      {language === 'mr' ? 'सुरक्षित पेमेंट' : 'Instant & Secure'}
+                    </span>
+                  </div>
+
+                  {/* Custom Amount Input */}
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-600 mb-1.5">
+                      {language === 'mr' ? 'पेमेंट रक्कम प्रविष्ट करा (₹):' : 'Enter Amount to Pay (₹):'}
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-800 font-bold text-base">
+                        ₹
+                      </div>
+                      <input
+                        type="number"
+                        min="1"
+                        max="50000"
+                        value={amountInputStr}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setAmountInputStr(val);
+                          const num = parseFloat(val);
+                          if (!isNaN(num) && num > 0) {
+                            setCustomPaymentAmount(num);
+                          }
+                        }}
+                        placeholder="50"
+                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold text-lg focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-all font-mono"
+                      />
+                    </div>
+
+                    {/* Quick Preset Amount Chips */}
+                    <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                      <span className="text-[10px] text-slate-400 font-semibold mr-0.5">
+                        {language === 'mr' ? 'निवडा:' : 'Quick:'}
+                      </span>
+                      {[20, 50, 100, 200, 500].map((amt) => {
+                        const isSelected = parseFloat(amountInputStr) === amt;
+                        return (
+                          <button
+                            key={amt}
+                            type="button"
+                            onClick={() => {
+                              setAmountInputStr(String(amt));
+                              setCustomPaymentAmount(amt);
+                            }}
+                            className={`px-2.5 py-1 text-xs rounded-lg font-bold transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-emerald-700 text-white shadow-2xs'
+                                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/70'
+                            }`}
+                          >
+                            ₹{amt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Payment Button */}
                   <button
                     type="button"
                     onClick={handleRazorpayPayment}
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-white bg-[#0B3830] hover:bg-[#124b41] shadow-md shadow-[#0B3830]/20 active:scale-[0.99] transition-all cursor-pointer text-xs"
+                    disabled={isSubmitting || !parseFloat(amountInputStr) || parseFloat(amountInputStr) < 1}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-white bg-[#0B3830] hover:bg-[#124b41] disabled:opacity-50 shadow-md shadow-[#0B3830]/20 active:scale-[0.99] transition-all cursor-pointer text-xs"
                   >
-                    <CreditCard className="w-4 h-4 text-emerald-400" />
-                    <span>{language === 'mr' ? 'ऑनलाईन फी भरा (₹५० - Razorpay)' : 'Pay Service Fee Online (₹50 via Razorpay)'}</span>
+                    {isSubmitting ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-emerald-400" />
+                    ) : (
+                      <CreditCard className="w-4 h-4 text-emerald-400" />
+                    )}
+                    <span>
+                      {language === 'mr'
+                        ? `₹${amountInputStr || customPaymentAmount || 50} ऑनलाईन भरा (Razorpay)`
+                        : `Pay ₹${amountInputStr || customPaymentAmount || 50} Online via Razorpay`}
+                    </span>
                   </button>
+
+                  <div className="flex items-center justify-center gap-2 text-[10px] text-slate-500 font-medium">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>UPI, Google Pay, PhonePe, Paytm, Cards &amp; NetBanking</span>
+                  </div>
+
                   {paymentError && (
-                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-xs font-medium flex items-center gap-2">
+                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-medium flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 flex-shrink-0 text-rose-600" />
                       <span>{paymentError}</span>
                     </div>
@@ -574,11 +667,15 @@ export const UploadPage: React.FC = () => {
                 <div className="p-4 bg-emerald-50 text-emerald-950 rounded-2xl border border-emerald-300 text-xs font-bold flex flex-col gap-1.5 shadow-2xs">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>{language === 'mr' ? 'Razorpay द्वारे पेमेंट यशस्वी झाले! (₹५०)' : 'Payment Confirmed via Razorpay! (₹50.00)'}</span>
+                    <span>
+                      {language === 'mr'
+                        ? `Razorpay द्वारे ₹${amountInputStr || customPaymentAmount || 50} पेमेंट यशस्वी झाले!`
+                        : `Payment of ₹${amountInputStr || customPaymentAmount || 50}.00 Confirmed via Razorpay!`}
+                    </span>
                   </div>
                   {paymentId && (
                     <div className="pl-6 text-[11px] font-mono text-emerald-700 font-normal">
-                      <span>Receipt ID: </span>
+                      <span>Receipt / Payment ID: </span>
                       <span className="font-bold">{paymentId}</span>
                     </div>
                   )}
@@ -645,7 +742,9 @@ export const UploadPage: React.FC = () => {
                   </div>
                   <div className="pt-2 border-t border-slate-200 flex justify-between items-center">
                     <span className="font-bold text-slate-800">Total Fee:</span>
-                    <span className="text-lg font-black text-slate-900 font-mono">₹50.00</span>
+                    <span className="text-lg font-black text-slate-900 font-mono">
+                      ₹{((pendingOrder.amount || 0) / 100).toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
