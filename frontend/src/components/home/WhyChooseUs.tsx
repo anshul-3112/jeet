@@ -21,27 +21,27 @@ export const WhyChooseUs: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-[#FAF9F6] border-b border-slate-200/90">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <section className="py-12 md:py-[72px] bg-[#FAF9F6] border-b border-slate-200/90">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Left Text & Benefits List (7 cols) */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-[#0B3830] border border-emerald-200">
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-[#0b3b32] border border-emerald-200">
               <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
               <span>{language === 'mr' ? 'नागपुरातील विश्वासू केंद्र' : 'Nagpur’s Trusted Seva Kendra'}</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-sans leading-[1.15]">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-sans leading-[1.15]">
               {language === 'mr' ? (
                 <>
                   नागपूरकरांचा विश्वास, <br />
-                  <span className="text-[#0B3830]">अचूक आणि जलद शासकीय सेवा.</span>
+                  <span className="text-[#0b3b32]">अचूक आणि जलद शासकीय सेवा.</span>
                 </>
               ) : (
                 <>
                   Built on citizen trust, <br />
-                  <span className="text-[#0B3830]">crafted for zero application delays.</span>
+                  <span className="text-[#0b3b32]">crafted for zero application delays.</span>
                 </>
               )}
             </h2>
@@ -83,22 +83,22 @@ export const WhyChooseUs: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="w-13 h-13 rounded-2xl bg-[#0B3830] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-[#0b3b32] text-white flex items-center justify-center font-bold text-base shadow-2xs">
                   JD
                 </div>
               </div>
 
               {/* Verified Details List */}
-              <div className="space-y-3 text-xs">
-                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                  <MapPin className="w-4 h-4 text-[#0B3830] flex-shrink-0 mt-0.5" />
+              <div className="space-y-2.5 text-xs">
+                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                  <MapPin className="w-4 h-4 text-[#0b3b32] flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-slate-900 block">Location Landmark</span>
                     <span className="text-slate-600">{businessConfig.address.landmark}, Nagpur-24</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
                   <Clock className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-slate-900 block">Working Hours</span>
@@ -106,7 +106,7 @@ export const WhyChooseUs: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
                   <Award className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-slate-900 block">Services Offered</span>
@@ -118,7 +118,7 @@ export const WhyChooseUs: React.FC = () => {
               {/* Direct Call Button */}
               <a
                 href={`tel:${businessConfig.primaryPhone}`}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#0B3830] hover:bg-[#134E43] text-white font-bold text-xs shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 h-12 px-5 rounded-full bg-[#0b3b32] hover:bg-[#072722] text-white font-bold text-xs sm:text-sm shadow-xs hover:shadow active:scale-95 transition-all cursor-pointer"
               >
                 <Phone className="w-4 h-4" />
                 <span>Call Center: {businessConfig.formattedPrimaryPhone}</span>

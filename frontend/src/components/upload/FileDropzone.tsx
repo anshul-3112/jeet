@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { UploadCloud, Camera, FileText, X, AlertCircle } from 'lucide-react';
+import { CameraModal } from './CameraModal';
+import { isMobileDevice } from '../../utils/camera';
 
 interface FileDropzoneProps {
   files: File[];
@@ -16,6 +18,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -65,6 +68,40 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
     setErrorMessage(null);
   };
 
+  const handleTakePhotoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setErrorMessage(null);
+
+    if (files.length >= maxFiles) {
+      setErrorMessage(`Maximum of ${maxFiles} files allowed.`);
+      return;
+    }
+
+    if (isMobileDevice()) {
+      // Trigger native rear camera capture on mobile/tablet devices
+      cameraInputRef.current?.click();
+    } else {
+      // Launch live webcam capture modal on desktop/laptop
+      setIsCameraModalOpen(true);
+    }
+  };
+
+  const handleSelectFilesClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setErrorMessage(null);
+
+    if (files.length >= maxFiles) {
+      setErrorMessage(`Maximum of ${maxFiles} files allowed.`);
+      return;
+    }
+
+    fileInputRef.current?.click();
+  };
+
+  const handleCameraPhotoCaptured = (capturedFile: File) => {
+    validateAndAddFiles([capturedFile]);
+  };
+
   return (
     <div className="w-full space-y-4">
       {/* Drop area */}
@@ -75,7 +112,13 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
         }}
         onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={() => {
+          if (files.length >= maxFiles) {
+            setErrorMessage(`Maximum of ${maxFiles} files allowed.`);
+          } else {
+            fileInputRef.current?.click();
+          }
+        }}
         className={`border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200 ${
           isDragOver
             ? 'border-brand-500 bg-brand-50/60 scale-[1.01]'
@@ -97,7 +140,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
           }}
         />
 
-        {/* Dedicated camera capture input */}
+        {/* Dedicated camera capture input (for mobile/tablet native camera capture) */}
         <input
           ref={cameraInputRef}
           type="file"
@@ -128,10 +171,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
           <div className="pt-2 flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                cameraInputRef.current?.click();
-              }}
+              onClick={handleTakePhotoClick}
               className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-full bg-[#0B3830] hover:bg-[#072722] text-white shadow-xs transition-all active:scale-95 cursor-pointer"
             >
               <Camera className="w-4 h-4 text-amber-300" />
@@ -139,10 +179,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
             </button>
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                fileInputRef.current?.click();
-              }}
+              onClick={handleSelectFilesClick}
               className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 shadow-2xs transition-colors cursor-pointer"
             >
               <FileText className="w-4 h-4 text-emerald-700" />
@@ -151,6 +188,14 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Desktop Camera Modal */}
+      <CameraModal
+        isOpen={isCameraModalOpen}
+        onClose={() => setIsCameraModalOpen(false)}
+        onPhotoCaptured={handleCameraPhotoCaptured}
+        onFallbackToFilePicker={() => fileInputRef.current?.click()}
+      />
 
       {/* Error alert */}
       {errorMessage && (
@@ -190,7 +235,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemove(idx)}
-                    className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
                     title="Remove file"
                   >
                     <X className="w-4 h-4" />

@@ -6,6 +6,7 @@ import { ScrollToTop } from './components/layout/ScrollToTop';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { MobileContactBar } from './components/layout/MobileContactBar';
+import { FloatingWhatsAppButton } from './components/common/FloatingWhatsAppButton';
 
 // Public Page Imports
 import { HomePage } from './pages/HomePage';
@@ -47,6 +48,7 @@ const PublicLayout: React.FC = () => {
         <Outlet />
       </main>
       <Footer />
+      <FloatingWhatsAppButton />
       <MobileContactBar />
     </div>
   );

@@ -6,9 +6,12 @@ export const translations = {
       home: 'Home',
       services: 'Services',
       howItWorks: 'How It Works',
-      about: 'About Us',
+      trackStatus: 'Track Status',
+      about: 'About',
       contact: 'Contact',
-      faq: 'FAQ'
+      faq: 'FAQ',
+      payOnline: 'Pay Online',
+      uploadDocuments: 'Upload Documents'
     },
     header: {
       open24Hours: 'Open 24 Hours',
@@ -97,9 +100,12 @@ export const translations = {
       home: 'मुख्य पान',
       services: 'सर्व सेवा',
       howItWorks: 'कार्यपद्धती',
+      trackStatus: 'स्थिती तपासा',
       about: 'आमच्याबद्दल',
       contact: 'संपर्क',
-      faq: 'प्रश्नोत्तरे'
+      faq: 'प्रश्नोत्तरे',
+      payOnline: 'ऑनलाईन फी भरा',
+      uploadDocuments: 'कागदपत्रे पाठवा'
     },
     header: {
       open24Hours: '२४ तास सेवा उपलब्ध',

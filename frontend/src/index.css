@@ -6,31 +6,29 @@
   --color-surface: #FFFFFF;
   --color-surface-elevated: #FFFFFF;
   
-  /* Deep Heritage Forest Pine */
-  --color-pine-50: #F0F7F4;
-  --color-pine-100: #DEEFE8;
-  --color-pine-200: #BDDFD2;
-  --color-pine-300: #8DC4B1;
-  --color-pine-400: #54A38B;
-  --color-pine-500: #1B7865;
-  --color-pine-600: #125B4D;
-  --color-pine-700: #0E473D;
-  --color-pine-800: #0B3830;
-  --color-pine-900: #072520;
-  --color-pine-950: #031411;
-
-  /* Brand Emerald / Government Action */
-  --color-brand-50: #ECFDF5;
-  --color-brand-100: #D1FAE5;
-  --color-brand-200: #A7F3D0;
-  --color-brand-300: #6EE7B7;
-  --color-brand-400: #34D399;
+  /* Official Brand Dark Green */
+  --color-brand-primary: #0b3b32;
+  --color-brand-dark: #072722;
+  --color-brand-light: #134E43;
+  --color-brand-50: #F0F7F5;
+  --color-brand-100: #DEEFE8;
+  --color-brand-200: #BDDFD2;
   --color-brand-500: #10B981;
   --color-brand-600: #059669;
   --color-brand-700: #047857;
-  --color-brand-800: #065F46;
-  --color-brand-900: #064E3B;
-  --color-brand-950: #022C22;
+  --color-brand-800: #0b3b32;
+  --color-brand-900: #072722;
+
+  /* Official Brand Gold Accent */
+  --color-gold-accent: #f5b800;
+  --color-gold-hover: #e0a700;
+  --color-gold-50: #FFFBEB;
+  --color-gold-100: #FEF3C7;
+  --color-gold-200: #FDE68A;
+  --color-gold-300: #FCD34D;
+  --color-gold-400: #FBBF24;
+  --color-gold-500: #f5b800;
+  --color-gold-600: #D97706;
 
   /* Gov Navy / Deep Slate */
   --color-govnavy-50: #F8FAFC;
@@ -45,25 +43,12 @@
   --color-govnavy-900: #0F172A;
   --color-govnavy-950: #080D1A;
 
-  /* Saffron Gold / Ochre - Official Aaple Sarkar Accents */
-  --color-ochre-50: #FFFBEB;
-  --color-ochre-100: #FEF3C7;
-  --color-ochre-200: #FDE68A;
-  --color-ochre-300: #FCD34D;
-  --color-ochre-400: #FBBF24;
-  --color-ochre-500: #F59E0B;
-  --color-ochre-600: #D97706;
-  --color-ochre-700: #B45309;
-  --color-ochre-800: #92400E;
-  --color-ochre-900: #78350F;
-
   /* Typography Colors */
   --color-ink-primary: #0F172A;
   --color-ink-secondary: #334155;
   --color-ink-muted: #64748B;
 
-  --font-serif: 'Newsreader', Garamond, Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans Devanagari', 'Inter', system-ui, -apple-system, sans-serif;
   --font-marathi: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
 
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.04), 0 6px 16px -2px rgba(15, 23, 42, 0.05);

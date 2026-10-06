@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import {
   MapPin,
   Navigation,
@@ -41,12 +42,14 @@ export const LocationQRCode: React.FC<LocationQRCodeProps> = ({
     return (
       <div className={`p-4 rounded-2xl bg-[#122A24] border border-[#1B4239] text-slate-200 shadow-md ${className}`}>
         <div className="flex items-center gap-3">
-          <div className="relative group/qr flex-shrink-0 bg-white p-2 rounded-xl border border-slate-700 shadow-sm transition-transform duration-200 hover:scale-105">
-            <img
-              src={businessConfig.locationQrImage}
-              alt="Scan QR for Net Cafe Location"
-              className="w-16 h-16 object-contain rounded"
-              loading="lazy"
+          <div className="relative group/qr flex-shrink-0 bg-white p-1.5 rounded-xl border border-slate-700 shadow-sm transition-transform duration-200 hover:scale-105 flex items-center justify-center">
+            <QRCodeSVG
+              value={businessConfig.googleMapsUrl}
+              size={64}
+              level="H"
+              includeMargin={false}
+              bgColor="#FFFFFF"
+              fgColor="#0b3b32"
             />
             <div className="absolute -bottom-1 -right-1 bg-emerald-600 text-white p-0.5 rounded-full shadow-xs">
               <Navigation className="w-2.5 h-2.5" />
@@ -130,11 +133,14 @@ export const LocationQRCode: React.FC<LocationQRCodeProps> = ({
           </div>
 
           <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-3.5 rounded-3xl border border-white/15 flex-shrink-0">
-            <div className="bg-white p-2 rounded-2xl shadow-lg">
-              <img
-                src={businessConfig.locationQrImage}
-                alt="Jeet Digital Seva Kendra Location QR Code"
-                className="w-24 h-24 object-contain rounded-xl"
+            <div className="bg-white p-2 rounded-2xl shadow-lg flex items-center justify-center">
+              <QRCodeSVG
+                value={businessConfig.googleMapsUrl}
+                size={96}
+                level="H"
+                includeMargin={false}
+                bgColor="#FFFFFF"
+                fgColor="#0b3b32"
               />
             </div>
             <div className="space-y-2">
@@ -200,12 +206,17 @@ export const LocationQRCode: React.FC<LocationQRCodeProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
         {/* QR Visual Showcase (5 cols) */}
         <div className="sm:col-span-5 flex flex-col items-center justify-center">
-          <div className="relative p-3 bg-gradient-to-b from-white to-slate-50 rounded-3xl border-2 border-emerald-200 shadow-md group transition-transform duration-300 hover:scale-[1.02]">
-            <img
-              src={businessConfig.locationQrImage}
-              alt="Jeet Digital Net Cafe Google Maps Location QR"
-              className="w-36 h-36 sm:w-40 sm:h-40 object-contain rounded-2xl bg-white"
-            />
+          <div className="relative p-3 bg-gradient-to-b from-white to-slate-50 rounded-3xl border-2 border-emerald-200 shadow-md group transition-transform duration-300 hover:scale-[1.02] flex flex-col items-center justify-center">
+            <div className="bg-white p-2 rounded-2xl flex items-center justify-center">
+              <QRCodeSVG
+                value={businessConfig.googleMapsUrl}
+                size={150}
+                level="H"
+                includeMargin={false}
+                bgColor="#FFFFFF"
+                fgColor="#0b3b32"
+              />
+            </div>
 
             <div className="mt-2 text-center">
               <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#0B3830] bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">

@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#0B1513] text-slate-300 pt-14 pb-24 md:pb-12 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Banner with Aaple Sarkar Tagline */}
         <div className="bg-[#122A24] rounded-3xl p-6 sm:p-8 mb-12 border border-[#1B4239] flex flex-col md:flex-row items-center justify-between gap-6 shadow-soft">
